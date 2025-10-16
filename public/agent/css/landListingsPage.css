@@ -1,0 +1,110 @@
+.agent-listings > a {
+  color: #000000;
+  font-weight: bold;
+}
+
+.agent-listings img {
+  transform: scale(1.1);
+}
+
+    /* LISTINGS SECTION */
+#Listings {
+    justify-items: center;
+
+    width: 100%;
+    background-color: #f5f8f6;
+    margin-left: 45px;
+}
+
+#Listings > h1:nth-child(1) {
+  
+  background-color: #4e6e5d;
+  width: 100%;
+  padding: 11.25px;
+  box-sizing: border-box;
+
+  margin: 0px;
+  font-size: 22.5px;
+  
+  border-radius: 11.25px;
+  color: #ffffff;
+}
+
+#Listings > div:nth-child(2) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+} 
+
+#Listings > div:nth-child(2) > a {
+    text-align: center;
+    font-size: 24px;
+    color: #90907a;
+    text-decoration: none;
+    transition: transform 0.25s;
+    margin: 20px 40px;
+}  
+
+#Listings > div:nth-child(2) > a:nth-child(2) {
+    color: #2b2b2b;
+    
+    transform: scale(1.05);
+} 
+
+#Listings > div:nth-child(2) > a:hover {
+    transform: scale(1.05);
+} 
+
+#Listings {
+  padding: 22.5px;
+
+  width: 100%;
+}
+
+#Listings > #featuredLandListings > .property > .translucentLayer {
+    background-color: #00000099;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    border: solid #00000099;
+    top: -1px;
+}
+
+#Listings .property .removeDelete  {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    border-radius: 35px;
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#Listings > #featuredLandListings {
+    padding-bottom: 15px;
+    margin-bottom: 45px;
+}
+
+#Listings > #featuredLandListings > #featured {
+    height: 30px;
+    font-size: 50px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    padding: 0px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+#Listings > h1:not(#Listings > h1:nth-child(1)) {
+    font-size: 45px;
+    font-weight: lighter;
+    text-align: center;
+    margin: 0px;
+}

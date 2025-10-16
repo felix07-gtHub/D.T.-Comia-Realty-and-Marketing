@@ -1,0 +1,176 @@
+.property {
+    width: 260px;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    border: solid 2px #4e6e5d;
+    border-radius: 20px;
+    color: #32402f;
+    font-weight: bold;
+    margin: 25px;
+    position: relative;
+    background-color: #f5f8f6;
+}
+
+.property > .imageContainer  {
+    width: 100%;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.property > .imageContainer > img {
+    width: 100%;
+    height: 100%;
+}
+
+.property > .imageContainer > input {
+    display: none;
+}
+
+#Listings .property .featuredCheckbox,
+#deletedListings .property .selectCheckbox,
+#savedPropertiesListings .property .selectCheckbox,
+#historyPropertiesListings .property .selectCheckbox {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 25px;
+    height: 25px;
+    z-index: 1;
+}
+
+#Listings .property .featuredCheckbox > img,
+#deletedListings .property .selectCheckbox > img,
+#savedPropertiesListings .property .selectCheckbox > img,
+#historyPropertiesListings .property .selectCheckbox > img {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.property > p {
+    width: 100%;
+    text-align: center;
+    margin: 2.5px;
+    font-size: 15px;
+}
+
+.property > img[alt="Property image"] + p {
+    font-size: 20px;
+}
+
+.property > img[alt="Bed icon"],
+.property > img[alt="Bathtub icon"] {
+    width: 20px;
+    height: 20px;
+}
+
+.property > img[alt="Bed icon"] + p,
+.property > img[alt="Bathtub icon"] + p {
+    width: auto;
+}
+
+.property > img[alt="Bathtub icon"] {
+    margin-left: 15px;
+}
+
+.property > .viewDetails {
+    width: 100%;
+    height: 35px;
+    margin: 2.5px 60px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.property > input[name="Saved checkbox"] {
+    display: none;
+}
+
+.property > label,
+.property > .shareIcon {
+    width: 30px;
+    height: 30px;
+    margin: 2.5px 10px 15px 10px;
+    cursor: pointer;
+}
+
+.property > label:hover,
+.property > .shareIcon:hover {
+    transform: scale(1.05);
+    transition: transform 0.25s;
+}
+
+.property .heartIcon {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.property > .moreIcon {
+    width: 34.75px;
+    height: 34.75px;
+    margin: 2.5px 10px 15px 10px;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    cursor: pointer;
+}
+
+    /* MORE */
+.property > .more {
+    position: absolute;
+    border-radius: 20px;
+    background-color: #faf2e9;
+    display: none;
+    box-shadow: 0px 0px 10px;
+    right: -130px;
+    bottom: -50px;
+    align-content: center;
+}
+
+.property > .more > ul {
+    list-style: none;
+    padding: 12.5px;
+    margin: 0px;
+}
+
+.property > .more > ul > li {
+    justify-items: center;
+}
+
+.property > .more > ul > li > a,
+.property > .more > ul > li > p {
+    text-decoration: none;
+    color: #32402f;
+    display: flex;
+    width: fit-content;
+    margin: 0px;
+}
+
+.property > .more > ul > li > a:hover,
+.property > .more > ul > li > p:hover {
+    color: #f8ce7f;
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+.property > .sold {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    padding: 12px;
+    box-sizing: border-box;
+    background-image: linear-gradient(black, transparent)
+}
+
+.property > .sold > p {
+    color: #ffffff;
+    font-size: 24px;
+    text-align: center; 
+    font-weight: lighter;
+    margin: 64px 0px;
+}

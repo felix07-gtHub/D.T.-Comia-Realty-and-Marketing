@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.T. Comia Realty and Markerting</title>
+    <link rel="icon" href="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap">
+    <link rel="stylesheet" href="./css/details1.css">
+    <link rel="stylesheet" href="./css/details2.css">
+    <link rel="stylesheet" href="./css/listings.css">
+    <link rel="stylesheet" href="./css/navBar.css">
+    <link rel="stylesheet" href="./css/houseListings.css">
+</head>
+<body>
+
+        <!-------------------------NAVIGATION BAR------------------------->
+    <nav>
+        <button onclick="toggleMenu()" id="menuIcon">&#9776;</button>  
+        <img src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png" alt="D.T. Comcia Realty and Markerting Logo" type="">
+        <h1>D.T. COMIA REALTY & MARKETING</h1>
+        <ul>
+            <li> 
+                <a href="./homePage.html">HOMEPAGE</a>
+            </li>
+            <li>
+                <a href="./houseListings.html">LISTINGS</a>
+                
+            </li>
+            <li>
+                <a href="gpsSystem.html?role=buyer">LOCATION</a>
+            </li>
+            <li>
+                <a href="./contactPage.html">CONTACT US</a>
+            </li>
+            <li>
+                <a href="./aboutPage.html">ABOUT</a>
+                
+            </li>
+        </ul>
+        
+            <!--NOTIFICATION ICON-->
+
+            <!--PROFILE ICON-->
+
+            <!--USER-->
+
+            <!--DROP-DOWN-->
+            
+    </nav>
+
+    <div id="gradientLayer"></div>
+
+        <!--MENU TAB-->
+    <div id="menuTab">
+        <ul>
+            <li>
+                <a href="./homePage.html">HOMEPAGE</a>
+            </li>
+            <li>
+                <a href="./houseListings.html">LISTINGS</a>
+            </li>
+            <li>
+                <a href="./gpsSystem.html">LOCATION</a>
+            </li>
+            <li>
+                <a href="./contactPage.html">CONTACT US</a>
+            </li>
+            <li>
+                <a href="./aboutPage.html">ABOUT</a>
+            </li>
+        </ul>
+    </div>
+        <!---------------------------------------------------------------->
+
+    <div>
+      <a href="./houseListings.html">House</a>
+      <a href="./landListings.html">Land</a>
+    </div>
+
+        <!-------------------------FILTER------------------------->
+    <section id="filter">
+        <div> 
+            <button>Reset</button>
+            <select name="House type" id="houseType">
+                <option value="Any">House type</option>
+                <option value="Bungalow">Bungalow</option>
+                <option value="Two-Storey House">Two-Storey House</option>
+                <option value="One-and-a-Half Storey House">One-and-a-Half Storey House</option>
+                <option value="Multi-Storey House">Multi-Storey House</option>
+                <option value="Split-Level House">Split-Level House</option>
+                <option value="Duplex">Duplex</option>
+                <option value="Triplex / Fourplex">Triplex / Fourplex</option>
+                <option value="Townhouse / Row House">Townhouse / Row House</option>
+                <option value="Semi-Detached House">Semi-Detached House</option>
+                <option value="Single-Detached House">Single-Detached House</option>
+                <option value="Modern House">Modern House</option>
+                <option value="Contemporary House">Contemporary House</option>
+                <option value="Villa">Villa</option>
+                <option value="Cottage">Cottage</option>
+                <option value="Farmhouse">Farmhouse</option>
+                <option value="Beach House">Beach House</option>
+                <option value="Rest House / Vacation home">Rest House / Vacation Home</option>
+            </select> 
+            <div>            
+                <input type="number" name="Number of bedrooms" placeholder="Enter no. of bedrooms" min="0">
+            </div>
+            <div>            
+                <input type="number" name="Number of bathrooms" placeholder="Enter no. of bathrooms" min="0">
+            </div>
+            <select name="Select location" id="selectLocation">
+                <option value="Any">Select location</option>
+            </select> 
+            <div>
+                <div id="priceRange">
+                    <p>Price range</p>
+                    <p>Min</p>
+                    <p id="minPrice"></p>
+                    <p>Max</p>
+                    <p id="maxPrice"></p>        
+                    <input type="range" min="0" max="54" value="0" id="minRange">
+                    <input type="range" min="0" max="54" value="54" id="maxRange">        
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <input type="image" name="Sort button" src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/sort.png" alt="Sort icon" id="sortIcon">
+                <label for="sortIcon">
+                    <p>Sort</p>
+                    <p>: Default</p>
+                </label>
+
+                    <!--SORT-->
+                <div id="sort">
+                    <ul>
+                        <li>Default</li>
+                        <li>Price ↑</li>
+                        <li>Date ↑</li>
+                    </ul>
+                </div>        
+            </div>
+        </div>
+    </section>
+        <!---------------------------------------------------------------->
+
+        <!-------------------------PORPERTY LISTINGS------------------------->
+    <section id="listings">
+        <div id="houseListings"></div>
+    </section>
+        <!---------------------------------------------------------------->
+
+</body>
+
+        <!--PLACE DOWN HERE TO ALLOW ELEMENTS TO EXIST FIRST BEFORE ADDING EVENT LISTENER.-->
+    <script src="./js/houseListings.js" type="text/javascript"></script>
+    <script src="./js/navBar.js" type="text/javascript"></script>
+
+</html>

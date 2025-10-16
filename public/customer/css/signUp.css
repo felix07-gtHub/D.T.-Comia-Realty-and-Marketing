@@ -1,0 +1,193 @@
+body {
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    /* FLEXBOX */
+#flexBox {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+ #flexBox > #signIn {
+  position: relative;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  box-sizing: border-box;
+  color: #faf2e9;
+  text-align: center;
+  overflow: hidden; /* keeps blur inside */
+}
+
+#flexBox > #signIn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/HOME PAGE/housebg.jpg') center/cover no-repeat;
+  filter: blur(6px);
+  transform: scale(1.1); /* fixes edge blur cutoff */
+  z-index: -1; /* sends it behind content */
+}
+
+
+#flexBox > #signIn > img {
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+}
+
+#flexBox > #signIn > h1 {
+    font-size: 35px;
+    letter-spacing: 2.5px;
+    color: white;
+}
+
+#flexBox > #signIn > p {
+    font-size: 15px;
+    width: 200px;
+    text-align: center;
+    margin: 35px 0px;
+    font-weight: bold;
+    color: #e5d7c4;
+}
+
+#flexBox > #signIn > a > button {
+    width: 225px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: #889063;
+    border: none;
+    color: #e5d7c4;
+    font-weight: bold;
+}
+
+#flexBox > #signIn > a > button:hover {
+    background-color: #faebcf;
+    color: #476840;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #faebcf;
+}
+
+    /* SIGN UP FORM */
+#flexBox > #signUp {
+    width: 60%;
+    height: 100%;
+    align-content: center;
+    justify-items: center;
+    background-color: #e5d7c4;
+}
+
+#flexBox > #signUp > form {
+    width: 100%;
+    max-width: 605px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 25px;
+    color: #45703c;
+}
+
+#flexBox > #signUp > form > h1 {
+    width: 100%;
+    text-align: center;
+    margin: 0px;
+    font-size: 35px;
+    letter-spacing: 5px;
+    color: #4f4b3a;
+}
+
+#flexBox > #signUp > form > div:not(#flexBox > #signUp > form > div ~ div) {
+    width: 47.5%;
+    margin-right: 12.5px;
+}
+
+#flexBox > #signUp > form > div + div {
+    width: 47.5%;
+    margin-left:12.5px;
+}
+
+@media (max-width: 1010px) {
+    #flexBox > #signUp > form > div:not(#flexBox > #signUp > form > div ~ div),
+    #flexBox > #signUp > form > div + div {
+        width: 100%;
+        margin: 0px;
+    }
+}
+
+#flexBox > #signUp > form P {
+    width: 100%;
+    margin-bottom: 0px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #4f4b3a;
+}
+
+#flexBox > #signUp > form input:not(#flexBox > #signUp > form > input[name="Submit button"]) {
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: solid 1px #4f4b3a;
+    padding: 0px 15px;
+    color: #faebcf;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+#flexBox > #signUp > form > input[name="Submit button"] {
+    width: 225px;
+    height: 50px;
+    margin: 25px;
+    border-radius: 100px;
+    background-color: #889063;
+    border: none;
+    color: #e5d7c4;
+    font-size: 14px;
+}
+
+#flexBox > #signUp > form > input[name="Submit button"]:hover {
+    background-color: #e5d7c4;
+    color: #889063;
+    border: solid 1px #889063;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #f8ce7f;
+}
+
+@media (max-width: 767px) {    
+    #flexBox {
+        flex-wrap: wrap;
+    }
+
+    #flexBox > #signIn, #flexBox > #signUp {
+        width: 100%;
+    }
+
+    #flexBox > #signUp > form > div:not(#flexBox > #signUp > form > div ~ div) {
+        width: 47.5%;
+        margin-right: 12.5px;
+    }
+    
+    #flexBox > #signUp > form > div + div {
+        margin-left: 12.5px;
+        width: 47.5%;
+    }
+}
+
+@media (max-width: 575px) {    
+    #flexBox > #signUp > form > div:not(#flexBox > #signUp > form > div ~ div),
+    #flexBox > #signUp > form > div + div {
+        width: 100%;
+        margin: 0px;
+    }
+}

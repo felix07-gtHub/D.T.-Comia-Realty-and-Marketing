@@ -1,0 +1,266 @@
+    /* BODY */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    /* NAVIGATION BAR */
+nav {
+    display: flex;
+    background-color: #354024;
+    width: 100%;
+    height: 113px;
+    position: fixed;
+    box-sizing: border-box;
+    top: 0px;
+    align-items: center;
+    padding: 0px 12.5px;
+    z-index: 6;
+}
+
+nav > #menuIcon {
+    color: #faf2e9;
+    font-size: 25px;
+    width: 22.5px;
+    display: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+nav > #menuIcon:hover {
+    color: #f8ce7f;
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+    /* MENU TAB */
+#menuTab {
+    position: fixed;
+    width: 0px;
+    max-width: 375px;
+    height: 100%;
+    background-color: #faf2e9;
+    transition: width 0.5s;
+    overflow: hidden;
+    z-index: 4;
+    top: 0px;
+    padding-top: 113px;
+    box-sizing: border-box;
+}
+
+#menuTab > ul {
+    list-style: none;
+    padding: 0px;
+}
+
+#menuTab > ul > li {
+    height: 60px;
+}
+
+#menuTab > ul > li > a {
+    color: #32402f;
+    text-decoration: none;
+    font-size: 20px;
+    text-wrap: nowrap;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    padding: 12.5px 50px 12.5px 50px;
+    box-sizing: border-box;
+}
+
+#menuTab > ul > li:hover {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+#menuTab > ul > li:hover > a {
+    color: #f8ce7f;
+}
+
+nav > img {
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    margin: 0px 12.5px;
+}
+
+nav > h1 {
+    width: 145px;
+    text-align: center;
+    color: #faf2e9;
+    font-weight: lighter;
+    font-size:  17px;
+}
+
+@media (max-width: 425px) {
+    nav > h1 {
+        display: none;
+    }    
+}
+
+nav > ul {
+    list-style: none;
+    padding: 0px;
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    margin-left: auto;
+}
+
+nav > ul > li {
+    margin: 0px auto;
+}
+
+nav > ul > li > a {
+    color: #faf2e9;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+nav > ul > li:hover {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+nav > ul > li:hover > a {
+    color: #f8ce7f;
+}
+
+@media (max-width: 767px) {
+    nav > #menuIcon {
+        display: block;
+    }
+
+    nav > ul {
+        display: none;
+    }
+}
+
+nav > #profileIcon {
+    width: 60px;
+    height: 60px;
+    border: 2.5px solid #faf2e9;
+    border-radius: 100%;
+    z-index: 1;
+    margin: 0px 12.5px 0px auto;
+}
+
+    /* USER */
+nav > #user {
+    background-color: #354024;
+    width: 0px;
+    max-width: 375px;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    transition: width 0.5s;
+    overflow: hidden;
+    align-content: center;
+    text-align: center;
+}
+nav > #user > p {
+    color: #f8ce7f;
+    font-size: 25px;
+    text-wrap: nowrap;
+    margin: 0px 125px 0px 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    /* DROP-DOWN */
+nav > #dropDown {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    max-width: 375px;
+    height: 0px;
+    overflow: hidden;
+    transition: height 0.5s;
+    display: flex;
+}
+
+nav > #dropDown > ul {
+    list-style: none;
+    padding: 0px;
+    background-color: #354024;
+    margin: 113px 0px 56.5px 0px;
+    width: 100%;
+}
+
+nav > #dropDown > ul > li {
+    min-height: 60px;
+    position: relative;
+    cursor: pointer;
+}
+
+nav > #dropDown > ul > li > a,
+nav > #dropDown > ul > li > p {
+    color: #e5d7c4;
+    text-decoration: none;
+    font-size: 20px;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    padding: 12.5px 25px 12.5px 105px;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0px;
+}
+
+nav > #dropDown > ul > li > a > img,
+nav > #dropDown > ul > li > img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin: 0px 37.5px;
+    left: 0px;
+    top: 50%;
+    transform: translate(0px, -50%);
+}
+
+nav > #dropDown > ul > li:hover {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+nav > #dropDown > ul > li:hover > a,
+nav > #dropDown > ul > li:hover > p  {
+    color: #f8ce7f;
+}
+
+#gradientLayer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(black, transparent);
+    top: 0px;
+    left: 0px;
+    z-index: 5;
+    display: none;
+}
+
+    /* LISTINGS */
+#featuredListings, #houseListings, #landListings, #savedPropertiesListings, #historyPropertiesListings, #activeListings, #historyListings {
+    width: 100%;
+    max-width: 950px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+@media (max-width: 1025px) {
+    #featuredListings, #houseListings, #landListings, #savedPropertiesListings, #historyPropertiesListings {
+        max-width: 650px;
+    }
+}
+
+@media (max-width: 710px) {
+    #featuredListings, #houseListings, #landListings, #savedPropertiesListings, #historyPropertiesListings {
+        max-width: 340px;
+    }
+}

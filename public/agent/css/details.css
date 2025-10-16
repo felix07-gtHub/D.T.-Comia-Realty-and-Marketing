@@ -1,0 +1,322 @@
+    /*  PROPERTY DETAILS */
+.propertyDetails {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    justify-items: center;
+    top: 0%;
+    left: 0%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 153px 10px 100px 10px;
+    box-sizing: border-box;
+    background-color: #00000075;
+    display: none;
+    z-index: 3;
+    border: solid;
+}
+
+    /* FIRST MODAL */
+.propertyDetails > .propertyModal {
+    width: 100%;
+    max-width: 712px;
+    display: flex;
+    
+    background-color: #f5f8f6;
+    border: solid 1px #4e6e5d;
+    padding: 12px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+    /* DETAILS */
+.propertyDetails > .propertyModal > .details {
+    width: 45%;
+    height: 437px;
+    margin: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    align-items: center;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer {
+    width: 100%;
+    height: 225px;
+    
+    border: solid 1px white;
+    padding: 5px;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer > .reserved {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    align-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: #00000099;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer > .reserved > p {
+    text-align: center; 
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer > .status {
+    position: absolute;
+    top: -6px;
+    right: 12px;
+    color: #354024;
+    border-radius: 10px;
+    width: 100px;
+    height: 25px;
+    font-size: 15px;
+    align-content: center;
+    text-align: center;    
+}
+
+    /* IMAGES */
+.propertyDetails > .propertyModal > .images {
+    width: 55%;
+    height: 437px;
+    margin: 5px;
+}
+
+.propertyDetails > .propertyModal > .images > div {
+    align-items: center;
+    height: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-color: #4e6e5d;
+    text-align: left;
+    border: none;
+}
+
+.propertyDetails > .propertyModal > .images > div > div {
+    min-width: 100%;
+    height: 100%;
+    align-content: center;
+}
+
+.propertyDetails > .propertyModal > .images > div img {
+    max-width: 100%;
+}
+
+.propertyDetails > .propertyModal > .images > div > .previousIcon {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    border-radius: 20px 0px 0px 20px;
+    background-color: transparent;
+    border: none;
+    color: #a39a9a;
+    cursor: pointer;
+    align-content: center;
+}
+
+.propertyDetails > .propertyModal > .images > div > .nextIcon {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    border-radius: 0px 20px 20px 0px;
+    background-color: transparent;
+    border: none;
+    color: #a39a9a;
+    cursor: pointer;
+    align-content: center;
+}
+
+.propertyDetails > .propertyModal > .images > div > button > img {
+    height: 60px;
+    width: 40px;
+}
+
+@media (max-width: 575px) {    
+    .propertyDetails > .propertyModal {
+        flex-wrap: wrap;
+    }
+    .propertyDetails > .propertyModal > .details,
+    .propertyDetails > .propertyModal > .images {
+        width: 100%;
+    }
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:not(
+    .propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled
+) {
+    font-size: 14px;
+    margin-left:  auto;
+    align-content: center;
+    color: #354024;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #00bf63;
+    border-radius: 35px;
+    padding: 6px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled {
+    font-size: 14px;
+    margin-left:  auto;
+    align-content: center;
+    color: #35402499;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #00bf6399;
+    border-radius: 35px;
+    padding: 6px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:not(
+    .propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled
+):hover {
+    background-color: #ffffff;
+    color: #00bf63;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00bf63;
+    
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(2) {
+    font-size: 16px;
+    margin: 0px;
+    color: #354024;
+    font-weight: bold;
+}
+
+.propertyDetails > .propertyModal > .details > button + p {
+    width: 100%;
+    text-decoration: none;
+    color: #354024;
+    margin: 3.25px 0px;
+    font-size: 15px;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.propertyDetails > .propertyModal > .details > hr {
+    width: 100%;
+    margin: 0px;
+    border: solid 1.25px #4e6e5d;
+}
+
+.propertyDetails > .propertyModal > .details > hr + a {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    color: #68bbe3;
+    width: 100%;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(7),
+.propertyDetails > .propertyModal > .details > p:nth-child(9),
+.propertyDetails > .propertyModal > .details > p:nth-child(11) {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    color: #354024;
+    width: 50%;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(8),
+.propertyDetails > .propertyModal > .details > p:nth-child(10),
+.propertyDetails > .propertyModal > .details > p:nth-child(12) {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    width: 50%;
+    
+}
+
+.propertyDetails > .propertyModal > .details > .measurements {
+    font-size: 15px;
+}
+
+    /* CONFIRM */
+.propertyDetails > .propertyModal > .details > .reserveModal > button {
+    background-color: #e5d7c4;
+    color: #354024;
+    border-radius: 6px;
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    
+    border: solid 1px #354024;
+    cursor: pointer;
+    margin: 6px;
+    font-weight: lighter;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > button:hover {
+    background-color: #00000099;
+    color: #a6a6a6;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00000050;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > a {
+    background-color: #00bf63;
+    color: #354024;
+    border-radius: 6px;
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    margin: 6px;
+    font-weight: lighter;
+    text-decoration: none;
+    display: inline-block;
+    align-content: center;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > a:hover {
+    background-color: #00bf63;
+    color: #ffffff;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00000050;
+}
+
+    /* DESCRIPTION */
+.propertyDetails > .description {
+    width: 100%;
+    max-width: 712px;
+    min-height: 75px;
+    background-color: #f5f8f6;
+    border: none;
+    padding: 12px;
+    box-sizing: border-box;
+    margin: 15px;
+}

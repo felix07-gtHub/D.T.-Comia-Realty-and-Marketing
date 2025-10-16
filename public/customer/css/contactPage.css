@@ -1,0 +1,404 @@
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #889063;
+}
+
+  /* TARGET THE ELEMENT WITH THE LINK OF THE ACTIVE PAGE */
+nav > ul > li:nth-child(4) {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+nav > ul > li:nth-child(4) > a {
+    color: #f8ce7f;
+} 
+
+#menuTab > ul > li:nth-child(4) {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+#menuTab > ul > li:nth-child(4) > a {
+    color: #f8ce7f;
+}
+
+
+.container-1 {
+  margin-top: 90px;
+  text-align: center;
+  padding: 50px 0 50px 0;
+  background-image: url('https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER\ ICONS\ AND\ LOGOS/contact bg.png');
+  background-size: cover; 
+  background-repeat: no-repeat; 
+}
+
+.container-1 h1 {
+  margin: 0;
+  margin: 20px;
+  font-weight: lighter;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+.container-1 p {
+  color: #e5d7c4;
+  font-size: 26px;
+  margin: 0;
+}
+
+h2, h1 {
+  color: #e5d7c4;
+}
+.left h2, .right h2 {
+  margin-left: 30px;
+  font-size: 25px;
+  font-weight: lighter;
+}
+
+.message {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: #889063;
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.left {
+  background-color: #889063;
+  max-width: 400px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border: solid 1px white;
+  
+}
+
+.right {
+  background-color: #354024;
+  width: 60%;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  max-width: 600px;
+
+}
+
+.contacts {
+  display: flex;
+  align-items: center;
+  margin: 30px;
+}
+#location {
+  width: 60px;
+  height: 57px;
+}
+#email {
+  width: 60px;
+  height: 40px;
+}
+
+#call {
+  width: 60px;
+  height: 60px;
+}
+
+.left h2{
+  color: #354024;
+  font-weight: bold;
+}
+
+.message h2:nth-child(2) {
+  color: #354024;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+hr {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.right h2 {
+  text-align: center;
+}
+
+.right p {
+  color: #e5d7c4;
+}
+
+input {
+  background-color: #354024;
+  border: solid 1px #e5d7c4;
+  border-radius: 5px;
+  width: 490px;
+  height: 35px;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+  outline: none;
+}
+
+input:hover, textarea:hover, button:hover {
+  transform: scale(1.1);
+  background-color: #dbbf7d;
+  color: #263831;
+}
+
+textarea {
+  background-color: #354024;
+  border: solid 1px #e5d7c4;
+  border-radius: 5px;
+  width: 490px;
+  height: 200px;
+  color: black;
+  transition: 0.3s;
+  outline: none;
+}
+
+#submit {
+  background-color: #889063;
+  border: none;
+  color: #e5d7c4;
+  border-radius: 5px;
+  width: 140px;
+  padding: 7px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.inputs-div {
+  justify-items: center;
+  width: 100%;
+  margin-top: 45px;
+}
+
+.map {
+  background-image: url('../https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER\ ICONS\ AND\ LOGOS/new map.png'); 
+  background-size: cover; 
+  height: 470px; /* kailangan ng height para lumabas ang bg */
+}
+
+.contact-footer {
+  display: flex;
+  height: 220px;
+
+}
+
+.contact-footer div {
+  flex: 1;
+  justify-content: center;
+}
+.compName {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-socials {
+  align-content: center;
+  text-align: center;
+}
+
+.footer-socials img {
+  width: 40px;
+  height: 40px;
+  margin: 20px;
+  transition: 0.2s;
+}
+
+.footer-socials img:hover {
+  transform: scale(1.1);
+}
+
+#footer-comia {
+  color: #e5d7c4;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.compName p {
+  color: #e5d7c4;
+  font-size: 14px;
+}
+
+#last {
+  text-align: center;
+  color: #e5d7c4;
+  font-size: 14px;
+}
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .message {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
+  }
+
+  .left,
+  .right {
+    width: 90%;
+    max-width: 600px;
+    border-radius: 15px;
+  }
+
+  .inputs-div input,
+  .inputs-div textarea {
+    width: 90%;
+    max-width: 490px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 130px;
+  }
+
+  .map {
+    height: 400px;
+  }
+
+  .contact-footer {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+}
+
+/* Tablets / small laptops */
+@media (max-width: 768px) {
+  .container-1 {
+    margin-top: 100px;
+    padding: 30px 15px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .left h2,
+  .right h2 {
+    font-size: 28px;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .contacts {
+    flex-direction: column;
+    text-align: center;
+    margin: 20px;
+  }
+
+  #location,
+  #email,
+  #call {
+    width: 50px;
+    height: auto;
+  }
+
+  .social-icons {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .social-icons img {
+    width: 28px;
+    height: 28px;
+    margin: 10px;
+  }
+
+  .inputs-div input,
+  .inputs-div textarea {
+    width: 95%;
+  }
+
+  button {
+    width: 120px;
+  }
+
+  .map {
+    height: 300px;
+  }
+
+  .contact-footer div {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container-1 {
+    margin-top: 100px;
+    padding: 20px 10px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .container-1 p {
+    font-size: 18px;
+  }
+
+  .left h2,
+  .right h2 {
+    font-size: 24px;
+  }
+
+  .message {
+    padding-bottom: 30px;
+  }
+
+  .inputs-div input,
+  .inputs-div textarea {
+    width: 95%;
+  }
+
+  textarea {
+    height: 150px;
+  }
+
+  button {
+    width: 110px;
+  }
+
+  .map {
+    height: 220px;
+  }
+
+  .social-icons img {
+    width: 25px;
+    height: 25px;
+    margin: 8px;
+  }
+
+  .footer-socials img {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+  }
+
+   .compName {
+    flex-direction: column; /* stack vertically sa mobile */
+    text-align: center;
+  }
+}

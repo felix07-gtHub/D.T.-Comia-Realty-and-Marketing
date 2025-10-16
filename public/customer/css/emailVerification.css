@@ -1,0 +1,28 @@
+body {
+    margin: 0px;
+    background-color: #faf2e9;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div {
+    background-color: #45703c;
+    height: 200px;
+    width: 100%;
+}
+
+body > h1 {
+    margin: 0px 12.5px;
+    color: #45703c;
+    font-size: 49.25px;
+}
+
+body > a {    
+    font-size: 19.25px;
+    align-items: end;
+    padding-bottom: 12.5px;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: none;
+    display: flex;
+}

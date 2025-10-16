@@ -1,0 +1,166 @@
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:not(
+    .propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled
+) {
+    font-size: 14px;
+    margin-left:  auto;
+    align-content: center;
+    color: #354024;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #00bf63;
+    border-radius: 35px;
+    padding: 6px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled {
+    font-size: 14px;
+    margin-left:  auto;
+    align-content: center;
+    color: #35402499;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #00bf6399;
+    border-radius: 35px;
+    padding: 6px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.propertyDetails > .propertyModal > .details > .imageContainer + p + button:not(
+    .propertyDetails > .propertyModal > .details > .imageContainer + p + button:disabled
+):hover {
+    background-color: #ffffff;
+    color: #00bf63;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00bf63;
+    
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(2) {
+    font-size: 16px;
+    margin: 0px;
+    color: #354024;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.propertyDetails > .propertyModal > .details > button + p,
+.propertyDetails > .propertyModal > .details > button + div + p {
+    width: 100%;
+    text-decoration: none;
+    color: #354024;
+    margin: 3.25px 0px;
+    font-size: 15px;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+.propertyDetails > .propertyModal > .details > hr {
+    width: 100%;
+    margin: 0px;
+    border: solid 1.25px #545454;
+}
+
+.propertyDetails > .propertyModal > .details > hr + a {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    color: #354024;
+    width: 100%;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(7),
+.propertyDetails > .propertyModal > .details > p:nth-child(9),
+.propertyDetails > .propertyModal > .details > p:nth-child(11) {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    color: #354024;
+    width: 50%;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+}
+
+.propertyDetails > .propertyModal > .details > p:nth-child(8),
+.propertyDetails > .propertyModal > .details > p:nth-child(10),
+.propertyDetails > .propertyModal > .details > p:nth-child(12) {
+    margin: 3.25px 0px;
+    font-size: 15px;
+    width: 50%;
+    color: #354024;
+    width: 50%;
+    padding-left: 7.5px;
+    box-sizing: border-box;
+    
+}
+
+.propertyDetails > .propertyModal > .details > .measurements {
+    font-size: 15px;
+}
+
+    /* CONFIRM */
+.propertyDetails > .propertyModal > .details > .reserveModal > button {
+    background-color: #e5d7c4;
+    color: #354024;
+    border-radius: 6px;
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    
+    border: solid 1px #354024;
+    cursor: pointer;
+    margin: 6px;
+    font-weight: lighter;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > button:hover {
+    background-color: #00000099;
+    color: #a6a6a6;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00000050;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > a {
+    background-color: #00bf63;
+    color: #354024;
+    border-radius: 6px;
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    margin: 6px;
+    font-weight: lighter;
+    text-decoration: none;
+    display: inline-block;
+    align-content: center;
+}
+
+.propertyDetails > .propertyModal > .details > .reserveModal > a:hover {
+    background-color: #00bf63;
+    color: #ffffff;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00000050;
+}
+
+    /* DESCRIPTION */
+.propertyDetails > .description {
+    width: 100%;
+    max-width: 712px;
+    min-height: 75px;
+    background-color: #f2e6d6;
+    border: none;
+    padding: 12px;
+    box-sizing: border-box;
+    margin: 15px;
+}

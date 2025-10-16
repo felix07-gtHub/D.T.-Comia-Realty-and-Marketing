@@ -1,0 +1,361 @@
+#toursReservations {
+    justify-items: center;
+    height: 100vh;
+}
+
+body {
+    background-color: #e5d7c4;
+}
+
+#toursReservations > div:nth-child(1) {
+    display: flex;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #889063;
+    align-items: center;
+    margin-top: 113px;
+    width: 100%;
+}
+
+#toursReservations > div:nth-child(1) > h1 {
+    margin: 0px 20px;
+    font-size: 40px;
+    color: #e5d7c4;
+    font-weight: bold;
+    letter-spacing: 2.5px;
+}
+
+#toursReservations > div:nth-child(2) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #f2e6d6;
+} 
+
+#toursReservations > div:nth-child(2) > hr {
+    height: 64px;
+    border: solid 1.25px #32402f;
+} 
+
+#toursReservations > div:nth-child(2) > a {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    color: #354024;
+    text-decoration: none;
+    transition: font-weight 0.25s;
+}  
+
+#toursReservations > div:nth-child(2) > a:nth-child(1) {
+    color: #4c3d19  ;
+    
+    font-weight: bold;
+} 
+
+#toursReservations > div:nth-child(2) > a:hover {
+    font-weight: bold;
+} 
+
+#toursReservations > hr {
+    width: 100%;
+    border-top: none;
+    border-left: solid 20px #faf2e9;
+    border-bottom: none;
+    border-right: solid 20px #faf2e9;
+    box-sizing: border-box;
+    background-color: #32402f;
+    height: 1.25px;
+    margin: 0px;
+}
+
+#toursReservations > div:nth-child(4) {
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%; 
+    
+}
+
+#toursReservations > div:nth-child(4) > p {
+    margin-top: 0px;
+    font-size: 20px;
+    color: #45703c;
+}
+
+.toursReservations {
+    width: 100%;
+    display: flex;
+    background-color: #f2e6d6;
+    border: solid 1px #38b6ff;
+    border-radius: 20px;
+    color: #354024;
+    font-weight: bold;
+    margin: 25px;
+    align-items: center;
+}
+
+.toursReservations > .imageContainer  {
+    min-width: 283.83px;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 253.83px;
+}
+
+.toursReservations > .imageContainer > img {
+    width: 100%;
+    height: 100%;
+}
+
+.toursReservations > .details  {
+    width: 100%;
+    height: 100%;
+    min-height: 253.83px;
+}
+
+.toursReservations > .details > div  {
+    display: flex;
+}
+
+.toursReservations > .details > div > h1 {
+    font-size: 20px;
+    width: 50%;
+    margin: 20px 10px;
+}
+
+.toursReservations > .details > div > p {
+    width: 50%;
+    margin: 7.5px 10px;
+    font-size: 15px;
+}
+
+@media (max-width: 650px) {
+    .toursReservations {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+    /*  TOURS AND RESERVATION DETAILS */
+.toursReservationsDetails {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    justify-items: center;
+    top: 0%;
+    left: 0%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 153px 10px 100px 10px;
+    box-sizing: border-box;
+    background-color: #00000075;
+    display: none;
+    z-index: 3;
+}
+
+    /* FIRST MODAL */
+.toursReservationsDetails > .toursReservationsModal {
+    width: 100%;
+    max-width: 712px;
+    display: flex;
+    background-color: #e5d7c4;
+    border: solid #ffde59 1px;
+    padding: 12px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+    /* IMAGES */
+.toursReservationsDetails > .toursReservationsModal > .images {
+    width: 55%;
+    height: 437px;
+    margin: 5px;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .images > div {
+    border: solid #a39a9a;
+    align-items: center;
+    border-radius: 20px;
+    height: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-color: #faebcf;
+    text-align: left;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .images > div > img {
+    min-width: 100%;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .images > div > input {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    border-radius: 20px 0px 0px 20px;
+    background-color: transparent;
+    border: none;
+    color: #a39a9a;
+    cursor: pointer;
+    align-content: center;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .images > div > .nextIcon {
+    right: 0px;
+    left: auto;
+}
+
+    /* DETAILS */
+.toursReservationsDetails > .toursReservationsModal > .detailsModal {
+    width: 45%;
+    height: 437px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > h1 {
+    font-size: 20px;
+    width: 100%;
+    margin-top: 0px;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div {
+    height: 100%;
+    padding: 10px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(1),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(3),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(5),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(7),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(9)  {
+    font-size: 17.5px;
+    width: 100%;
+    margin: 0px;
+    font-weight: bolder;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(2),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(4),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(6),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(8),
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > div > p:nth-child(10) {
+    font-size: 17.5px;
+    width: 100%;
+    margin: 0px 0px 20px 0px;
+}
+
+@media (max-width: 575px) { 
+    .toursReservationsDetails > .toursReservationsModal > .images {
+        width: 100%;
+    }
+    
+    .toursReservationsDetails > .toursReservationsModal > .detailsModal {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .toursReservationsDetails > .toursReservationsModal {
+        flex-wrap: wrap;
+    }
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > button {
+    font-size: 20px;
+    margin: 12px 0px 12px auto;
+    align-content: center;
+    color: #e5d7c4;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #c92a2a;
+    border-radius: 10px;
+    padding: 10px 40px;
+    box-sizing: border-box;
+    border: none;
+    font-weight: bold;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > button:hover {
+    background-color: #ffffff;
+    color: #c92a2a;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #c92a2a;
+}
+
+/* CANCEL MODAL */
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer {
+    width: 100.7%;
+    border-radius: 10px;
+    background-color: #00000075;
+    position: absolute;
+    z-index: 1;
+    display: none;
+    height: 101.1%;
+    top: -3px;
+    left: -2px;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div {
+    width: 100%;
+    max-width: 612px;
+    padding: 12px;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    top: 50%;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div > .cancelModal {
+    background-color: #e5d7c4;
+    padding: 12px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div > .cancelModal > p {
+    margin: 6px;
+    font-size: 17.5px;
+}
+
+    /* CONFIRM */
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div > .cancelModal > button {
+    background-color: #e5d7c4;
+    color: #000000;
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    border: solid 1px #354024;
+    cursor: pointer;
+    margin: 6px;
+    font-weight: lighter;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div > .cancelModal > button:nth-child(2):hover {
+    background-color: #000000;
+    color: #c2bfa7;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #000000;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .detailsModal > .translucentLayer > div >.cancelModal > button:nth-child(3):hover {
+    background-color: #c92a2a;
+    color: #ffffff;
+    border: none;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #00000050;
+}

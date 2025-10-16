@@ -1,0 +1,24 @@
+/* FEATURED SECTION */
+#listings {
+    width: 100%;
+    background-color: #f5f2e8;
+    justify-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#listings > h1 {
+    font-size: 35px;
+    color: #354024;
+    font-weight: bold;
+    text-align: center;
+}
+
+#listings > #featuredListings > p {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    cursor: pointer;
+    margin: 0px;
+    color: #354024;
+}

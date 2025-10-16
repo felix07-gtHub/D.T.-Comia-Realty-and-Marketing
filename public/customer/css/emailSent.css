@@ -1,0 +1,10 @@
+body {
+    margin: 0px;
+    background-color: #45703c;
+}
+
+body > h1 {
+    margin: 12.5px;
+    color: #faf2e9;
+    font-size: 35px;
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D.T. Comia Realty and Markerting</title>
+  <link rel="icon" href="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png">
+  <link rel="stylesheet" href="./css/landReservationForm.css">
+  <link rel="stylesheet" href="./css/navBar.css">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <!-------------------------NAVIGATION BAR------------------------->
+  <nav>
+    <button onclick="toggleMenu()" id="menuIcon">&#9776;</button>  
+    <img src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png" alt="D.T. Comcia Realty and Markerting Logo" type="">
+    <h1>D.T. COMIA REALTY & MARKETING</h1>
+      <ul>
+        <li> 
+          <a href="./homePage.html">HOMEPAGE</a>
+        </li>
+        <li>
+          <a href="./houseListings.html">LISTINGS</a> 
+        </li>
+        <li>
+          <a href="gpsSystem.html?role=buyer">LOCATION</a>
+        </li>
+        <li>
+          <a href="./contactPage.html">CONTACT US</a>
+        </li>
+        <li>
+          <a href="./aboutPage.html">ABOUT</a>  
+      </li>
+    </ul>
+        
+      <!--NOTIFICATION ICON-->
+
+      <!--PROFILE ICON-->
+
+      <!--USER-->
+
+      <!--DROP-DOWN-->
+            
+  </nav>
+
+  <div id="gradientLayer"></div>
+
+    <!--MENU TAB-->
+  <div id="menuTab">
+      <ul>
+          <li>
+            <a href="./homePage.html">HOMEPAGE</a>
+          </li>
+          <li>
+            <a href="./contactPage.html">CONTACT US</a>
+          </li>
+          <li>
+            <a href="./houseListings.html">LISTINGS</a>
+          </li>
+          <li>
+            <a href="./gpsSystem.html">LOCATION</a>
+          </li>
+          <li>
+        <a href="./aboutPage.html">ABOUT</a>
+      </li>
+    </ul>
+  </div>
+    <!---------------------------------------------------------------->
+  
+  <div id="landReservationForm">
+    <div id="nav">
+      <input type="image" name="Back icon" src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/green arrow.png" alt="back icon">
+    </div>
+
+    <div class="LandReservationForm-div">
+      <h2>Land Reservation Form</h2>
+      <p>This form temporarily secures the property in your name.</p>
+      <p>
+          Complete the reservation form and payment within <span id="highlight">30 minutes</span>. If not finished within this period, the lot will be opened to other interested buyers. 
+      </p>
+    </div>
+
+    <hr>
+    
+    <div class="buyer-info-div">
+      <h2>Buyer Information</h2>
+
+      <div>
+        <p>Full Name:</p>
+        <input type="text" name="Full name" maxlength="50">
+      </div>
+
+      <div>
+        <p>Contact Number:</p>
+        <input type="number" name="Contact number">
+      </div>
+
+      <div>
+        <p>Email:</p>
+        <input type="text" name="Email address" maxlength="50">
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="property-info-div">
+      <h2>Property Information</h2>
+
+      <div>
+        <p>Property Name:</p>
+        <input type="text" name="Property name" disabled>
+      </div>
+
+      <div>
+        <p>Location:</p>
+        <input type="text" name="Location" disabled>
+      </div>
+
+      <div>
+        <p>Lot Area:</p>
+        <input type="text" name="Lot area" disabled>
+      </div>
+
+      <div>
+        <p>Total Price:</p>
+        <input type="text" name="Total price" disabled>
+      </div>
+    </div>
+
+    <hr>
+    
+    <div class="Reservation-Details-div">
+      <h2>Reservation Details</h2>
+
+      <div>
+        <p>Reservation Period:</p>
+
+        <div>
+          <div>
+            <p>From</p>
+            <input type="date" name="Reservation period from" disabled>
+          </div>
+
+          <div>
+            <p>to</p>
+            <input type="date" name="Reservation period to">
+          </div>
+        </div>        
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="Term-and-Conditions">
+      <h2>Term and Conditions</h2>
+      <div>
+        <p>•</p>
+        <p>The reservation fee is non-refundable and will be deducted from the total contract price upon purchase.</p>
+      </div>
+
+      <div>
+        <p>•</p>
+        <p>The buyer must settle the down payment or full payment within the reservation period.</p>
+      </div>
+
+      <div>
+        <p>•</p>
+        <p>Failure to comply with the payment schedule will result in automatic cancellation of the reservation, and the property will be opened to other buyers.</p>
+      </div>
+
+      <div>
+        <p>•</p>
+        <p>The developer/agent reserves the right to modify or update property details if necessary.</p>
+      </div>
+      
+      <div class="checkbox">
+        <input type="checkbox" name="Terms and conditions">
+
+        <p>
+          <strong>I agree to the Terms and Conditions</strong>
+        </p>
+      </div>
+      
+    </div>
+
+    <hr>
+
+    
+      <button disabled>FINISH RESERVATION</button>
+    
+  </div>
+
+</body>
+
+        <!--PLACE DOWN HERE TO ALLOW ELEMENTS TO EXIST FIRST BEFORE ADDING EVENT LISTENER.--> 
+    <script src="./js/navBar.js" type="text/javascript"></script>  
+    <script src="./js/landReservationForm.js" type="text/javascript"></script>  
+
+</html>

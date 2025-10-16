@@ -1,0 +1,255 @@
+body {
+  margin: 0px;
+  background-color: #d8e3d0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+    /* NAVIGATION BAR */
+nav {
+    display: flex;
+    background-color: #4e6e5d;
+    width: 100%;
+    height: 92px;
+    position: fixed;
+    box-sizing: border-box;
+    top: 0px;
+    align-items: center;
+    padding: 0px 12.5px;
+    z-index: 6;
+}
+
+nav > .burger-btn {
+    color: #faf2e9;
+    font-size: 25px;
+    width: 22.5px;
+    display: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+nav > .burger-btn:hover {
+    color: #f8ce7f;
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+nav > img {
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    margin: 0px 12.5px;
+}
+
+nav > h1 {
+    text-align: center;
+    color: #f5f8f6;
+    font-weight: lighter;
+    font-size:  17px;
+}
+
+@media (max-width: 819px) {
+    nav > h1 {
+        display: none;
+    }    
+}
+
+nav > div:nth-child(4) {
+    display: flex;
+    width: 100%;
+    margin-left: auto;
+    max-width: fit-content;
+}
+
+nav > div:nth-child(4) > p {
+    margin: 0px;
+    color: #f5f8f6;
+}
+
+nav > div:nth-child(4) > hr {
+    margin: 0px 6.25px;
+}
+
+nav > hr {
+  margin: 0px 12.5px;
+  height: 100%;
+}
+
+nav > a {
+    width: 60px;
+    height: 60px;
+}
+
+nav > a > #profileIcon {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+
+    /* USER */
+nav > #user {
+    width: 100%;
+    background-color: #4e6e5d;
+    height: 100%;
+    align-content: center;
+    margin: 0px 12.5px;
+    max-width: fit-content;
+}
+
+@media (max-width: 736px) {
+    nav > #user {
+        display: none;
+    }    
+}
+
+nav > #user > p:nth-child(1) {
+    color: #f5f8f6;
+    font-size: 16px;
+    margin: 0px;
+}
+
+nav > #user > p:nth-child(2) {
+    color: #f5f8f6;
+    font-size: 12.5px;
+    margin: 0px;
+}
+
+
+.main-container {
+  display: flex;
+  padding: 45px 45px 45px 0px;
+  box-sizing: border-box;
+  margin-top: 92px;
+}
+
+.side-panel {
+  width: 0px;
+  background-color: #f5f8f6;
+  height: auto; 
+  position: static;
+  left: 0px;
+  top: 0px;
+  z-index: 3;
+  overflow: hidden;
+  transition: margin-left 0.3s ease, min-width 0.3s ease;
+  margin-left: 45px ;
+  min-width: 280px;
+  padding-top: 0px;
+  box-sizing: border-box;
+}
+
+.profile-div {
+ 
+  background-color: #4e6e5d;
+  align-content: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.profile-div img {
+  width: 75px;
+  height: 75px;
+  border-radius: 60px;
+ 
+}
+
+.profile-div p {
+
+  margin: 0px;
+  color: #f5f8f6;
+}
+
+.side-panel-content p {
+
+  margin: 11.25px;
+  color: #00000099;
+}
+
+.agent-listings,
+.agent-add-prop,
+.calendar,
+.recycle-bin,
+.gps-manage-btn,
+.logout {
+  height: 60px;
+  display: flex;
+  width: 100%;
+}
+
+.side-panel-content a {
+  text-decoration: none;
+  width: 100%;
+
+  font-size: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: #00000099;
+}
+.agent-listings:hover > a,
+.agent-add-prop:hover > a,
+.calendar:hover > a,
+.recycle-bin:hover > a,
+.gps-manage-btn:hover > a,
+.logout:hover > a {
+  color: #000000;
+  font-weight: bold;
+}
+
+.side-panel-content img {
+  width: 30px;
+
+  height: 30px;
+  margin-right: 7.5px;
+  transition: transform 0.5s;
+}
+
+.agent-listings:hover img,
+.agent-add-prop:hover img,
+.calendar:hover img,
+.recycle-bin:hover img,
+.gps-manage-btn:hover img,
+.logout:hover img {
+  transform: scale(1.1);
+}
+
+
+
+    /* LISTINGS */
+#featuredHouseListings, #featuredLandListings, #houseListings2, #landListings2, #deletedListings {
+    width: 100%;
+    max-width: 950px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+@media (max-width: 1025px) {
+    #featuredHouseListings, #featuredLandListings, #houseListings2, #landListings2, #deletedListings {
+        max-width: 650px;
+    }
+}
+
+@media (max-width: 710px) {
+    #featuredHouseListings, #featuredLandListings, #houseListings2, #landListings2, #deletedListings{
+        max-width: 340px;
+    }
+}
+
+.property {
+  padding-bottom: 22.5px;
+}
+
+.main-container + p {
+  text-align: center;
+
+  margin: 0px;
+  font-size: 20px;
+  background-color: #4e6e5d;
+  padding: 11.25px;
+  box-sizing: border-box;
+  color: #f5f8f6;
+}

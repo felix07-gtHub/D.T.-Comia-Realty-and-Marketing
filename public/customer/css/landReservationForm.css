@@ -1,0 +1,201 @@
+
+#landReservationForm {
+  display: flex;
+  flex-direction: column;
+}
+
+#nav {
+  background-color: #889063;
+  padding: 10px;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  margin-top: 113px;
+  width: 100%;
+}
+
+#nav /* img */ input {
+  width: 64px;
+  height: 64px;
+  margin: 0px 20px;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #e5d7c4;
+}
+
+.LandReservationForm-div {
+  margin: 0px 20px;
+}
+
+.LandReservationForm-div h2 {
+  font-size: 35px;
+  color: #4c3d19;
+}
+
+h2 {
+  color: #4c3d19;
+}
+
+.LandReservationForm-div p {
+  font-size: 17.5px;
+  color: #4c3d19;
+}
+
+.LandReservationForm-div #highlight {
+  color: #c92a2a;
+}
+
+#landReservationForm hr {
+  width: 100%;
+  box-sizing: border-box;
+  border: solid white 1px;
+}
+
+.buyer-info-div,
+.property-info-div,
+.Reservation-Details-div,
+.Term-and-Conditions {
+  margin: 0px 20px 40px 20px;
+}
+
+.buyer-info-div div,
+.property-info-div div {
+  margin-left: 20px;
+  display: flex;
+  max-width: 500px;
+}
+
+.buyer-info-div p,
+.property-info-div p,
+.Reservation-Details-div p  {
+  margin: 0px;
+  color: #4c3d19;
+  font-size: 20px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.buyer-info-div input,
+.property-info-div input {
+  border: none;
+  border-bottom: solid #4c3d19 1.25px;
+  background-color: transparent;
+  outline: none;
+  font-size: 17.5px;
+  width: 100%;
+}
+
+.Reservation-Details-div > div:nth-child(2) {
+  margin-left: 20px;
+  display: flex;
+}
+
+.Reservation-Details-div > div:nth-child(2) > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Reservation-Details-div > div:nth-child(2) > div > div {
+  display: flex;
+}
+
+.Reservation-Details-div > div:nth-child(2) div > div > p {
+  margin: 0px 10px;
+}
+
+.Reservation-Details-div > div:nth-child(2) div > div > input {
+  border: none;
+  border-bottom: solid #4c3d19 1.25px;
+  background-color: transparent;
+  outline: none;
+  font-size: 17.5px;
+  color: #4c3d19;
+}
+
+.Reservation-Details-div > div:nth-child(2) div > div > input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.Term-and-Conditions p:not(
+  .checkbox p
+) {
+  margin: 0px 0px 0px 20px;
+  color: #4c3d19;
+  font-weight: lighter;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.Term-and-Conditions div:not(
+  .checkbox
+) {
+  display: flex;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+
+  margin-left: 10px;
+}
+
+.checkbox input {
+  width: 17.5px;
+  height: 17.5px;
+  cursor: pointer;
+}
+
+.checkbox p {
+  font-size: 14px;
+  color: #4c3d19;
+  margin: 17.5px;
+}
+
+#landReservationForm button:not(#landReservationForm button:disabled) {
+  background-color: #889063;
+  border: none;
+  border-radius: 20px;
+  color: #e5d7c4;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 17.5px;
+  transition: transform 0.25s;
+  margin-top: 20px;
+  margin-left: auto; 
+
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+#landReservationForm button:disabled {
+  background-color: #4b6c5e50;
+  border: none;
+  border-radius: 20px;
+  color: #ffffff50;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 17.5px;
+  transition: transform 0.25s;
+  margin-top: 20px;
+  margin-left: auto; 
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+#landReservationForm button:not(#landReservationForm button:disabled):hover {
+  transform: scale(1.05);
+
+  background-color: white;
+  color: #4b6c5e;
+  box-shadow: 0px 0px 10px #00000050;
+  
+}
+
+@media (max-width: 464px) {
+  .Reservation-Details-div > div:nth-child(2) {
+    flex-wrap: wrap;
+  }
+}

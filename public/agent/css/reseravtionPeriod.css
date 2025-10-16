@@ -1,0 +1,591 @@
+.calendar > a {
+  color: #000000;
+  font-weight: bold;
+}
+
+.calendar img {
+  transform: scale(1.1);
+}
+
+#reservationPeriod {
+    background-color: #f5f8f6;
+    padding: 22.5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    margin-left: 45px;
+}
+
+#reservationPeriod > h1:nth-child(1) {
+  /* position: fixed; */
+  background-color: #4e6e5d;
+  /* width: 100%; */
+  padding: 11.25px;
+  box-sizing: border-box;
+/* 
+  left: 0px;
+  top: 0px;
+  display: flex;
+  z-index: 2;
+*/
+  margin: 0px;
+  font-size: 22.5px;
+  /* transition: padding 0.3s ease; */
+  border-radius: 11.25px;
+  color: #ffffff;
+}
+
+#reservationPeriod > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#reservationPeriod > div:nth-child(2) > img {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+
+#reservationPeriod > div:nth-child(2) > h2 {
+    font-size: 40px;
+    margin: 0px;
+    color: #2b2b2b;
+}
+
+#reservationPeriod > div:nth-child(3) {
+    display: flex;
+    height: 100%;
+    min-height: 100vh;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(1) {
+    display: flex;
+    padding: 80px 10px;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) {
+    width: 100%;
+    background-color: #ffffff;
+    overflow: hidden;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+    display: flex;
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div {
+    display: flex;
+    border-radius: 20px;
+    align-items: center;
+    width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 5px #ffffff;
+    justify-content: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+    background-color: #c8deff;
+    color: #2b2b2b;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) {
+    background-color: #fff27d;
+    color: #ab9047;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) {
+    background-color: #bfecac;
+    color: #667538;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > :nth-child(4) {
+    background-color: #ff7d7d;
+    color: #560216;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div > img {
+    width: 60px;
+    height: 60px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div > div > p {
+    margin: 0px;
+    font-size: 15px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div > div > h3 {
+    margin: 0px;
+    font-size: 30px;
+    color: #00000099;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > hr {
+    width: 100%;
+    border-color: #4d4444;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) {
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > h4 {
+    font-size: 20px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    margin-left: auto;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > input[name="Search input"] {
+    width: 100%;
+    height: 40px;
+    border-radius: 50px 0px 0px 50px;
+    padding: 0px 25px;
+    box-sizing: border-box;
+    background-color: #dae2d4;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > input[name="Search input"]::placeholder {
+    color: #90907a;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > input[name="Search button"] {
+    width: 35px;
+    height: 40px;
+    border-radius: 0px 50px 50px 0px;
+    background-color: #dae2d4;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:hover {
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #90907a;
+    border-radius: 40px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:hover > input[name="Search input"] {
+    background-color: #ffffff;
+    color: #90907a;
+    border: solid #dae2d4;
+    border-right: none;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:hover > input[name="Search input"]::placeholder {
+    color: #dae2d4;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:hover > input[name="Search button"] {
+    background-color: #ffffff;
+    color: black;
+    border: solid #dae2d4;
+    box-sizing: border-box;
+    border-left: none;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > a {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    display: inline-block;
+    transition: transform 0.25s;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > a:hover {
+    transform: scale(1.05);
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > a > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) {
+    overflow: auto;
+    border: solid 2px #4d4444;
+    box-sizing: border-box; 
+    height: 100%;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation {
+    display: flex;
+    min-width: 991.2px;
+    height: 56.8px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > *:nth-child(1) {
+    margin: 0px;
+    width: 10%;
+    padding: 10px;
+    box-sizing: border-box;
+    align-content: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > *:nth-child(1) ~ *:not(
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > *:nth-child(8)
+) {
+    margin: 0px;
+    width: 14%;
+    min-width: 139.7px;
+    padding: 10px;
+    box-sizing: border-box;
+    align-content: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > textarea:nth-child(6) ~ * {
+    text-align: center;
+    font-size: 15px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > *:nth-child(8) {
+    margin: 0px;
+    width: 10%;
+    min-width: 100.11px;
+    padding: 10px;
+    box-sizing: border-box;
+    align-content: center;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > button {
+    font-weight: bold;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > button:not(
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > button:nth-child(8)
+) {
+    cursor: pointer;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > textarea {
+    border: none;
+    background-color: transparent;
+    color: #000000;
+    resize: none;
+    height: 100%;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > hr {
+    border-color: #4d4444;
+    min-width: 991.2px;
+    margin: 0px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) .reservation > p {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+    /* ACTION */
+#reservationPeriod #action {
+    justify-items: center;
+    align-content: center;
+    position: absolute;
+    background-color: #bfecac;
+    display: none;
+    right: 100.11px;
+    transform: translate(0px, -28.8px);
+    width: 208.16px;
+    border: solid #667538;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+#reservationPeriod #action > ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+
+#reservationPeriod #action > ul > li {
+    font-size: 20px;
+    cursor: pointer;
+    color: #2b2b2b;
+    margin: 10px;
+    padding: 2.5px 10px;
+    font-weight: bold;
+}
+
+    /* SUB DROP-DOWN */
+#reservationPeriod #action .subDropDown:not(
+    #reservationPeriod #action .subDropDown:nth-child(3) .subDropDown
+) {
+    justify-items: center;
+    align-content: center;
+    position: absolute;
+    background-color: #ffffff;
+    display: none;
+    top: 0px;
+    right: 100%;
+    z-index: 1;
+    border: solid #000000;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0px 10px;
+}
+
+#reservationPeriod #action .subDropDown > ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+
+#reservationPeriod #action .subDropDown > ul li {
+    cursor: pointer;
+    margin: 10px;
+    padding: 2.5px 10px;
+    align-items: center;
+}
+
+#reservationPeriod #action .subDropDown button {
+    background-color: #b4b49f;
+    font-size: 15px;
+    padding: 2.5px 30px;
+    margin: 10px 5px;
+    cursor: pointer;
+    border-radius: 35px;
+    box-sizing: border-box;
+    border: none;
+}
+
+#reservationPeriod #action .subDropDown button:not(
+    #reservationPeriod #action  .subDropDown > button:disabled
+):hover {
+    background-color: #000000;
+    color: #b4b49f;
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #b4b49f;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) li {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown {
+    justify-items: center;
+    align-content: center;
+    position: absolute;
+    background-color: #ffffff;
+    display: none;
+    transform: translate(-25%, 0px);
+    z-index: 1;
+    border: solid #000000;
+    border-radius: 20px;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown h4 {
+    font-size: 20px;
+    margin: 10px;
+    text-align: left;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown label {
+    cursor: pointer;
+    display: flex;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown li {
+    margin: 0px 10px;
+    padding: 2.5px 0px;
+    display: flex;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown input {
+    cursor: pointer;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown p {
+    font-size: 15px;
+    margin: 0px;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown input:nth-child(3) {
+    font-size: 15px;
+    border: none;
+    border-bottom: dashed 1px;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown button:nth-child(3):disabled {
+    background-color: #ff000099;
+    color: #ffffff;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown button:nth-child(3):not(
+    #reservationPeriod #action .subDropDown:nth-child(3) .subDropDown button:nth-child(3):disabled
+) {
+    background-color: red;
+    color: #ffffff;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(3) .subDropDown button:nth-child(3):not(
+    #reservationPeriod #action .subDropDown:nth-child(3) .subDropDown button:nth-child(3):disabled
+):hover {
+    background-color: #ffffff;
+    color: red;
+    box-shadow: 0px 0px 10px red;
+}
+
+#reservationPeriod #action .subDropDown:nth-child(6) {
+    display: none;
+    flex-direction: column;
+    align-items: end;
+}
+
+#reservationPeriod #action  .subDropDown:nth-child(6) > textarea {
+    font-size: 15px;
+    color: #2b2b2b;
+    margin: 10px 10px 5px 10px;
+    border: none;
+    background-color: transparent;
+    color: #000000;
+    resize: none;
+    box-sizing: border-box;
+}
+
+#reservationPeriod #action  .subDropDown:nth-child(6) > button {
+    color: #ffffff;
+    background-color: #6897f4;
+    margin: 5px 10px 10px 5px;
+    max-width: 92.2px;
+}
+
+#reservationPeriod #action  .subDropDown:nth-child(6) > button:hover {
+    background-color: #ffffff;
+    color: #6897f4;
+    box-shadow: 0px 0px 10px #6897f4;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0px 20px auto;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > button {
+    width: 110px;
+    height: 40px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+    transition: transform 0.25s;
+    font-size: 15px;
+    border: solid 1.25px;
+    cursor: pointer;
+    display: none
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div {
+    width: fit-content;
+    max-width: 150px;
+    display: flex;
+    overflow: hidden;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div > div {
+    min-width: 50px;
+    min-height: 50px;
+    padding: 5px;
+    box-sizing: border-box;
+    display: inline-block;
+    border-radius: 2.5px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div > div > button {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    text-align: center;
+    align-content: center;
+    border-radius: 5px;
+    background-color: transparent;
+    transition: transform 0.25s;
+    font-size: 15px;
+    cursor: pointer;
+    border: solid 1.25px;
+}
+
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > button:hover,
+#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3) > div > div >  button:hover {
+    background-color: #000000;
+    color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 10px #000000;
+}
+
+@media (max-width: 1178px) {
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+        flex-wrap: wrap;
+    }
+
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div {
+        width: 50%;
+    }
+}
+
+@media (max-width: 807px) {
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) {
+        flex-direction: column;
+    }
+
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div {
+        width: 100%;
+        max-width: 316.4px;
+    }
+}
+
+@media (max-width: 714px) {
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) {
+        flex-wrap: wrap;
+    }
+
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > h4 {
+        width: 100%;
+    }
+
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div {
+        margin: 0px auto;
+    }
+
+    #reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > a {
+        margin-left: auto;
+    }
+}

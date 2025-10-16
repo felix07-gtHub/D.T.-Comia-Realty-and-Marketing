@@ -1,0 +1,84 @@
+#historyProperties {
+    justify-items: center;
+    height: 100vh;
+}
+
+#historyProperties > div:nth-child(1) {
+    display: flex;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #889063;
+    align-items: center;
+    margin-top: 113px;
+    width: 100%;
+}
+
+#historyProperties > div:nth-child(1) > h1 {
+    margin: 0px 20px;
+    font-size: 40px;
+    color: #e5d7c4;
+    font-weight: lighter;
+    letter-spacing: 2.5px;
+}
+
+#historyProperties > div:nth-child(2) {
+    display: flex;
+    padding: 22.5px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#historyProperties > div:nth-child(2) > div {
+    font-size: 15px;
+    text-align: center;
+}
+
+#historyProperties > div:nth-child(2) > div > input {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+#historyProperties > div:nth-child(2) > p {
+    margin: 5px;
+}
+
+#historyProperties > div:nth-child(2) > #select {
+    margin: 0px 0px auto auto;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+#historyProperties > div:nth-child(4) {
+    display: none;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    left: 0;
+    bottom: 0px;
+    transition: padding 0.3s ease;
+}
+
+#historyProperties > div:nth-child(4) > button {
+    width: 100%;
+    background-color: #f8ce7f;
+    border: none;
+    font-size: 22.5px;
+    padding: 11.5px 0px;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #654811;
+}
+
+#historyProperties > div:nth-child(4) > button:hover {
+    background-color: #faebcf;
+    color: #45703c;
+    box-shadow: 0px 0px 10px #f8ce7f;
+}
+
+#historyProperties > div:nth-child(4) > button > img {
+    height: 45px;
+}

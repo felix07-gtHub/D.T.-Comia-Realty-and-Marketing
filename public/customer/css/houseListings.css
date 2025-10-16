@@ -1,0 +1,296 @@
+    /* TARGET THE ELEMENT WITH THE LINK OF THE ACTIVE PAGE */
+nav > ul > li:nth-child(2) {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+nav > ul > li:nth-child(2) > a {
+    color: #f8ce7f;
+} 
+
+#menuTab > ul > li:nth-child(2) {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+}
+
+#menuTab > ul > li:nth-child(2) > a {
+    color: #f8ce7f;
+}
+
+body > div:nth-child(4) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #889063;
+    margin-top: 113px;
+    justify-content: center;
+} 
+
+body > div:nth-child(4) > a {
+    text-align: center;
+    font-size: 24px;
+    color: #4c3d19;
+    text-decoration: none;
+    transition: transform 0.25s;
+    margin: 20px 40px;
+}  
+
+body > div:nth-child(4) > a:nth-child(1) {
+    color: #e5d7c4;
+    text-decoration: underline 1px;
+    transform: scale(1.05);
+} 
+
+body > div:nth-child(4) > a:hover {
+    transform: scale(1.05);
+} 
+
+    /* FILTER */
+#filter {
+    justify-items: center;
+    margin: 40px 40px 0px 40px;
+}
+
+#filter > div {
+    width: 100%;
+    max-width: 900px;
+    padding: 32px 0px 80px 0px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+}
+
+#filter > div button {
+    margin: auto 0px;
+    width: 100px;
+    height: 25px;
+    font-size: 15px;
+    background-color: #889063;
+    border: none;
+    border-radius: 5px;
+    color: #e5d7c4;
+    font-weight: bold;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+}
+
+#filter > div button:hover {
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #f8ce7f;
+    background-color: #faebcf;
+    border: solid #f8ce7f;
+    color: #32402f;
+}
+
+#filter > div > div:not(#filter > div > select:nth-child(5) + div),
+#filter > div > select + div > #priceRange {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    margin: 7px 15px;
+    position: relative;
+}
+
+#filter > div > div > input[type="number"], #filter > div > select {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0px 15px;
+    box-sizing: border-box;
+    border: none;
+    border: solid #4c3d19 2px;
+    background-color: #e5d7c4;
+    color: #4c3d19;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+}
+
+#filter > div > div > input[type="number"]::placeholder {
+    color: #4c3d19;
+}
+
+#filter > div > select {
+    max-width: 380px;
+    border-radius: 40px;
+    cursor: pointer;
+    margin: 7px 15px;
+}
+
+#filter > div > div:not(#filter > div > select:nth-child(5) + div):hover,
+#filter > div > select:hover {
+    transform: scale(1.05);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #f8ce7f;
+    border-radius: 40px;
+}
+
+#filter > div > div:hover > input[type="number"] {
+    background-color: #faebcf;
+    color: black;
+    border: solid #f8ce7f;
+    border-right: none;
+}
+
+#filter > div > div:hover > input[type="number"]::placeholder {
+    color: #32402f;
+}
+
+#filter > div > select:hover {
+    background-color: #faebcf;
+    color: black;
+    border: solid #f8ce7f;
+}
+
+#filter > div > select + div {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    align-items: end;
+}
+
+#filter > div > select + div > #priceRange {
+    flex-wrap: wrap;
+}
+
+#filter > div > select + div > #priceRange > p {
+    margin: 0px;
+    color: #4c3d19;
+    font-weight: bold;
+}
+
+#filter > div > select + div > #priceRange > p:not(#filter > div > select + div > #priceRange  > p ~ p) {
+    width: 100%;
+    text-align: center;
+}
+
+#filter > div > select + div > #priceRange  > p ~ p {
+    margin-bottom: 20px;
+}
+
+#filter > div > select + div > #priceRange > #minPrice + p {
+    margin-left: auto;
+}
+
+#filter > div > select + div > #priceRange > input + div > div {
+    position: absolute;
+    height: 100%;
+    background-color: #889063; 
+}
+
+#filter > div > select + div > #priceRange > input {
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+    appearance: none;
+    background-color: transparent;
+    bottom: 0px;
+    margin: 0px;
+    z-index: 1;
+    padding: 0px 3px;
+    box-sizing: border-box;
+}
+
+#filter > div > select + div > #priceRange > input + div {
+    position: absolute;
+    height: 10px;
+    width: 99%;
+    bottom: 3px; 
+    border: solid 2px #4c3d19;
+    border-radius: 40px;
+    overflow: hidden;
+}
+
+#filter > div > select + div > #priceRange > input::-webkit-slider-thumb {
+    pointer-events: auto;
+    appearance: none;
+    height: 20px;
+    width: 10px;
+    background-color: #32402f;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+#filter > div > select + div > #priceRange > input::-webkit-slider-thumb:hover {
+    transform: scale(1.5);
+    transition: transform 0.25s;
+    box-shadow: 0px 0px 10px #f8ce7f;
+    background-color: #faebcf;
+    border: solid #f8ce7f;
+}
+
+#filter > div > div > #sortIcon {
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+}
+
+#filter > div > div > label {
+    height: 25px;
+    display: flex;
+    min-width: 100px;
+    z-index: 2;
+    border: solid #faf2e9 1px;
+}
+
+#filter > div > div > label > p {
+    font-size: 15px;
+    color: #4c3d19;
+    cursor: pointer;
+    margin: 0px;
+    text-wrap: nowrap;
+    align-content: center;
+}
+
+#filter > div > div > label > p + p {    
+    width: 100%;
+}
+
+    /* SORT */
+#filter > div > div > #sort {
+    justify-items: center;
+    align-content: center;
+    position: absolute;
+    background-color: #f8ce7f;
+    display: none;
+    top: 100%;
+    right: 2px;
+    width: 100px;
+    box-shadow: 0px 0px 10px #faebcf;
+    z-index: 1;
+}
+
+#filter > div > div > #sort > ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+
+#filter > div > div > #sort > ul > li {
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    color: #45703c;
+    border: solid #f8ce7f;
+}
+
+#filter > div > div > #sort > ul > li:hover {
+    transform: scale(1.1);
+    transition: transform 0.25s;
+    border-color: #32402f;
+    color: #32402f;
+    background-color: #faebcf;
+    box-shadow: 0px 0px 10px #faebcf;
+}
+
+    /* PROPERTY */
+#listings {
+    justify-items: center;
+}
