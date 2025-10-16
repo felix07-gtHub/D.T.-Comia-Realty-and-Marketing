@@ -371,7 +371,7 @@ document.body.addEventListener("click", showHideSearchSuggestion);
 async function searchLocation() {
     const locationValue = locationInput.value;
 
-    const response = await fetch('http://127.0.0.1:3000/search-location', {
+    const response = await fetch('dt-comia-realty-and-marketing-production.up.railway.app/search-location', {
         method: 'POST',
         headers: {                    
                     'User-Agent': 'undici-stream-example',
