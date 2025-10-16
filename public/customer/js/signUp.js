@@ -174,9 +174,9 @@ async function submitButton() {
             firstName.removeEventListener("mouseenter", invalidInputsMousEnter);
             firstName.removeEventListener("mouseleave", invalidInputsMousEave);
 
-            firstName.style.backgroundColor = '#f8ce7f';
-            firstName.style.color = '#faebcf';
-            firstName.style.border = 'none';
+            firstName.style.backgroundColor = 'transparent';
+            firstName.style.color = 'black';
+            firstName.style.border = 'solid 1px #4f4b3a';
             firstName.style.boxShadow = 'none';  
 
             firstName.addEventListener("mouseenter", validInputsMousEnter);
@@ -188,11 +188,11 @@ async function submitButton() {
             lastName.removeEventListener("mouseenter", validInputsMousEnter);
             lastName.removeEventListener("mouseleave", validInputsMousEave);
 
-            lastName.style.backgroundColor = '#faebcf';
-            lastName.style.color = 'black';
-            lastName.style.border = 'solid red';
-            lastName.style.boxShadow = '0px 0px 10px red';
-                
+            password.style.backgroundColor = 'transparent';
+            password.style.color = 'black';
+            password.style.border = 'solid 1px #4f4b3a';
+            password.style.boxShadow = 'none';  
+
             lastName.addEventListener("mouseenter", invalidInputsMousEnter);
             lastName.addEventListener("mouseleave", invalidInputsMousEave);
 
@@ -200,9 +200,9 @@ async function submitButton() {
             lastName.removeEventListener("mouseenter", invalidInputsMousEnter);
             lastName.removeEventListener("mouseleave", invalidInputsMousEave);
 
-            lastName.style.backgroundColor = '#f8ce7f';
-            lastName.style.color = '#faebcf';
-            lastName.style.border = 'none';
+            lastName.style.backgroundColor = 'transparent';
+            lastName.style.color = 'black';
+            lastName.style.border = 'solid 1px #4f4b3a';
             lastName.style.boxShadow = 'none';  
 
             lastName.addEventListener("mouseenter", validInputsMousEnter);
@@ -226,9 +226,9 @@ async function submitButton() {
             email.removeEventListener("mouseenter", invalidInputsMousEnter);
             email.removeEventListener("mouseleave", invalidInputsMousEave);
 
-            email.style.backgroundColor = '#f8ce7f';
-            email.style.color = '#faebcf';
-            email.style.border = 'none';
+            email.style.backgroundColor = 'transparent';
+            email.style.color = 'black';
+            email.style.border = 'solid 1px #4f4b3a';
             email.style.boxShadow = 'none';  
 
             email.addEventListener("mouseenter", validInputsMousEnter);
@@ -252,9 +252,9 @@ async function submitButton() {
             password.removeEventListener("mouseenter", invalidInputsMousEnter);
             password.removeEventListener("mouseleave", invalidInputsMousEave);
 
-            password.style.backgroundColor = '#f8ce7f';
-            password.style.color = '#faebcf';
-            password.style.border = 'none';
+            password.style.backgroundColor = 'transparent';
+            password.style.color = 'black';
+            password.style.border = 'solid 1px #4f4b3a';
             password.style.boxShadow = 'none';  
 
             password.addEventListener("mouseenter", validInputsMousEnter);
@@ -273,7 +273,7 @@ async function submitButton() {
             email.value = '';
             password.value = '';
 
-            //  window.location = "./emailSent.html?emailAddress";
+            window.location = "./emailSent.html?emailAddress";
 
         };
 
