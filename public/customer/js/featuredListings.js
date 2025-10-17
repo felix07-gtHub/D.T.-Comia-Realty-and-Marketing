@@ -398,10 +398,10 @@ async function featuredProperty() {
                     data.featuredPropertyListings[i].property_type != "Beach House" &&
                     data.featuredPropertyListings[i].property_type != "Rest House / Vacation home"
                 ) {
-                    window.location = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/landListings.html?location=" + data.featuredPropertyListings[i].location;
+                    window.location = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/landListings.html?location=" + data.featuredPropertyListings[i].location;
 
                 } else {
-                    window.location = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/houseListings.html?location=" + data.featuredPropertyListings[i].location;
+                    window.location = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/houseListings.html?location=" + data.featuredPropertyListings[i].location;
 
                 };
 
