@@ -133,7 +133,7 @@ async function featuredLandListings() {
 
                 // DELAY BY 10ms TO AVOID TRIGGERING propertylistings2 AND featuredLandListings IMMEDIATELY.
             setTimeout(() => {
-                propertylistings2().catch(console.error);
+                landListings2().catch(console.error);
                 featuredLandListings().catch(console.error);
             }, 10);
         }
@@ -575,5 +575,6 @@ async function featuredLandListings() {
     };
 
 };
+
 
 featuredLandListings().catch(console.error);
