@@ -133,7 +133,7 @@ async function featuredHouseListings() {
 
                 // DELAY BY 10ms TO AVOID TRIGGERING propertylistings2 AND featuredHouseListings IMMEDIATELY.
             setTimeout(() => {
-                propertylistings2().catch(console.error);
+                houseListings2().catch(console.error);
                 featuredHouseListings().catch(console.error);
             }, 10);
         }
@@ -575,5 +575,6 @@ async function featuredHouseListings() {
     };
 
 };
+
 
 featuredHouseListings().catch(console.error);
