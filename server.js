@@ -3742,61 +3742,6 @@ app.post('/change-status', (req, res) => {
 
 });
 
-  //  RESERVATION ARCHIVE.
-app.post('/reservation-archive', (req, res) => {
-    //  USER INPUTS
-  const reservationIdInput = req.body.reservationIdInput;
-  const d = new Date();
-  const dateArchived = d.getFullYear().toString().padStart(4, "0")  + '-' +
-                            (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
-                             d.getDate().toString().padStart(2, "0") + ' ' +
-                             d.getHours().toString().padStart(2, "0") + ':' +
-                             d.getMinutes().toString().padStart(2, "0") + ':' +
-                             d.getSeconds().toString().padStart(2, "0");
-  
-  if(req.session.userId != undefined) {
-    const userId = req.session.userId;
-
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-      if (err) {throw err};
-      
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") {
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      } else { 
-          //  UPDATE ARCHIVE QUERY.
-        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE reservation_id = ?';
-
-          //  DECLARES updateArchiveValue.
-        const updateArchiveValue = [dateArchived, reservationIdInput];
-
-        connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
-          if(err) {throw err};
-          
-            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-          res.json("");
-          
-        }); 
-
-      };
-      
-    });
-
-  } else {  
-      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-    res.json("");
-
-  };
-
-});
-
   //  ADD NOT.
 app.post('/add-note', (req, res) => {
     //  USER INPUTS
@@ -4246,6 +4191,7 @@ app.post('/delete-thirty-days-property', (req, res) => {
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
 
 
 
