@@ -1421,7 +1421,7 @@ app.post('/password-change', (req, res) => {
   const confirmPasswordInput = req.body.confirmPasswordInput;
 
     //  SELECT FORGET PASSWORD QUERY.
-  const selectForgetPasswordQuery = 'SELECT first_name, last_name, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forget_password_table WHERE token = ?';
+  const selectForgetPasswordQuery = 'SELECT first_name, last_name, password, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forget_password_table WHERE token = ?';
 
   connection.query(selectForgetPasswordQuery, tokenInput, (err, selectForgetPasswordResult) => {
     if(err) {throw err};
@@ -1432,8 +1432,8 @@ app.post('/password-change', (req, res) => {
           //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
         res.json("");
 
-      } else { 
-        if(selectForgetPasswordResult[0].password != newPasswordInput) {       
+      } else {
+        if(selectForgetPasswordResult[0].password != newPasswordInput) {
             //  LENGTH.
           let length = '';
 
@@ -1552,7 +1552,7 @@ app.post('/password-change', (req, res) => {
 
                 });
 
-            });
+              });
 
             });
 
@@ -1567,7 +1567,7 @@ app.post('/password-change', (req, res) => {
           res.json("");
 
         };
-        
+
       };
 
     } else {
