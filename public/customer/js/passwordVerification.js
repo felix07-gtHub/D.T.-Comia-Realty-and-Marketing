@@ -1,5 +1,5 @@
 const text = document.querySelector('.main-container p');
-const link = document.querySelector('.backToLogIn');
+const link = document.querySelector('.main-container a');
 let recoveryEmailAddressInput = '';
 let token = '';
 

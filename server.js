@@ -1012,7 +1012,7 @@ app.post('/forgot-password', (req, res) => {
               connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?emailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
 
                 res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1080,7 +1080,7 @@ app.post('/forgot-password', (req, res) => {
                 connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?emailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                  emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
 
                   res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1152,7 +1152,7 @@ app.post('/forgot-password', (req, res) => {
             connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].first_name + ' ' + selectUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?emailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].first_name + ' ' + selectUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
 
               res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1246,7 +1246,7 @@ app.post('/password-change-link', (req, res) => {
             connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?emailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+              emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1316,7 +1316,7 @@ app.post('/password-change-link', (req, res) => {
               connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?emailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
