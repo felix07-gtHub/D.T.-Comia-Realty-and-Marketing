@@ -1658,9 +1658,9 @@ app.get('/featured-property', (req, res) => {
 });
 
   //  SELECT LOCATIONS.
-app.post('/select-location', (req, res) => {
+app.post('/house-location', (req, res) => {
     //  SELECT DISTINCT LOCATION QUERY.
-  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL';
+  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home")';
 
   connection.query(selectDisitnctLocationQuery, (err, selectDisitnctLocationResult) => {
     if (err) {throw err};
@@ -1781,6 +1781,20 @@ app.post('/house-listings', (req, res) => {
 
   });
   
+});
+
+  //  SELECT LOCATIONS.
+app.post('/land-location', (req, res) => {
+    //  SELECT DISTINCT LOCATION QUERY.
+  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot")';
+
+  connection.query(selectDisitnctLocationQuery, (err, selectDisitnctLocationResult) => {
+    if (err) {throw err};
+
+    res.json({distinctLocation: selectDisitnctLocationResult});
+            
+  });
+
 });
 
   //  SELECT LAND LISTINGS.

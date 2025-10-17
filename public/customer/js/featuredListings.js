@@ -378,25 +378,25 @@ async function featuredProperty() {
             document.addEventListener("click", showHideMore);   
 
                 //  FUNCTION FOR ViewSimilarProperties.
-            async function viewSimilarPropertiesFunction(e) {            
+            async function viewSimilarPropertiesFunction(e) {              
                 if(
-                    data.featuredPropertyListings[i].property_type != "bungalow" ||
-                    data.featuredPropertyListings[i].property_type != "two-storey house" ||
-                    data.featuredPropertyListings[i].property_type != "one-and-a-half storey house" ||
-                    data.featuredPropertyListings[i].property_type != "multi-storey house" ||
-                    data.featuredPropertyListings[i].property_type != "split-level house" ||
-                    data.featuredPropertyListings[i].property_type != "duplex" ||
-                    data.featuredPropertyListings[i].property_type != "triplex / fourplex" ||
-                    data.featuredPropertyListings[i].property_type != "townhouse / row house" ||
-                    data.featuredPropertyListings[i].property_type != "semi-detached house" ||
-                    data.featuredPropertyListings[i].property_type != "single-detached house" ||
-                    data.featuredPropertyListings[i].property_type != "modern house" ||
-                    data.featuredPropertyListings[i].property_type != "contemporary house" ||
-                    data.featuredPropertyListings[i].property_type != "villa" ||
-                    data.featuredPropertyListings[i].property_type != "cottage" ||
-                    data.featuredPropertyListings[i].property_type != "farmhouse" ||
-                    data.featuredPropertyListings[i].property_type != "beach house" ||
-                    data.featuredPropertyListings[i].property_type != "rest house / vacation home"
+                    data.featuredPropertyListings[i].property_type != "Bungalow" &&
+                    data.featuredPropertyListings[i].property_type != "Two-Storey House" &&
+                    data.featuredPropertyListings[i].property_type != "One-and-a-Half Storey House" &&
+                    data.featuredPropertyListings[i].property_type != "Multi-Storey House" &&
+                    data.featuredPropertyListings[i].property_type != "Split-Level House" &&
+                    data.featuredPropertyListings[i].property_type != "Duplex" &&
+                    data.featuredPropertyListings[i].property_type != "Triplex / Fourplex" &&
+                    data.featuredPropertyListings[i].property_type != "Townhouse / Row House" &&
+                    data.featuredPropertyListings[i].property_type != "Semi-Detached House" &&
+                    data.featuredPropertyListings[i].property_type != "Single-Detached House" &&
+                    data.featuredPropertyListings[i].property_type != "Modern House" &&
+                    data.featuredPropertyListings[i].property_type != "Contemporary House" &&
+                    data.featuredPropertyListings[i].property_type != "Villa" &&
+                    data.featuredPropertyListings[i].property_type != "Cottage" &&
+                    data.featuredPropertyListings[i].property_type != "Farmhouse" &&
+                    data.featuredPropertyListings[i].property_type != "Beach House" &&
+                    data.featuredPropertyListings[i].property_type != "Rest House / Vacation home"
                 ) {
                     window.location = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/landListings.html?location=" + data.featuredPropertyListings[i].location;
 

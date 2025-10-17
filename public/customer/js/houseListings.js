@@ -46,7 +46,7 @@ if(window.location.search != '') {
 
     //  ADDS THE NEW LOCATION TO SELECT OPTION.
 async function selectFunction() {        
-    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/select-location', {
+    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/house-location', {
         method: 'POST',
         headers: {                    
                     'User-Agent': 'undici-stream-example',
