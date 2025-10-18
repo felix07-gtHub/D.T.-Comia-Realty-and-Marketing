@@ -184,19 +184,19 @@ async function submitButton() {
 
         };
 
-        if(data.firstName != "FIRST NAME FOUND!") {
+        if(data.lastName != "LAST NAME FOUND!") {
             lastName.removeEventListener("mouseenter", validInputsMousEnter);
             lastName.removeEventListener("mouseleave", validInputsMousEave);
 
-            password.style.backgroundColor = 'transparent';
-            password.style.color = 'black';
-            password.style.border = 'solid 1px #4f4b3a';
-            password.style.boxShadow = 'none';  
-
+            lastName.style.backgroundColor = '#faebcf';
+            lastName.style.color = 'black';
+            lastName.style.border = 'solid red';
+            lastName.style.boxShadow = '0px 0px 10px red';
+                
             lastName.addEventListener("mouseenter", invalidInputsMousEnter);
             lastName.addEventListener("mouseleave", invalidInputsMousEave);
 
-        } else {            
+        } else {          
             lastName.removeEventListener("mouseenter", invalidInputsMousEnter);
             lastName.removeEventListener("mouseleave", invalidInputsMousEave);
 
@@ -209,7 +209,7 @@ async function submitButton() {
             lastName.addEventListener("mouseleave", validInputsMousEave);
 
         };
-
+        
         if(data.email != "EMAIL ADDRESS FOUND!") {
             email.removeEventListener("mouseenter", validInputsMousEnter);
             email.removeEventListener("mouseleave", validInputsMousEave);
@@ -280,5 +280,6 @@ async function submitButton() {
     };
     
 };
+
 
 document.querySelector('#flexBox > #signUp > form > input[name="Submit button"]').addEventListener("click", submitButton);
