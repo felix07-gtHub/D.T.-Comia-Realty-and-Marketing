@@ -74,7 +74,15 @@ function inputChange() {
         fullName.value != "" &&
         contactNumber.value != "" &&
         emailAddress.value != "" &&
-        reservataionPeriodTo.value != "" &&
+        propertyName.value != "" &&
+        locationPropertyDetails.value != "" &&
+        lotArea.value != "" &&
+        totalPrice.value != "" &&
+        reservataionPeriodFrom.value != "" &&
+        (
+            reservataionPeriodTo.value != "" &&
+            reservataionPeriodFrom.value > reservataionPeriodTo.value
+        ) &&
         termsCondition.checked == true
     ) {
         finishReservation.disabled = false;

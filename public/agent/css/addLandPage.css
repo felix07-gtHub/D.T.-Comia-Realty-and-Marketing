@@ -70,10 +70,6 @@
   align-content: end;
 }
 
-#AddProperty > form > div:nth-child(4) > div:nth-child(2) {
-  overflow: hidden;
-}
-
 #AddProperty input:not(#AddProperty input[type='file']),
 #AddProperty select {
  
@@ -90,14 +86,10 @@
   padding: 0px 22.5px 0px 22.5px;
 }
 
-#AddProperty div:not(#AddProperty > form > div:nth-child(4) > div:nth-child(2)),
+#AddProperty div,
 #AddProperty > form > input,
 #AddProperty > form > select {
   margin-bottom: 22.5px;
-}
-
-#AddProperty > form > p:nth-child(5) {
-  margin-top: 67.2px;
 }
 
 #AddProperty input:not(#AddProperty input[type='number']),

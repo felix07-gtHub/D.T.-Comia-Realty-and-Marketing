@@ -1,58 +1,7 @@
-    //-----------------------------------------------------------HOVER STYLE FOR LOCATION INTPUT-----------------------------------------------------------.
-    // SEPARATED DUE TO DIFFERENCE IN STRUCTURE.
-const locationInput = document.querySelector('#AddProperty input[name="Location"]');
-const locationSuggestion= document.querySelector('#AddProperty > form > div:nth-child(4) > div');
-
-    //  FUNCTION FOR VALID INPUTS mouseenter.
-function validLocationInputsMousEnter(e) {
-    e.target.style.backgroundColor = '#d8e3d0';
-    e.target.style.color = 'black';
-    e.target.style.boxShadow = '0px 0px 10px #4e6e5d';
-    e.target.parentElement.style.transform = 'scale(1.01)';
-    e.target.parentElement.style.transition = 'transform 0.25s';
-    e.target.parentElement.style.boxShadow = '0px 0px 10px #4e6e5d';
-
-    for(let i = 0; i < e.target.nextElementSibling.children.length; i++) {
-        e.target.nextElementSibling.children[i].style.backgroundColor = '#d8e3d0';
-        e.target.nextElementSibling.children[i].style.color = 'black';
-    }
-};
-
-locationInput.addEventListener("mouseenter", validLocationInputsMousEnter);
-
-    //  FUNCTION FOR VALID INPUTS mouseleave.
-function validLocationInputsMousEave(e) {
-    e.target.style.backgroundColor = '#4e6e5d';
-    e.target.style.color = '#f5f8f6';
-    e.target.style.boxShadow = 'none';
-    e.target.parentElement.style.transform = 'none';
-    e.target.parentElement.style.transition = 'none';
-    e.target.parentElement.style.boxShadow = 'none';
-
-    for(let i = 0; i < e.target.nextElementSibling.children.length; i++) {
-        e.target.nextElementSibling.children[i].style.backgroundColor = '#4e6e5d';
-        e.target.nextElementSibling.children[i].style.color = '#f5f8f6';
-    }
-};
-
-locationInput.addEventListener("mouseleave", validLocationInputsMousEave);
-
-    //  FUNCTION FOR INVALID INPUTS mouseenter.
-function invalidLocationInputsMousEnter(e) {
-    e.target.parentElement.style.transform = 'scale(1.01)';
-    e.target.parentElement.style.transition = 'transform 0.25s';
-};
-
-    //  FUNCTION FOR INVALID INPUTS mouseleave.
-function invalidLocationInputsMousEave(e) {
-    e.target.parentElement.style.transform = 'none';
-    e.target.parentElement.style.transition = 'none';
-};
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------.
-    
     //----------------------------------------------------------HOVER STYLE FOR THE REST OF INPUTS----------------------------------------------------------.
     //  SEPARATED DUE TO DIFFERENCE IN STRUCTURE.
 
+const locationInput = document.querySelector('#AddProperty input[name="Location"]');
 const address = document.querySelector('#AddProperty input[name="Address"]');
 const houseType = document.querySelector('#AddProperty select');
 const price = document.querySelector('#AddProperty input[name="Price"]');
@@ -70,6 +19,7 @@ function validInputsMousEnter(e) {
     e.target.style.boxShadow = '0px 0px 10px #4e6e5d';
 };
 
+locationInput.addEventListener("mouseenter", validInputsMousEnter);
 address.addEventListener("mouseenter", validInputsMousEnter);
 houseType.addEventListener("mouseenter", validInputsMousEnter);
 price.addEventListener("mouseenter", validInputsMousEnter);
@@ -87,6 +37,7 @@ function validInputsMousEave(e) {
     e.target.style.boxShadow = 'none';
 };
 
+locationInput.addEventListener("mouseleave", validInputsMousEave);
 address.addEventListener("mouseleave", validInputsMousEave);
 houseType.addEventListener("mouseleave", validInputsMousEave);
 price.addEventListener("mouseleave", validInputsMousEave);
@@ -182,16 +133,16 @@ const save = document.querySelector('#AddProperty > div:nth-child(5) > button:nt
     */
 function inputChange() {
     if(locationInput.style.border != "none" && locationInput.value != "") {
-        locationInput.removeEventListener("mouseenter", invalidLocationInputsMousEnter);
-        locationInput.removeEventListener("mouseleave", invalidLocationInputsMousEave);
+        locationInput.removeEventListener("mouseenter", invalidInputsMousEnter);
+        locationInput.removeEventListener("mouseleave", invalidInputsMousEave);
 
         locationInput.style.backgroundColor = '#4e6e5d';
         locationInput.style.color = '#f5f8f6';
         locationInput.style.border = 'none';
         locationInput.style.boxShadow = 'none';  
 
-        locationInput.addEventListener("mouseenter", validLocationInputsMousEnter);
-        locationInput.addEventListener("mouseleave", validLocationInputsMousEave);
+        locationInput.addEventListener("mouseenter", validInputsMousEnter);
+        locationInput.addEventListener("mouseleave", validInputsMousEave);
 
     };
 
@@ -356,94 +307,21 @@ description.addEventListener("input", inputChange);
 
 
 
-    //  HIDES THE locationSuggestion IF CLICKED OUTSIDE THE locationInput.
-function showHideSearchSuggestion(e) {
-    if(!locationInput.contains(e.target)) {
-        locationSuggestion.style.height = "0px";
-    } else {
-        locationSuggestion.style.height = "auto";
-    }
-}
-
-document.body.addEventListener("click", showHideSearchSuggestion);
-
-    //  FUNCTION FOR SEARCHING LOCATION.
-async function searchLocation() {
-    const locationValue = locationInput.value;
-
-    const response = await fetch('dt-comia-realty-and-marketing-production.up.railway.app/search-location', {
-        method: 'POST',
-        headers: {                    
-                    'User-Agent': 'undici-stream-example',
-                    'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({locationValue})
-    });
-    const data = await response.json();
-
-        //  RESETS locationSuggestion EVERYTIME USER SEARCHES LOCATION TO AVOID FLOODING
-        //  THE locationSuggestions WITH UNRELATED SUGGESTIONS TO THE SEARCHED LOCATION.
-    locationSuggestion.innerHTML = "";
-
-    for(let i = 0; i < data.location.length; i++) {
-        const location = document.createElement('input');
-
-        location.type = "button";
-        location.name = data.location[i];
-        location.value = data.location[i];
-
-        locationSuggestion.appendChild(location);
-
-            //  FUNCTION FOR VALID INPUTS mouseenter.
-        function suggestedLocationInputsMousEnter(e) {
-            e.target.style.backgroundColor = '#252525';
-            e.target.style.color = 'white';
-        };
-
-        location.addEventListener("mouseenter", suggestedLocationInputsMousEnter);
-
-            //  FUNCTION FOR VALID INPUTS mouseleave.
-        function suggestedLocationInputsMousEave(e) {
-            e.target.style.backgroundColor = '#4e6e5d';
-            e.target.style.color = '#f5f8f6';
-        };
-
-        location.addEventListener("mouseleave", suggestedLocationInputsMousEave);
-
-        function selectSuggestedLocation() {
-            locationInput.value = location.value;
-
-            // store coords for saving later
-            locationInput.dataset.lat = data.lat[i];
-            locationInput.dataset.lng = data.lon[i];
-
-            searchLocation().catch(console.error);
-   
-}
-
-        location.addEventListener("click", selectSuggestedLocation);
-    }
-};  
-
-locationInput.addEventListener("input", searchLocation);
-
-
-
     //  RESETS THE INPUTS.
 function discardFunction() {
     if(locationInput.style.border != "none") {
         locationInput.value = "";
 
-        locationInput.removeEventListener("mouseenter", invalidLocationInputsMousEnter);
-        locationInput.removeEventListener("mouseleave", invalidLocationInputsMousEave);
+        locationInput.removeEventListener("mouseenter", invalidInputsMousEnter);
+        locationInput.removeEventListener("mouseleave", invalidInputsMousEave);
 
         locationInput.style.backgroundColor = '#4e6e5d';
         locationInput.style.color = '#f5f8f6';
         locationInput.style.border = 'none';
         locationInput.style.boxShadow = 'none';   
 
-        locationInput.addEventListener("mouseenter", validLocationInputsMousEnter);
-        locationInput.addEventListener("mouseleave", validLocationInputsMousEave);
+        locationInput.addEventListener("mouseenter", validInputsMousEnter);
+        locationInput.addEventListener("mouseleave", validInputsMousEave);
 
     } else {            
         locationInput.value = "";
@@ -544,29 +422,29 @@ async function saveFunction() {
             THAT THE USER SELECTS LOCATION FROM locationSuggestion.
             ONLY VALID WHEN THE USER SELECT LOCATION FROM THE locationSuggestion.
         */
-    if(locationInput.value != "" && locationSuggestion.children.length == 1) {
-        locationInput.removeEventListener("mouseenter", invalidLocationInputsMousEnter);
-        locationInput.removeEventListener("mouseleave", invalidLocationInputsMousEave);
+    if(locationInput.value != "") {
+        locationInput.removeEventListener("mouseenter", invalidInputsMousEnter);
+        locationInput.removeEventListener("mouseleave", invalidInputsMousEave);
 
         locationInput.style.backgroundColor = '#4e6e5d';
         locationInput.style.color = '#f5f8f6';
         locationInput.style.border = 'none';
         locationInput.style.boxShadow = 'none';  
 
-        locationInput.addEventListener("mouseenter", validLocationInputsMousEnter);
-        locationInput.addEventListener("mouseleave", validLocationInputsMousEave);
+        locationInput.addEventListener("mouseenter", validInputsMousEnter);
+        locationInput.addEventListener("mouseleave", validInputsMousEave);
 
     } else {            
-        locationInput.removeEventListener("mouseenter", validLocationInputsMousEnter);
-        locationInput.removeEventListener("mouseleave", validLocationInputsMousEave);
+        locationInput.removeEventListener("mouseenter", validInputsMousEnter);
+        locationInput.removeEventListener("mouseleave", validInputsMousEave);
 
         locationInput.style.backgroundColor = '#f5f8f6';
         locationInput.style.color = '#000000';
         locationInput.style.border = 'solid red';
         locationInput.style.boxShadow = '0px 0px 10px red';
             
-        locationInput.addEventListener("mouseenter", invalidLocationInputsMousEnter);
-        locationInput.addEventListener("mouseleave", invalidLocationInputsMousEave);
+        locationInput.addEventListener("mouseenter", invalidInputsMousEnter);
+        locationInput.addEventListener("mouseleave", invalidInputsMousEave);
 
     };
 
@@ -690,11 +568,7 @@ async function saveFunction() {
             ONLY UPLOADS WHEN REQUIRED FIELD ARE PROVIDED.
         */
     if(
-        (
-            locationInput.value != "" &&
-            locationSuggestion.children.length == 1
-        ) &&
-
+        locationInput.value != "" &&
         mainImage.children[1].value != "" &&
         address.value != "" &&
         houseType.value != "Any" &&

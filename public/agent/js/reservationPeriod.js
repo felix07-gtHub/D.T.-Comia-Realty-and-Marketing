@@ -263,6 +263,7 @@ async function reservationListings() {
         const otherText = document.createElement('input');
         const cancelTourCancel = document.createElement('button');
         const cancelTourConfirm = document.createElement('button');
+        const actionArchiveFromList = document.createElement('li');
         const actionAddNote = document.createElement('li');
         const addNoteDropDown = document.createElement('div');
         const addNoteTextarea = document.createElement('textarea');
@@ -320,6 +321,9 @@ async function reservationListings() {
         cancelTourCancel.innerHTML = "Cancel";
         cancelTourConfirm.disabled = true;
         cancelTourConfirm.innerHTML = "Confirm";
+        actionArchiveFromList.innerHTML = "Archive from List";
+        actionArchiveFromList.addEventListener("mouseenter", actionOptionMousEnter);
+        actionArchiveFromList.addEventListener("mouseleave", actionOptionMousEave);
         actionAddNote.innerHTML = "Add Note";
         actionAddNote.addEventListener("mouseenter", actionOptionMousEnter);
         actionAddNote.addEventListener("mouseleave", actionOptionMousEave);
@@ -356,6 +360,7 @@ async function reservationListings() {
         otherLi.appendChild(otherText);
         cancelTourDropDown.appendChild(cancelTourCancel);
         cancelTourDropDown.appendChild(cancelTourConfirm);
+        actionUl.appendChild(actionArchiveFromList);
         actionUl.appendChild(actionAddNote);
         actionUl.appendChild(addNoteDropDown);
         addNoteDropDown.appendChild(addNoteTextarea);
@@ -488,6 +493,10 @@ async function reservationListings() {
                 actionStatus.removeEventListener("mouseenter", actionOptionMousEnter);
                 actionStatus.removeEventListener("mouseleave", actionOptionMousEave);
                 actionStatus.removeEventListener("click", showStatusDropDown);
+                actionArchiveFromList.style.color = '#00000099';
+                actionArchiveFromList.removeEventListener("mouseenter", actionOptionMousEnter);
+                actionArchiveFromList.removeEventListener("mouseleave", actionOptionMousEave);
+                actionArchiveFromList.removeEventListener("click", addToArchiveList);
                 actionAddNote.style.color = '#00000099';
                 actionAddNote.removeEventListener("mouseenter", actionOptionMousEnter);
                 actionAddNote.removeEventListener("mouseleave", actionOptionMousEave);
@@ -712,6 +721,26 @@ async function reservationListings() {
         completed.addEventListener("click", changeStatus);
         cancelled.addEventListener("click", changeStatus);
 
+            //  ADD TO ARCHIVE LIST.
+        async function addToArchiveList() {
+            const reservationIdInput = data.reservationListings[i].reservation_id;
+
+            const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/reservation-archive', {
+                method: 'POST',
+                headers: {                
+                            'User-Agent': 'undici-stream-example',
+                            'Content-Type': 'application/json'
+                },
+                credentials: "include",
+                body: JSON.stringify({reservationIdInput}),
+            });
+
+            reservationListings().catch(console.error);
+
+        };
+
+        actionArchiveFromList.addEventListener("click", addToArchiveList);
+
             //  SHOWS ADD NOTE DROP-DOWN.
         function showAddNoteDropDown() {
             actionStatus.addEventListener("mouseleave", actionOptionMousEave);
@@ -885,6 +914,5 @@ async function pageNumbers() {
     };
 
 };
-
 
 pageNumbers().catch(console.error);

@@ -3183,25 +3183,6 @@ app.post('/mark-sold', (req, res) => {
 
 });
 
-  //  TRIGGER THE OPEN STREET MAP END-POINT THROUGH THIS API SINCE BACK-END IS CORS ENABLED.
-app.post('/search-location', async (req, res) => {
-  const searchInput = req.body.locationValue;
-
-    //  END-POINT PROVIDED BY NOMINATIM TO FETCH DATA FROM OPEN STREET MAP.
-  const response = await fetch('https://nominatim.openstreetmap.org/search?q=' + searchInput + '&format=json',);
-  const data = await response.json();
-
-    //  INITIALIZED displayNameValue.
-  const displayNameValue = [];
-
-    //  PUSH EVERY FETCHED DISPLAY NAME TO displayNameValue.
-  for(let i = 0; i < data.length; i++) {
-    displayNameValue.push(data[i].display_name);
-  }
-
-  res.json({location: displayNameValue});
-})
-
 const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images', maxCount: 10 }])
 app.post('/add-house', uploadMiddleware, function (req, res) {
     //  USER INPUTS.
@@ -3742,7 +3723,62 @@ app.post('/change-status', (req, res) => {
 
 });
 
-  //  ADD NOT.
+  //  RESERVATION ARCHIVE.
+app.post('/reservation-archive', (req, res) => {
+    //  USER INPUTS
+  const reservationIdInput = req.body.reservationIdInput;
+  const d = new Date();
+  const dateArchived = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                            (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                             d.getDate().toString().padStart(2, "0") + ' ' +
+                             d.getHours().toString().padStart(2, "0") + ':' +
+                             d.getMinutes().toString().padStart(2, "0") + ':' +
+                             d.getSeconds().toString().padStart(2, "0");
+  
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+      //  SELECT AGENT QUERY
+    const selectAgentQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectAgentQuery, userId, (err, selectAgentQuery) => {
+      if (err) {throw err};
+                            
+      if(selectAgentQuery.length > 0) {  
+          //  UPDATE ARCHIVE QUERY.
+        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE reservation_id = ?';
+
+          //  DECLARES updateArchiveValue.
+        const updateArchiveValue = [dateArchived, reservationIdInput];
+
+        connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+          if(err) {throw err};
+          
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+          
+        }); 
+
+      } else { 
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      };
+      
+    });
+
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+
+});
+
+  //  ADD NOTE.
 app.post('/add-note', (req, res) => {
     //  USER INPUTS
   const reservationIdInput = req.body.reservationIdInput;
@@ -3976,10 +4012,16 @@ app.get('/deleted-listings', (req, res) => {
         res.json("");  
 
       } else { 
-          //  SELECT DELETE PROPERTY LISTINGS QUERY.
-        const selectDeletedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (date_deleted IS NOT NULL AND date_deleted > "1970-01-01 00:00:00") ORDER BY date_deleted';
+        const d = new Date();
+        d.setDate(d.getDate() - 30);
 
-        connection.query(selectDeletedPropertyListingsQuery, userId, (err, selectDeletedPropertyListingsResult) => {
+          //  SELECT DELETE PROPERTY LISTINGS QUERY.
+        const selectDeletedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (date_deleted IS NOT NULL AND date_deleted > ?) ORDER BY date_deleted';
+
+          // DECLARES selectDeletedPropertyListingsValue.
+        const selectDeletedPropertyListingsValue = [userId, d];
+
+        connection.query(selectDeletedPropertyListingsQuery, selectDeletedPropertyListingsValue, (err, selectDeletedPropertyListingsResult) => {
           if (err) {throw err};
               
             res.json({deletedPropertyListings: selectDeletedPropertyListingsResult});
@@ -4143,56 +4185,7 @@ app.post('/delete-all-property', (req, res) => {
 
 });
 
-  //  DELETE THIRTY DAYS PROPERTY.
-app.post('/delete-thirty-days-property', (req, res) => {
-    //  USER INPUTS.
-  const propertyIdInput = req.body.propertyIdInput;
-
-  if(req.session.userId != undefined) {
-    const userId = req.session.userId;
-
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-      if (err) {throw err};
-      
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      } else {
-          //  DELETE THIRTY DAYS PROPERTY QUERY.
-        const deleteThirtyDaysPropertyQuery = 'UPDATE property_table SET date_deleted = "1970-01-01 00:00:00" WHERE user_id = "' + userId +  '" AND property_id = ?';
-
-        connection.query(deleteThirtyDaysPropertyQuery, propertyIdInput, (err, deleteThirtyDaysPropertyResult) => {
-          if (err) {throw err};
-
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
-
-        });
-
-      };
-
-    });
-
-  } else {    
-      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-    res.json("");
-
-  };
-})
-
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
-
-
-
-
-
