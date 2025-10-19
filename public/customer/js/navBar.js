@@ -169,7 +169,7 @@ async function user() {
             savedPropertiesIcon.alt = "Saved properties Icon";
             savedPropertiesIcon.type = "";
             toursReservations.href = "./tourReservationActive.html";
-            toursReservations.innerHTML = "MY TOURS & RESERVATIONS";
+            toursReservations.innerHTML = "MY RESERVATIONS";
             toursReservationsIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/my reservations.png";
             toursReservationsIcon.alt = "My tours and reservations Icon";
             toursReservationsIcon.type = "";
