@@ -313,12 +313,12 @@ app.post('/sign-up', (req, res) => {
             });
 
           } else {
-            const d = new Date();         
-            d.setMinutes(d.getMinutes() + 30);
-
             const dateAttempted = new Date(selectProxyUserResult[0].date_attempted);
+            dateAttempted.setHours(dateAttempted.getHours() + 5);
 
-            if(d < dateAttempted) {
+            const d = new Date();         
+
+            if(dateAttempted < d) {
                 //  SELECT TOKEN QUERY.
               const selectTokenQuery = 'SELECT token FROM proxy_user_table';
 
@@ -563,12 +563,12 @@ app.post('/email-verification-link', (req, res) => {
           });
 
         } else {
-          const d = new Date();         
-          d.setMinutes(d.getMinutes() + 30);
-
           const dateAttempted = new Date(selectProxyUserResult[0].date_attempted);
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
 
-          if(d < dateAttempted) {
+          const d = new Date();         
+
+          if(dateAttempted < d) {
               //  SELECT TOKEN QUERY.
             const selectTokenQuery = 'SELECT token FROM proxy_user_table';
 
@@ -674,15 +674,11 @@ app.post('/email-verification', (req, res) => {
         res.json({text: text, link: link});
 
       } else {
-        if(selectProxyUserResult[0].attempt_count != null) {
-            // USER INPUTS.
+        if(parseInt(selectProxyUserResult[0].attempt_count) < 5) {
           const dateExpired = new Date(selectProxyUserResult[0].date_expired);
           const d = new Date();
 
-          if(dateExpired < d) {
-            res.json({text: text, link: link});
-
-          } else {
+          if(d < dateExpired) {
             const typeOfUser = "Customer";
             const dateJoined = d.getFullYear().toString().padStart(4, "0")  + '-' +
                               (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
@@ -761,20 +757,107 @@ app.post('/email-verification', (req, res) => {
 
             });
 
+          } else {
+            res.json({text: text, link: link});
+
           };
 
         } else {
-            // USER INPUTS.
           const dateAttempted = new Date(selectProxyUserResult[0].date_attempted);
-          const d = new Date();
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
+
+          const d = new Date();     
 
           if(dateAttempted < d) {
-            res.json({text: text, link: link});
+            const dateExpired = new Date(selectProxyUserResult[0].date_expired);
+            const d = new Date();
+
+            if(d < dateExpired) {
+              const typeOfUser = "Customer";
+              const dateJoined = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                d.getDate().toString().padStart(2, "0") + ' ' +
+                                d.getHours().toString().padStart(2, "0") + ':' +
+                                d.getMinutes().toString().padStart(2, "0") + ':' +
+                                d.getSeconds().toString().padStart(2, "0");
+
+              let userId = '';
+
+                //  GENERATE USER ID.
+              function userIdFunction() {
+                const randomIndex = Math.floor(Math.random() * 9999);
+                userId = "USER" + randomIndex;
+              };
+
+                //  SELECT USER ID QUERY.
+              const selectUserIdQuery = 'SELECT user_id FROM main_user_table WHERE user_id LIKE "%' + userId.substring(4, 8) + '"';
+
+              connection.query(selectUserIdQuery, (err, sselectUserIdResult) => {
+                if(err) {throw err};
+
+                userIdFunction();
+
+                if(sselectUserIdResult.length > 0) {
+                  for(let i = 0; i < sselectUserIdResult.length; i++) {
+                    if(sselectUserIdResult[0].user_id == userId) {
+                      userIdFunction();
+
+                      i = 0;
+
+                    };
+
+                  };
+
+                };
+
+                text = "Your account has been successfully verified.";
+                link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/logIn.html";
+
+                  //  INSERT USER QUERY.
+                const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, recovery_email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+                  //  VALUE FOR insertProxyUserValue.
+                const insertUserValue = [
+                                        userId,
+                                        typeOfUser,
+                                        selectProxyUserResult[0].first_name,
+                                        selectProxyUserResult[0].last_name,
+                                        userId,
+                                        selectProxyUserResult[0].email_address,
+                                        selectProxyUserResult[0].email_address,
+                                        selectProxyUserResult[0].password,
+                                        dateJoined
+                                        ];
+
+                connection.query(insertUserQuery, insertUserValue, (err, insertUserResult) => {
+                  if(err) {throw err}; 
+
+                    //  DELETE PROXY USER QUERY.
+                  const deleteProxyUserQuery = 'DELETE FROM proxy_user_table WHERE token = ?';
+
+                    //  DECLARE deleteProxyUserValue.
+                  const deleteProxyUserValue = selectProxyUserResult[0].token;
+
+                  connection.query(deleteProxyUserQuery, deleteProxyUserValue, (err, deleteProxyUserResult) => {
+                    if(err) {throw err};
+
+                    req.session.userId = userId;
+
+                    res.json({text: text, link: link});
+
+                  });
+                      
+                });
+
+              });
+
+            } else {
+              res.json({text: text, link: link});
+
+            };
 
           } else {
-            text = "Link expired.";
-
-            res.json({text: text, link: link});
+            res.json({dateAttempted: dateAttempted}); 
 
           };
 
@@ -849,25 +932,42 @@ app.post('/log-in', (req, res) => {
       account = "ACCOUNT NOT FOUND!";
     };
 
-    if(account == "ACCOUNT MATCHED!") {
-        //  DELETE PROXY USER QUERY.
-      const deleteLogInQuery = 'DELETE FROM log_in_table WHERE account = ?';
+    if(account == "ACCOUNT MATCHED!") {   
+        //  SELECT LOG IN QUERY.
+      const selectLogInQuery = 'SELECT account, attempt_count FROM log_in_table WHERE account= ?';
 
-      connection.query(deleteLogInQuery, accountInput, (err, deleteLogInResult) => {
+      connection.query(selectLogInQuery, accountInput, (err, selectLogInResult) => {
         if(err) {throw err};
-                
-        const typeOfUser = selectUserResult[0].type_of_user;
-        const userId = selectUserResult[0].user_id;
 
-        req.session.userId = userId;
+        if(selectLogInResult.length > 0) {
+            //  DELETE PROXY USER QUERY.
+          const deleteLogInQuery = 'DELETE FROM log_in_table WHERE account = ?';
 
-        res.json({account: account, typeOfUser: typeOfUser});
+          connection.query(deleteLogInQuery, accountInput, (err, deleteLogInResult) => {
+            if(err) {throw err};
+
+            const userId = selectUserResult[0].user_id;
+
+            req.session.userId = userId;
+
+            res.json({account: account});
+
+          });
+
+        } else {
+          const userId = selectUserResult[0].user_id;
+
+          req.session.userId = userId;
+
+          res.json({account: account});
+
+        };
 
       });
     
     } else if(account == "ACCOUNT DOESN'T MATCH!") {
         //  SELECT LOG IN QUERY.
-      const selectLogInQuery = 'SELECT account, password, token, attempt_count FROM log_in_table WHERE account= ?';
+      const selectLogInQuery = 'SELECT account, attempt_count FROM log_in_table WHERE account= ?';
 
       connection.query(selectLogInQuery, accountInput, (err, selectLogInResult) => {
         if(err) {throw err};
@@ -1020,12 +1120,12 @@ app.post('/forgot-password', (req, res) => {
             });
 
           } else {
+            const dateAttempted = new Date(selectProxyUserResult[0].date_attempted);
+            dateAttempted.setHours(dateAttempted.getHours() + 5);
+
             const d = new Date();         
-            d.setMinutes(d.getMinutes() + 30);
 
-            const dateAttempted = new Date(selectForgetPasswordResult[0].date_attempted);
-
-            if(d < dateAttempted) {
+            if(dateAttempted < d) {
                 //  SELECT TOKEN QUERY.
               const selectTokenQuery = 'SELECT token FROM forget_password_table';
 
@@ -1256,12 +1356,12 @@ app.post('/password-change-link', (req, res) => {
           });
 
         } else {
-          const d = new Date();         
-          d.setMinutes(d.getMinutes() + 30);
-
           const dateAttempted = new Date(selectProxyUserResult[0].date_attempted);
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
 
-          if(d < dateAttempted) {
+          const d = new Date();         
+
+          if(dateAttempted < d) {
               //  SELECT TOKEN QUERY.
             const selectTokenQuery = 'SELECT token FROM forget_password_table';
 
@@ -1367,34 +1467,43 @@ app.post('/password-verification', (req, res) => {
         res.json({text: text, link: link});
 
       } else {
-        if(selectForgetPasswordResult[0].attempt_count != null) {
-            // USER INPUTS.
+        if(parseInt(selectForgetPasswordResult[0].attempt_count) < 5) {
           const dateExpired = new Date(selectForgetPasswordResult[0].date_expired);
-          const d = new Date();
+          const d = new Date();     
 
-          if(dateExpired < d) {
-            res.json({text: text, link: link});
-
-          } else {
+          if(d < dateExpired) {
             text = "Password verified.";
             link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + selectForgetPasswordResult[0].token;
             
             res.json({text: text, link: link});
+
+          } else {
+            res.json({text: text, link: link});
+
           };
 
         } else {
-            // USER INPUTS.
           const dateAttempted = new Date(selectForgetPasswordResult[0].date_attempted);
-          const d = new Date();
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
+
+          const d = new Date();     
 
           if(dateAttempted < d) {
-            res.json({text: text, link: link});
+            const dateExpired = new Date(selectProxyUserResult[0].date_expired);
+
+            if(d < dateExpired) {
+              text = "Password verified.";
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + selectForgetPasswordResult[0].token;
+            
+              res.json({text: text, link: link});
+          
+            } else {
+              res.json({text: text, link: link});
+
+            };
 
           } else {
-            text = "Link expired.";
-            link = selectForgetPasswordResult[0].date_attempted;
-
-            res.json({text: text, link: link});
+            res.json({dateAttempted: dateAttempted}); 
 
           };
 
