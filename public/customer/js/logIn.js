@@ -142,11 +142,8 @@ async function submitButton() {
         };
         
     } else {
-        const signUp = document.querySelector('.main-container:nth-child(1)');
-        const accountLocked = document.querySelector('.main-container:nth-child(2)');
-
-        signUp.style.display = 'none';
-        accountLocked.style.display = 'block';
+        alert("We're unable to complete your request, please reset access and try again");
+        
     }
 
 };

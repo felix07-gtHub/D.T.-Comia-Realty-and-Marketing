@@ -155,7 +155,7 @@ async function submitButton() {
     const data = await response.json();
 
     if(data.dateAttempted != undefined) {
-        console.log("Too much attempt, try again after 1 hour.");
+        alert("Too much attempt, try again after 5 hours.");
         
     } else {
         if(data.firstName != "FIRST NAME FOUND!") {

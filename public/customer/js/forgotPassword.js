@@ -66,7 +66,10 @@ async function submitButton() {
     });
     const data = await response.json();
 
-    if(data != "") {
+     if(data.dateAttempted != undefined) {
+       alert("Too much attempt, try again after 5 hours.");
+        
+    } else {
         if(data.recoveryEmailAddress != "RECOVERY EMAIL ADDRESS FOUND!") {
             recoveryEmailAddressInputField.removeEventListener("mouseenter", validInputsMousEnter);
             recoveryEmailAddressInputField.removeEventListener("mouseleave", validInputsMousEave);
@@ -100,44 +103,7 @@ async function submitButton() {
 
         };
 
-    } else {
-        const dateAttempted = new Date(data.dateAttempted);
-         
-        function attemptCount() {
-            if(dateAttempted < new Date()) {
-                emailVerification().catch(console.error);
-
-            };
-
-            if(Math.floor((dateAttempted - new Date()) / 3600000) > 0) {
-                text.innerHTML = "(Try again after " + Math.floor(((dateAttempted - new Date()) / 3600000)) + " hour)";
-
-            } else if(Math.floor((dateAttempted - new Date()) / 60000) > 0) {
-                if(Math.floor((dateAttempted - new Date()) / 60000) > 1) {
-                    text.innerHTML = "(Try again after " + Math.floor(((dateAttempted - new Date()) / 60000)) + " minutes)";
-                        
-                } else {
-                    text.innerHTML = "(Try again after " + Math.floor(((dateAttempted - new Date()) / 60000)) + " minute)";
-                        
-                }
-
-            } else {
-                if(Math.floor((dateAttempted - new Date()) / 1000) > 1) {
-                    text.innerHTML = "(Try again after " + Math.floor(((dateAttempted - new Date()) / 1000)) + " seconds)";
-                        
-                } else if(Math.floor((dateAttempted - new Date()) / 1000) == 0) {
-                    text.innerHTML = "(Try again after " + Math.floor(((dateAttempted - new Date()) / 1000)) + " second)";
-                        
-                }
-            };
-
-        };
-
-        attemptCount();
-
-        setInterval(attemptCount, 1000);
-        
-    }
+    };
 
 };
 
