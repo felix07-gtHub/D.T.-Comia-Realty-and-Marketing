@@ -1702,64 +1702,77 @@ app.post('/password-change', (req, res) => {
 app.get('/featured-property', (req, res) => {
 
     //  SELECT FEATURED PORPERTY LISTINGS QUERY.
-  const selectFeaturedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE status != "SOLD" AND date_featured IS NOT NULL AND date_deleted IS NULL';
+  const selectFeaturedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                              'WHERE status != "SOLD" AND date_featured IS NOT NULL AND date_deleted IS NULL ' +
+                                              'ORDER BY date_featured';
 
   connection.query(selectFeaturedPropertyListingsQuery, (err, selectFeaturedPropertyListingsResult) => {
     if (err) {throw err};
 
-      //  SELECT RESERVATION LISTINGS QUERY.
-    const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      //  SELECT FEATURED IMAGE LISTINGS QUERY.
+    const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-    connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+    connection.query(selectFeaturedImageListingsQuery, (err, selectFeaturedImageListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT RESERVATION LISTINGS QUERY.
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-          
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-            userId = '';
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-            res.json({userId: userId,
-                      featuredPropertyListings: selectFeaturedPropertyListingsResult,
-                      reservationListings: selectReservationListingsResult
-                    });
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-          } else {
-
-              //  SELECT SAVED PROPERTY LISTINGS QUERY.
-            const selectSavedPropertyListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
-
-            connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
-              if (err) {throw err};
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
+            
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+              userId = '';
 
               res.json({userId: userId,
                         featuredPropertyListings: selectFeaturedPropertyListingsResult,
-                        reservationListings: selectReservationListingsResult, 
-                        savedPropertyListings: selectSavedPropertyListingsResult
-                       });
-                  
-                });
+                        featuredImageListings: selectFeaturedImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                      });
 
-          };
+            } else {
 
-        });
+                //  SELECT SAVED PROPERTY LISTINGS QUERY.
+              const selectSavedPropertyListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
 
-      } else {
-          res.json({userId: userId,
-                    featuredPropertyListings: selectFeaturedPropertyListingsResult,
-                    reservationListings: selectReservationListingsResult
+              connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
+                if (err) {throw err};
+
+                res.json({userId: userId,
+                          featuredPropertyListings: selectFeaturedPropertyListingsResult,
+                          featuredImageListings: selectFeaturedImageListingsResult,
+                          reservationListings: selectReservationListingsResult, 
+                          savedPropertyListings: selectSavedPropertyListingsResult
+                        });
+                    
                   });
 
-      };
-            
+            };
+
+          });
+
+        } else {
+            res.json({userId: userId,
+                      featuredPropertyListings: selectFeaturedPropertyListingsResult,
+                      featuredImageListings: selectFeaturedImageListingsResult,
+                      reservationListings: selectReservationListingsResult
+                    });
+
+        };
+              
+      });
+
     });
 
   });
@@ -1769,7 +1782,7 @@ app.get('/featured-property', (req, res) => {
   //  SELECT LOCATIONS.
 app.post('/house-location', (req, res) => {
     //  SELECT DISTINCT LOCATION QUERY.
-  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home")';
+  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL';
 
   connection.query(selectDisitnctLocationQuery, (err, selectDisitnctLocationResult) => {
     if (err) {throw err};
@@ -1783,31 +1796,36 @@ app.post('/house-location', (req, res) => {
   //  SELECT HOUSE LISTINGS.
 app.post('/house-listings', (req, res) => {
     //  USER INPUTS.
-  const minRangeInput = req.body.minRangeInput;
-  const maxRangeInput = req.body.maxRangeInput;
   const propertyTypeInput = req.body.propertyTypeInput;
   const bedroomsInput = req.body.bedroomsInput;
   const bathroomsInput = req.body.bathroomsInput;
   const locationInput = req.body.locationInput;
+  const minRangeInput = req.body.minRangeInput;
+  const maxRangeInput = req.body.maxRangeInput;
   const sortInput = req.body.sortInput;
 
     //  INITIALIZED THE VALUE FOR selectHouseListingsQuery.
-  let selectHouseListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND price >= ? and price <= ? AND ' + propertyTypeInput;
+  let selectHouseListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                  'WHERE status != "SOLD" AND date_deleted IS NULL';
 
     //  DECLARES sortValue.
-  const sortValue = [];
-
-    //  INITIALIZED THE VALUE FOR sortValue.
-  sortValue.push(minRangeInput, maxRangeInput);
+  const sortValue = [minRangeInput, maxRangeInput];
 
    //  ADDS THE USER INPUTS ON selectHouseListingsQuery.
+  if(propertyTypeInput != "Any") {
+    selectHouseListingsQuery += ' AND property_type = ?';
+    sortValue.push(propertyTypeInput);
+  } else {
+    selectHouseListingsQuery += ' AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home")';
+  };
+
   if(bedroomsInput != "") {
-    selectHouseListingsQuery +=(' AND room_count = ?');
+    selectHouseListingsQuery += ' AND room_count = ?';
     sortValue.push(bedroomsInput);
   };
 
   if(bathroomsInput != "") {
-    selectHouseListingsQuery +=(' AND bath_count = ?');
+    selectHouseListingsQuery += ' AND bath_count = ?';
     sortValue.push(bathroomsInput);
   };
 
@@ -1816,76 +1834,87 @@ app.post('/house-listings', (req, res) => {
     sortValue.push(locationInput);
   };
 
-  if(sortInput != ": Default") {
-    selectHouseListingsQuery += ' ORDER BY';
-          
-    if(sortInput == ": Price ↑") {
-      selectHouseListingsQuery += ' price_formatted DESC';
-    } else if(sortInput == ": Price ↓") {
-      selectHouseListingsQuery += ' price_formatted ASC';
-    } else if(sortInput == ": Date ↑") {
-      selectHouseListingsQuery += ' date_created DESC';
-    } else if(sortInput == ": Date ↓") {
-      selectHouseListingsQuery += ' date_created ASC';
-    };
+  selectHouseListingsQuery += ' AND (price >= ? AND price <= ?)';
+
+  if(sortInput == ": Default") {     
+    selectHouseListingsQuery += ' ORDER BY date_created';
+  } else if(sortInput == ": Price ↑") {
+    selectHouseListingsQuery += ' ORDER BY price DESC';
+  } else if(sortInput == ": Price ↓") {
+    selectHouseListingsQuery += ' ORDER BY price ASC';
+  } else if(sortInput == ": Date ↑") {
+    selectHouseListingsQuery += ' ORDER BY date_created DESC';
+  } else if(sortInput == ": Date ↓") {
+    selectHouseListingsQuery += ' ORDER BY date_created ASC';
   };
 
   connection.query(selectHouseListingsQuery, sortValue, (err, selectHouseListingsResult) => {
     if (err) {throw err};
 
-      //  SELECT RESERVATION LISTINGS QUERY.
-    const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      //  SELECT IMAGE LISTINGS QUERY.
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-    connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+    connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT RESERVATION LISTINGS QUERY.
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-          
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-            userId = '';
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-            res.json({userId: userId,
-                      houseListings: selectHouseListingsResult,
-                      reservationListings: selectReservationListingsResult
-                      });
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-          } else {
-
-              //  SELECT SAVED PROPERTY LISTINGS QUERY.
-            const selectSavedHouseListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
-
-            connection.query(selectSavedHouseListingsQuery, userId, (err, selectSavedHouseListingsResult) => {
-              if (err) {throw err};
-
-              res.json({houseListings: selectHouseListingsResult,
-                        userId: userId,
-                        reservationListings: selectReservationListingsResult, 
-                        savedHouseListings: selectSavedHouseListingsResult
-                      });
-                    
-            });
-
-          };
-
-        });
-
-      } else {
-        res.json({userId: userId,
-                  houseListings: selectHouseListingsResult,
-                  reservationListings: selectReservationListingsResult
-                });
-
-      };
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
             
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+              userId = '';
+
+              res.json({userId: userId,
+                        houseListings: selectHouseListingsResult,
+                        imageListings: selectImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                        });
+
+            } else {
+
+                //  SELECT SAVED PROPERTY LISTINGS QUERY.
+              const selectSavedHouseListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
+
+              connection.query(selectSavedHouseListingsQuery, userId, (err, selectSavedHouseListingsResult) => {
+                if (err) {throw err};
+
+                res.json({userId: userId,
+                          houseListings: selectHouseListingsResult,
+                          imageListings: selectImageListingsResult,
+                          reservationListings: selectReservationListingsResult, 
+                          savedHouseListings: selectSavedHouseListingsResult
+                        });
+                      
+              });
+
+            };
+
+          });
+
+        } else {
+          res.json({userId: userId,
+                    houseListings: selectHouseListingsResult,
+                    imageListings: selectImageListingsResult,
+                    reservationListings: selectReservationListingsResult
+                  });
+
+        };
+              
+      }); 
+
     });
 
   });
@@ -1895,7 +1924,7 @@ app.post('/house-listings', (req, res) => {
   //  SELECT LOCATIONS.
 app.post('/land-location', (req, res) => {
     //  SELECT DISTINCT LOCATION QUERY.
-  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot")';
+  const selectDisitnctLocationQuery = 'SELECT DISTINCT location FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL';
 
   connection.query(selectDisitnctLocationQuery, (err, selectDisitnctLocationResult) => {
     if (err) {throw err};
@@ -1906,102 +1935,118 @@ app.post('/land-location', (req, res) => {
 
 });
 
+
   //  SELECT LAND LISTINGS.
 app.post('/land-listings', (req, res) => {
     //  USER INPUTS.
-  const minRangeInput = req.body.minRangeInput;
-  const maxRangeInput = req.body.maxRangeInput;
   const propertyTypeInput = req.body.propertyTypeInput;
   const locationInput = req.body.locationInput;
+  const minRangeInput = req.body.minRangeInput;
+  const maxRangeInput = req.body.maxRangeInput;
   const sortInput = req.body.sortInput;
 
     //  INITIALIZED THE VALUE FOR selectLandListingsQuery.
-  let selectLandListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE status != "SOLD" AND date_deleted IS NULL AND price >= ? and price <= ? AND ' + propertyTypeInput;
+  let selectLandListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                'WHERE status != "SOLD" AND date_deleted IS NULL';
 
     //  DECLARES sortValue.
-  const sortValue = [];
-
-    //  INITIALIZED THE VALUE FOR sortValue.
-  sortValue.push(minRangeInput, maxRangeInput);
+  const sortValue = [minRangeInput, maxRangeInput];
 
    //  ADDS THE USER INPUTS ON selectLandListingsQuery.
+  if(propertyTypeInput != "Any") {
+    selectLandListingsQuery += ' AND property_type = ?';
+    sortValue.push(propertyTypeInput);
+  } else {
+    selectLandListingsQuery += ' AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot")';
+  };
 
   if(locationInput != "Any") {
     selectLandListingsQuery += ' AND location = ?';
     sortValue.push(locationInput);
   };
 
-  if(sortInput != ": Default") {
-    selectLandListingsQuery += ' ORDER BY';
-          
-    if(sortInput == ": Price ↑") {
-      selectLandListingsQuery += ' price_formatted DESC';
-    } else if(sortInput == ": Price ↓") {
-      selectLandListingsQuery += ' price_formatted ASC';
-    } else if(sortInput == ": Date ↑") {
-      selectLandListingsQuery += ' date_created DESC';
-    } else if(sortInput == ": Date ↓") {
-      selectLandListingsQuery += ' date_created ASC';
-    };
+  selectLandListingsQuery += ' AND (price >= ? AND price <= ?)';
+
+  if(sortInput == ": Default") {     
+    selectLandListingsQuery += ' ORDER BY date_created';
+  } else if(sortInput == ": Price ↑") {
+    selectLandListingsQuery += ' ORDER BY price DESC';
+  } else if(sortInput == ": Price ↓") {
+    selectLandListingsQuery += ' ORDER BY price ASC';
+  } else if(sortInput == ": Date ↑") {
+    selectLandListingsQuery += ' ORDER BY date_created DESC';
+  } else if(sortInput == ": Date ↓") {
+    selectLandListingsQuery += ' ORDER BY date_created ASC';
   };
 
   connection.query(selectLandListingsQuery, sortValue, (err, selectLandListingsResult) => {
     if (err) {throw err};
 
-      //  SELECT RESERVATION LISTINGS QUERY.
-    const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      //  SELECT IMAGE LISTINGS QUERY.
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-    connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+    connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT RESERVATION LISTINGS QUERY.
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-          
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-            userId = '';
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-            res.json({userId: userId,
-                      landListings: selectLandListingsResult,
-                      reservationListings: selectReservationListingsResult
-                      });
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-          } else {
-
-              //  SELECT SAVED PROPERTY LISTINGS QUERY.
-            const selectSavedLandListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
-
-            connection.query(selectSavedLandListingsQuery, userId, (err, selectSavedLandListingsResult) => {
-              if (err) {throw err};
-
-              res.json({landListings: selectLandListingsResult,
-                        userId: userId,
-                        reservationListings: selectReservationListingsResult, 
-                        savedLandListings: selectSavedLandListingsResult
-                      });
-                    
-            });
-
-          };
-
-        });
-
-      } else {
-        res.json({userId: userId,
-                  landListings: selectLandListingsResult,
-                  reservationListings: selectReservationListingsResult
-                });
-
-      };
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
             
-    });
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+              userId = '';
+
+              res.json({userId: userId,
+                        landListings: selectLandListingsResult,
+                        imageListings: selectImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                        });
+
+            } else {
+
+                //  SELECT SAVED PROPERTY LISTINGS QUERY.
+              const selectSavedLandListingsQuery = 'SELECT property_id FROM saved_property_table WHERE user_id = ?';
+
+              connection.query(selectSavedLandListingsQuery, userId, (err, selectSavedLandListingsResult) => {
+                if (err) {throw err};
+
+                res.json({userId: userId,
+                          landListings: selectLandListingsResult,
+                          imageListings: selectImageListingsResult,
+                          reservationListings: selectReservationListingsResult, 
+                          savedLandListings: selectSavedLandListingsResult
+                        });
+                      
+              });
+
+            };
+
+          });
+
+        } else {
+          res.json({userId: userId,
+                    landListings: selectLandListingsResult,
+                    imageListings: selectImageListingsResult,
+                    reservationListings: selectReservationListingsResult
+                  });
+
+        };
+              
+      }); 
+
+    }); 
 
   });
   
@@ -2089,60 +2134,71 @@ app.post('/saved', (req, res) => {
 app.get('/saved-property', (req, res) => {
 
     //  SELECT SAVED PORPERTY LISTINGS QUERY.
-  const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE date_deleted IS NULL';
+  const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                      'WHERE date_deleted IS NULL ' +
+                                      'ORDER BY date_created';
 
   connection.query(selectPropertyListingsQuery, (err, selectPropertyListingsResult) => {
     if (err) {throw err};
 
-      //  SELECT RESERVATION LISTINGS QUERY.
-    const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      //  SELECT IMAGE LISTINGS QUERY.
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-    connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+    connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT RESERVATION LISTINGS QUERY.
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-          
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-          } else {
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-              //  SELECT SAVED PROPERTY LISTINGS QUERY.
-            const selectSavedPropertyListingsQuery = 'SELECT property_id, date_saved FROM saved_property_table WHERE user_id = ? ORDER BY date_saved DESC';
-
-            connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
-              if (err) {throw err};
-
-              res.json({propertyListings: selectPropertyListingsResult,
-                        userId: userId,
-                        reservationListings: selectReservationListingsResult, 
-                        savedPropertyListings: selectSavedPropertyListingsResult
-                       });
-                  
-                });
-
-          };
-
-        });
-
-      } else {
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      };
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
             
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              res.json("");
+
+            } else {
+
+                //  SELECT SAVED PROPERTY LISTINGS QUERY.
+              const selectSavedPropertyListingsQuery = 'SELECT property_id, date_saved FROM saved_property_table WHERE user_id = ? ORDER BY date_saved DESC';
+
+              connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
+                if (err) {throw err};
+
+                res.json({userId: userId,
+                          propertyListings: selectPropertyListingsResult,
+                          imageListings: selectImageListingsResult,
+                          reservationListings: selectReservationListingsResult, 
+                          savedPropertyListings: selectSavedPropertyListingsResult
+                        });
+                    
+                  });
+
+            };
+
+          });
+
+        } else {
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+
+        };
+              
+      });
+       
     });
 
   });
@@ -2169,12 +2225,11 @@ app.post('/delete-all-saved', (req, res) => {
         res.json("");
 
       } else {
-          //  DELETE ALL QUERY.
-        let deleteAllSavedQuery = '';
 
-        if(propertyIdInput.length > 1) {
-          deleteAllSavedQuery += 'DELETE FROM saved_property_table WHERE user_id = "' + userId + '" AND ';
-            
+        if(propertyIdInput.length > 0) {
+            //  DELETE ALL QUERY.
+          let deleteAllSavedQuery = 'DELETE FROM saved_property_table WHERE user_id = "' + userId + '" AND (';
+          
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
             deleteAllSavedQuery += 'property_id = ?';
@@ -2184,22 +2239,13 @@ app.post('/delete-all-saved', (req, res) => {
             };
           };
 
+          deleteAllSavedQuery += ')';
+
           connection.query(deleteAllSavedQuery, propertyIdInput, (err, deleteAllSavedResult) => {
             if (err) {throw err};
 
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
               //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
-            res.json("");
-          });
-
-        } else if(propertyIdInput.length > 0) {
-          deleteAllSavedQuery += 'DELETE FROM saved_property_table WHERE user_id = "' + userId + '" AND property_id = ?';
-          
-          connection.query(deleteAllSavedQuery, propertyIdInput, (err, deleteAllSavedResult) => {
-            if (err) {throw err};
-
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
             res.json("");
           });
 
@@ -2309,69 +2355,80 @@ app.post('/history', (req, res) => {
 app.get('/history-property', (req, res) => {
 
     //  SELECT HISTORY PORPERTY LISTINGS QUERY.
-  const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE date_deleted IS NULL';
+  const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                      'WHERE date_deleted IS NULL ' +
+                                      'ORDER BY date_created';
 
   connection.query(selectPropertyListingsQuery, (err, selectPropertyListingsResult) => {
     if (err) {throw err};
 
-      //  SELECT RESERVATION LISTINGS QUERY.
-    const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      //  SELECT IMAGE LISTINGS QUERY.
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-    connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+    connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT RESERVATION LISTINGS QUERY.
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-          
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-          } else {
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-              //  SELECT SAVED PROPERTY LISTINGS QUERY.
-            const selectSavedPropertyListingsQuery = 'SELECT property_id, date_saved FROM saved_property_table WHERE user_id = ? ORDER BY date_saved DESC';
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
+            
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              res.json("");
 
-            connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
-              if (err) {throw err};
+            } else {
 
-                //  SELECT HISTORY PROPERTY LISTINGS QUERY.
-              const selectHistoryPropertyListingsQuery = 'SELECT property_id, date_history FROM history_property_table WHERE user_id = ? ORDER BY date_history DESC';
+                //  SELECT SAVED PROPERTY LISTINGS QUERY.
+              const selectSavedPropertyListingsQuery = 'SELECT property_id, date_saved FROM saved_property_table WHERE user_id = ? ORDER BY date_saved DESC';
 
-              connection.query(selectHistoryPropertyListingsQuery, userId, (err, selectHistoryPropertyListingsResult) => {
+              connection.query(selectSavedPropertyListingsQuery, userId, (err, selectSavedPropertyListingsResult) => {
                 if (err) {throw err};
 
-                res.json({userId: userId,
-                          propertyListings: selectPropertyListingsResult,
-                          reservationListings: selectReservationListingsResult, 
-                          historyPropertyListings: selectHistoryPropertyListingsResult, 
-                          savedPropertyListings: selectSavedPropertyListingsResult
-                        });
+                  //  SELECT HISTORY PROPERTY LISTINGS QUERY.
+                const selectHistoryPropertyListingsQuery = 'SELECT property_id, date_history FROM history_property_table WHERE user_id = ? ORDER BY date_history DESC';
+
+                connection.query(selectHistoryPropertyListingsQuery, userId, (err, selectHistoryPropertyListingsResult) => {
+                  if (err) {throw err};
+
+                  res.json({userId: userId,
+                            propertyListings: selectPropertyListingsResult,
+                            imageListings: selectImageListingsResult,
+                            reservationListings: selectReservationListingsResult, 
+                            historyPropertyListings: selectHistoryPropertyListingsResult, 
+                            savedPropertyListings: selectSavedPropertyListingsResult
+                          });
+                      
+                });
                     
               });
-                  
-            });
 
-          };
+            };
 
-        });
+          });
 
-      } else {
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
+        } else {
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
 
-      };
-            
+        };
+              
+      });
+         
     });
 
   });
@@ -2398,11 +2455,10 @@ app.post('/delete-all-history', (req, res) => {
         res.json("");
 
       } else {
-          //  DELETE ALL QUERY.
-        let deleteAllHistoryQuery = '';
 
-        if(propertyIdInput.length > 1) {
-          deleteAllHistoryQuery += 'DELETE FROM history_property_table WHERE user_id = "' + userId + '" AND ';
+        if(propertyIdInput.length > 0) {
+          //  DELETE ALL QUERY.
+          deleteAllHistoryQuery += 'DELETE FROM history_property_table WHERE user_id = "' + userId + '" AND (';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
@@ -2413,22 +2469,13 @@ app.post('/delete-all-history', (req, res) => {
             };
           };
 
+          deleteAllHistoryQuery += ')';
+
           connection.query(deleteAllHistoryQuery, propertyIdInput, (err, deleteAllHistoryResult) => {
             if (err) {throw err};
 
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
               //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
-            res.json("");
-          });
-
-        } else if(propertyIdInput.length > 0) {
-          deleteAllHistoryQuery += 'DELETE FROM history_property_table WHERE user_id = "' + userId + '" AND property_id = ?';
-          
-          connection.query(deleteAllHistoryQuery, propertyIdInput, (err, deleteAllHistoryResult) => {
-            if (err) {throw err};
-
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
             res.json("");
           });
 
@@ -2457,7 +2504,9 @@ app.post('/property-information', (req, res) => {
   const propertyId = req.body.propertyId;
 
     //  SELECT PROPERTY INFORMATION QUERY.
-  const selectPropertyInformationQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE property_id = ? AND status = "AVAILABLE" AND date_deleted IS NULL';
+  const selectPropertyInformationQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                         'WHERE property_id = ? AND status = "AVAILABLE" AND date_deleted IS NULL ' +
+                                         'ORDER BY date_created';
 
   connection.query(selectPropertyInformationQuery, propertyId, (err, selectPropertyInformationResult) => {
     if (err) {throw err};
@@ -2506,7 +2555,9 @@ app.post('/reservation', (req, res) => {
   const status = "On Going";
 
     //  SELECT PROPERTY INFORMATION QUERY.
-  const selectPropertyInformationQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE property_id = ? AND status = "AVAILABLE" AND date_deleted IS NULL';
+  const selectPropertyInformationQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                         'WHERE property_id = ? AND status = "AVAILABLE" AND date_deleted IS NULL ' +
+                                         'ORDER BY date_created';
 
   connection.query(selectPropertyInformationQuery, propertyId, (err, selectPropertyInformationResult) => {
     if (err) {throw err};
@@ -2528,7 +2579,7 @@ app.post('/reservation', (req, res) => {
         } else { 
 
             //  SELECT RESERVATION QUERY.
-          const selectReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table';
+          const selectReservationQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table';
 
           connection.query(selectReservationQuery, (err, selectReservationResult) => {
             if(err) {throw err};
@@ -2538,7 +2589,7 @@ app.post('/reservation', (req, res) => {
               //  GENERATE RESERVATION ID.
             function reservationIdFunction() {
               const randomIndex = Math.floor(Math.random() * 10000);
-              reservationId = "RSRV" + randomIndex;
+              reservationId = "RSRV" + reservataionPeriodFromInput.substring(2 , 4) + randomIndex;
             };
 
               //  SELECT RESERVATION ID QUERY.
@@ -2563,21 +2614,21 @@ app.post('/reservation', (req, res) => {
               };
 
                 //  INSERT RESERVATION QUERY.
-              const insertReservationQuery = 'INSERT INTO reservation_table (reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+              const insertReservationQuery = 'INSERT INTO reservation_table (reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                     
                 //  DECLARES insertReservationValue.
-              const insertReservationValue = [reservationId, selectPropertyInformationResult[0].user_id, userId, propertyId, fullNameInput, contactNumberInput, emailAddressInput, selectPropertyInformationResult[0].address, reservataionPeriodFromInput, reservataionPeriodToInput, status];
+              const insertReservationValue = [reservationId, selectPropertyInformationResult[0].user_id, userId, fullNameInput, contactNumberInput, emailAddressInput, propertyId, reservataionPeriodFromInput, reservataionPeriodToInput, status];
 
               connection.query(insertReservationQuery, insertReservationValue, (err, insertReservationQuery) => {
                 if (err) {throw err};
 
-                  //  RESERVED PROPERTY QUERY.
-                const reservedPropertyQuery = 'UPDATE property_table SET status = "RESERVED" WHERE user_id = ? AND property_id = ?';
+                  //  RESERVED HOUSE QUERY.
+                const reservedHouseQuery = 'UPDATE property_table SET status = "RESERVED" WHERE user_id = ? AND property_id = ?';
 
-                  //  DECLARES reservedPropertyValue.
-                const reservedPropertyValue = [selectPropertyInformationResult[0].user_id, propertyId]
+                  //  DECLARES reservedHouseValue.
+                const reservedHouseValue = [selectPropertyInformationResult[0].user_id, propertyId]
 
-                connection.query(reservedPropertyQuery, reservedPropertyValue, (err, reservedPropertyResult) => {
+                connection.query(reservedHouseQuery, reservedHouseValue, (err, reservedHouseResult) => {
                   if (err) {throw err};
 
                     //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
@@ -2619,73 +2670,86 @@ app.post('/tour-reservation-active', (req, res) => {
     if (err) {throw err};
 
       //  SELECT PORPERTY LISTINGS QUERY.
-    const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE date_deleted IS NULL';
+    const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                        'WHERE date_deleted IS NULL ' +
+                                        'ORDER BY date_created';
 
     connection.query(selectPropertyListingsQuery, (err, selectPropertyListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT IMAGE LISTINGS QUERY.
+      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-            
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-          } else {
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-              //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
+              
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              res.json("");
 
-              //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "on going"';
+            } else {
 
-            connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
-              if (err) {throw err};
+                //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
 
-              if(sortInput == "all") {
-                res.json({propertyListings: selectPropertyListingsResult, 
-                          userListings: selectUserListingsResult, 
-                          userId: userId,
-                          reservationListings: selectReservationListingsResult
-                        });
+                //  SELECT RESERVATION LISTINGS QUERY.
+              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "on going"';
 
-              } else if(sortInput == "reservations") {
-                 res.json({propertyListings: selectPropertyListingsResult,
-                          userListings: selectUserListingsResult, 
-                          userId: userId,
-                          reservationListings: selectReservationListingsResult
-                        });
+              connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
+                if (err) {throw err};
 
-              } else {
-                res.json({propertyListings: selectPropertyListingsResult,
-                          userListings: selectUserListingsResult, 
-                          userId: userId,
-                        });
+                if(sortInput == "all") {
+                  res.json({propertyListings: selectPropertyListingsResult, 
+                            imageListings: selectImageListingsResult,
+                            userListings: selectUserListingsResult, 
+                            userId: userId,
+                            reservationListings: selectReservationListingsResult
+                          });
 
-              };
+                } else if(sortInput == "reservations") {
+                  res.json({propertyListings: selectPropertyListingsResult,
+                            imageListings: selectImageListingsResult,
+                            userListings: selectUserListingsResult, 
+                            userId: userId,
+                            reservationListings: selectReservationListingsResult
+                          });
 
-            });
+                } else {
+                  res.json({propertyListings: selectPropertyListingsResult,
+                            imageListings: selectImageListingsResult,
+                            userListings: selectUserListingsResult, 
+                            userId: userId,
+                          });
 
-              //---------------------------------------------------------------------------------------------------------------------------.
+                };
 
-          };
+              });
 
-        });
+                //---------------------------------------------------------------------------------------------------------------------------.
 
-      } else {
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
+            };
 
-      };
+          });
+
+        } else {
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+
+        };
+
+      });
 
     });
 
@@ -2724,17 +2788,17 @@ app.post('/cancel-reservation', (req, res) => {
         connection.query(updateStatusReservationQuery, updateStatusReservationValue, (err, updateStatusReservationResult) => {
           if(err) {throw err};
           
-            //  UPDATE STATUS PROPERTY QUERY.
-          const updateStatusPropertyQuery = 'UPDATE property_table SET status = "available" WHERE user_id = ? AND  property_id = ?';
+            //  UPDATE STATUS HOUSE QUERY.
+          const updateStatusHouseQuery = 'UPDATE property_table SET status = "AVAILABLE" WHERE user_id = ? AND  property_id = ?';
 
-            //  DECLARES updateStatuPropertyValue.
-          const updateStatusPropertyValue = [agentIdInput, propertyIdInput];
+            //  DECLARES updateStatusHouseValue.
+          const updateStatusHouseValue = [agentIdInput, propertyIdInput];
 
-          connection.query(updateStatusPropertyQuery, updateStatusPropertyValue, (err, updateStatusPropertyResult) => {
+          connection.query(updateStatusHouseQuery, updateStatusHouseValue, (err, updateStatusHouseesult) => {
             if(err) {throw err};
-          
+
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
             res.json("");
               
           });
@@ -2780,57 +2844,68 @@ app.post('/tour-reservation-history', (req, res) => {
     if (err) {throw err};
 
       //  SELECT PORPERTY LISTINGS QUERY.
-    const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE date_deleted IS NULL';
+    const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                        'WHERE date_deleted IS NULL ' +
+                                        'ORDER BY date_created';
 
     connection.query(selectPropertyListingsQuery, (err, selectPropertyListingsResult) => {
       if (err) {throw err};
 
-      let userId = '';
+        //  SELECT IMAGE LISTINGS QUERY.
+      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
 
-      if(req.session.userId != undefined) {
-        userId = req.session.userId;
+      connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
+        if (err) {throw err};
 
-          //  SELECT TYPE OF USER QUERY
-        const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
+        let userId = '';
 
-        connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-          if (err) {throw err};
-            
-          if(selectTypeOfUserResult[0].type_of_user != "Customer") {
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+        if(req.session.userId != undefined) {
+          userId = req.session.userId;
 
-          } else {
+            //  SELECT TYPE OF USER QUERY
+          const selectTypeOfUserQuery = 'SELECT type_of_user FROM main_user_table WHERE user_id = ?';
 
-              //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
+          connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+            if (err) {throw err};
+              
+            if(selectTypeOfUserResult[0].type_of_user != "Customer") {
+                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              res.json("");
 
-              //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND ' + selectTourResercationStatus;
+            } else {
 
-            connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
-              if (err) {throw err};
+                //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
 
-              res.json({propertyListings: selectPropertyListingsResult,
-                        userListings: selectUserListingsResult, 
-                        userId: userId,
-                        reservationListings: selectReservationListingsResult
-                      });
+                //  SELECT RESERVATION LISTINGS QUERY.
+              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND ' + selectTourResercationStatus;
 
-            });
+              connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
+                if (err) {throw err};
 
-              //---------------------------------------------------------------------------------------------------------------------------.
+                res.json({propertyListings: selectPropertyListingsResult,
+                          imageListings: selectImageListingsResult,
+                          userListings: selectUserListingsResult, 
+                          userId: userId,
+                          reservationListings: selectReservationListingsResult
+                        });
 
-          };
+              });
 
-        });
+                //---------------------------------------------------------------------------------------------------------------------------.
 
-      } else {
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
+            };
 
-      };
+          });
+
+        } else {
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+
+        };
+
+      });
 
     });
 
@@ -2864,20 +2939,33 @@ app.get('/featured-house-listings', (req, res) => {
 
       } else {
           //  SELECT FEATURED HOUSE LISTINGS QUERY.
-        const selectFeaturedHouseListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home") AND date_featured IS NOT NULL AND date_deleted IS NULL ORDER BY date_featured';
+        const selectFeaturedHouseListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                                 'WHERE user_id = ? AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home") AND date_featured IS NOT NULL AND date_deleted IS NULL ' +
+                                                 'ORDER BY date_featured';
 
         connection.query(selectFeaturedHouseListingsQuery, userId, (err, selectFeaturedHouseListingsResult) => {
           if (err) {throw err};
 
+            //  SELECT FEATURED IMAGE LISTINGS QUERY.
+          const selectFeaturedmageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+
+          connection.query(selectFeaturedmageListingsQuery, (err, selectFeaturedImageListingsResult) => {
+            if (err) {throw err};
+
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
-              
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+                
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
-                        
-              res.json({featuredHouseListings: selectFeaturedHouseListingsResult, reservationListings: selectReservationListingsResult});
+                          
+              res.json({featuredHouseListings: selectFeaturedHouseListingsResult,
+                        featuredImageListings: selectFeaturedImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                      });
 
             });
+
+          });
 
         });
 
@@ -2912,20 +3000,33 @@ app.get('/featured-land-listings', (req, res) => {
 
       } else {
           //  SELECT FEATURED LAND LISTINGS QUERY.
-        const selectFeaturedLandListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot") AND date_featured IS NOT NULL AND date_deleted IS NULL ORDER BY date_featured';
+        const selectFeaturedLandListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                                'WHERE user_id = ? AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot") AND date_featured IS NOT NULL AND date_deleted IS NULL ' +
+                                                'ORDER BY date_featured';
 
         connection.query(selectFeaturedLandListingsQuery, userId, (err, selectFeaturedLandListingsResult) => {
           if (err) {throw err};
 
+            //  SELECT FEATURED IMAGE LISTINGS QUERY.
+          const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+
+          connection.query(selectFeaturedImageListingsQuery, (err, selectFeaturedImageListingsResult) => {
+            if (err) {throw err};
+
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
                         
-              res.json({featuredLandListings: selectFeaturedLandListingsResult, reservationListings: selectReservationListingsResult});
+              res.json({featuredLandListings: selectFeaturedLandListingsResult,
+                        featuredImageListings: selectFeaturedImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                      });
 
             });
+
+          });
 
         });
 
@@ -2962,18 +3063,18 @@ app.post('/remove-featured', (req, res) => {
         res.json("");
 
       } else {
-          //  REMOVE FEATURED PROPERTY QUERY.
-        const removeFeaturedPropertyQuery = 'UPDATE property_table SET date_featured = NULL WHERE user_id = ? AND property_id = ?';
+          //  REMOVE FEATURED HOUSE QUERY.
+        const removeFeaturedHouseQuery = 'UPDATE property_table SET date_featured = NULL WHERE user_id = ? AND property_id = ?';
 
-          //  DECLARES removeFeaturedPropertyValue.
-        const removeFeaturedPropertyValue = [userId, propertyIdInput]
+          //  DECLARES removeFeaturedHouseValue.
+        const removeFeaturedHouseValue = [userId, propertyIdInput]
 
-        connection.query(removeFeaturedPropertyQuery, removeFeaturedPropertyValue, (err, removeFeaturedPropertyResult) => {
+        connection.query(removeFeaturedHouseQuery, removeFeaturedHouseValue, (err, removeFeaturedHouseResult) => {
           if (err) {throw err};
 
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
+          res.json("");
 
         });
 
@@ -3007,20 +3108,33 @@ app.get('/house-listings-2', (req, res) => {
 
       } else {  
           //  SELECT HOUSE LISTINGS QUERY.
-        const selectHouseListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home") AND date_featured IS NULL AND date_deleted IS NULL';
+        const selectHouseListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                         'WHERE user_id = ? AND (property_type = "bungalow" OR property_type = "two-storey house" OR property_type = "one-and-a-half storey house" OR property_type = "multi-storey house" OR property_type = "split-level house" OR property_type = "duplex" OR property_type = "triplex / fourplex" OR property_type = "townhouse / row house" OR property_type = "semi-detached house" OR property_type = "single-detached house" OR property_type = "modern house" OR property_type = "contemporary house" OR property_type = "villa" OR property_type = "cottage" OR property_type = "farmhouse" OR property_type = "beach house" OR property_type = "rest house / vacation home") AND date_featured IS NULL AND date_deleted IS NULL ' +
+                                         'ORDER BY date_created';
 
         connection.query(selectHouseListingsQuery, userId, (err, selectHouseListingsResult) => {
           if (err) {throw err};
 
+            //  SELECT IMAGE LISTINGS QUERY.
+          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+
+          connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
+            if (err) {throw err};
+
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
                         
-              res.json({houseListings: selectHouseListingsResult, reservationListings: selectReservationListingsResult});
+              res.json({houseListings: selectHouseListingsResult,
+                        imageListings: selectImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                      });
 
             });
+
+          });
 
         });
 
@@ -3053,20 +3167,33 @@ app.get('/land-listings-2', (req, res) => {
 
       } else { 
           //  SELECT LAND LISTINGS QUERY.
-        const selectlandListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (property_type = "residential lot" OR property_type = "commercial lot" OR property_type = "industrial lot" OR property_type = "agricultural / farm land" OR property_type = "subdivision lot" OR property_type = "beachfront lot" OR property_type = "mountain / hillside lot" OR property_type = "mixed-use lot" OR property_type = "vacant lot" OR property_type = "raw land" OR property_type = "investment lot") AND date_featured IS NULL AND date_deleted IS NULL';
-
+        const selectlandListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                        'WHERE user_id = ? AND (property_type = "Residential Lot" OR property_type = "Commercial Lot" OR property_type = "Industrial Lot" OR property_type = "Agricultural / Farm Land" OR property_type = "Subdivision Lot" OR property_type = "Beachfront Lot" OR property_type = "Mountain / HillsideLlot" OR property_type = "Mixed-Use Lot" OR property_type = "Vacant Lot" OR property_type = "Raw Land" OR property_type = "Investment Lot") AND date_featured IS NULL AND date_deleted IS NULL ' +
+                                        'ORDER BY date_created';
+                                         
         connection.query(selectlandListingsQuery, userId, (err, selectlandListingsResult) => {
           if (err) {throw err};
 
+            //  SELECT IMAGE LISTINGS QUERY.
+          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+
+          connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
+            if (err) {throw err};
+
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
                         
-              res.json({landListings: selectlandListingsResult, reservationListings: selectReservationListingsResult});
+              res.json({landListings: selectlandListingsResult,
+                        imageListings: selectImageListingsResult,
+                        reservationListings: selectReservationListingsResult
+                      });
 
             });
+
+          });
 
         });
 
@@ -3108,18 +3235,29 @@ app.post('/delete-property', (req, res) => {
         res.json("");
 
       } else {
-        //  DELETE PROPERTY QUERY.
-        const deletePropertyQuery = 'UPDATE property_table SET date_deleted = ? WHERE user_id = ? AND property_id = ?';
+        //  DELETE HOUSE QUERY.
+        const deleteHouseQuery = 'UPDATE property_table SET date_deleted = ? WHERE user_id = ? AND property_id = ?';
 
-          //  DECLARES deleteValue.
-        const deleteValue = [dateDeleted, userId, propertyIdInput];
+          //  DECLARES deleteHouseValue.
+        const deleteHouseValue = [dateDeleted, userId, propertyIdInput];
 
-        connection.query(deletePropertyQuery, deleteValue, (err, deletePropertyResult) => {
-          if (err) {throw err};
+        connection.query(deleteHouseQuery, deleteHouseValue, (err, deleteHouseResult) => {
+          if (err) {throw err}; 
 
+            //  UPDATE ARCHIVE QUERY.
+          const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE property_id = ?';
+
+            //  DECLARES updateArchiveValue.
+          const updateArchiveValue = [dateDeleted, propertyIdInput];
+
+          connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+            if(err) {throw err};
+            
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
               //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
             res.json("");
+            
+          }); 
 
         });
 
@@ -3162,26 +3300,27 @@ app.post('/add-featured', (req, res) => {
 
       } else {
           //  ADD FEATURED PROPERTY QUERY.
-        let addFeaturedPropertyQuery = '';
+        let addFeaturedHouseQuery = '';
 
         if(propertyIdInput.length > 0) {
-          addFeaturedPropertyQuery += 'UPDATE property_table SET date_featured = "' + dateFeatured + '" WHERE user_id = "' + userId + '" AND ';
+          addFeaturedHouseQuery += 'UPDATE property_table SET date_featured = "' + dateFeatured + '" WHERE user_id = "' + userId + '" AND ';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
-            addFeaturedPropertyQuery += 'property_id = ?';
+            addFeaturedHouseQuery += 'property_id = ?';
             
             if(propertyIdInput.length > 1 && i < propertyIdInput.length - 1) {
-              addFeaturedPropertyQuery += ' OR ';
+              addFeaturedHouseQuery += ' OR ';
             };
           };
 
-          connection.query(addFeaturedPropertyQuery, propertyIdInput, (err, addFeaturedPropertyResult) => {
+          connection.query(addFeaturedHouseQuery, propertyIdInput, (err, addFeaturedHouseResult) => {
             if (err) {throw err};
 
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
               //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
             res.json("");
+
           });
 
         } else {
@@ -3222,61 +3361,29 @@ app.post('/mark-sold', (req, res) => {
         res.json(""); 
 
       } else {
-          //  SELECT PROPERTY LISTINGS QUERY.
-        const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND property_id = ? AND date_deleted IS NULL';
+          //  MARK SOLD HOUSE QUERY.
+        const markSoldHouseQuery = 'UPDATE property_table SET status = "SOLD" WHERE user_id = ? AND property_id = ?';
 
-          //  DECALRES selectPropertyListingsValue.
-        const selectPropertyListingsValue = [userId, propertyIdInput];
+          //  DECLARES markSoldHouseValue.
+        const markSoldHouseValue = [userId, propertyIdInput]
 
-        connection.query(selectPropertyListingsQuery, selectPropertyListingsValue, (err, selectPropertyListingsResult) => {
+        connection.query(markSoldHouseQuery, markSoldHouseValue, (err, markSoldHouseResult) => {
           if (err) {throw err};
+          
+            //  UPDATE STATUS RESERVATION QUERY.
+          const updateStatusReservationQuery = 'UPDATE reservation_table SET status = "Cancelled", reason_for_cancelling = "Property has been sold." WHERE property_id = ? AND status = "On going"';
 
-          if(
-              selectPropertyListingsResult[0].status != "AVAILABLE" &&
-              selectPropertyListingsResult[0].status != "SOLD" 
-            ) {
-              //  MARK SOLD PROPERTY QUERY.
-            const markSoldPropertyQuery = 'UPDATE property_table SET status = "SOLD" WHERE user_id = ? AND property_id = ?';
+            //  DECLARES updateStatusReservationValue.
+          const updateStatusReservationValue = [propertyIdInput];
 
-              //  DECLARES markSoldPropertyValue.
-            const markSoldPropertyValue = [userId, propertyIdInput]
+          connection.query(updateStatusReservationQuery, updateStatusReservationValue, (err, updateStatusReservationResult) => {
+            if(err) {throw err};
 
-            connection.query(markSoldPropertyQuery, markSoldPropertyValue, (err, markSoldPropertyResult) => {
-              if (err) {throw err}; 
-                  //  UPDATE STATUS RESERVATION QUERY.
-                const updateStatusReservationQuery = 'UPDATE reservation_table SET status = ?, reason_for_cancelling = ? WHERE property_id = ?';
+              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
+            res.json("");
 
-                  //  DECLARES updateStatusReservationValue.
-                const updateStatusReservationValue = ["Cancelled", "Property has been sold", propertyIdInput];
-
-                connection.query(updateStatusReservationQuery, updateStatusReservationValue, (err, updateStatusReservationResult) => {
-                  if(err) {throw err};
-
-                  //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-                  //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
-                res.json("");
-
-              });
-
-            });
-            
-          } else {            
-              //  MARK SOLD PROPERTY QUERY.
-            const markSoldPropertyQuery = 'UPDATE property_table SET status = "SOLD" WHERE user_id = ? AND property_id = ?';
-
-              //  DECLARES markSoldPropertyValue.
-            const markSoldPropertyValue = [userId, propertyIdInput]
-
-            connection.query(markSoldPropertyQuery, markSoldPropertyValue, (err, markSoldPropertyResult) => {
-              if (err) {throw err};
-
-                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
-              res.json("");
-
-            });
-
-          }
+          });
 
         });
 
@@ -3292,329 +3399,393 @@ app.post('/mark-sold', (req, res) => {
 
 });
 
+async function imageUploader(propertyImage, propertyId, fileName) {
+  const { data, error } = await supabase
+    .storage
+    .from('D.T.C omia Realty and Marketing')
+    .upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer, {
+      cacheControl: '3600',
+      upsert: false
+    });
+};  
+
+/*
+  EXAMPLE FOLDER STRUCTURE:
+    resources/
+      PROPERTY/
+        [USER ID(1)]
+          [PROPERTY ID(1)]
+            FILE(ORIGINAL NAME)
+          [PROPERTY ID(2)]
+            FILE(ORIGINAL NAME)(1)
+            FILE(ORIGINAL NAME)(2)
+        [USER ID(2)]
+          [PROPERTY ID]
+            FILE(ORIGINAL NAME)(1)
+            FILE(ORIGINAL NAME)(2)
+            FILE(ORIGINAL NAME)(3)
+*/
+
 const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images', maxCount: 10 }])
+
 app.post('/add-house', uploadMiddleware, function (req, res) {
-    //  USER INPUTS.
-  const locationInput = req.body.Location;
-  const addressInput = req.body.Address;
-  const mainImage = req.files['Main_image'][0].originalname;
-  const additionalImages = req.files['Additional_images'];
-
-    //  INITIALIZED VALUE FOR additionalImagesInput.
-  const additionalImagesInput = [];
-
-    //  .
-  if(additionalImages != undefined) {
-    for(let i = 0; i < additionalImages.length; i++) {
-      additionalImagesInput.push(additionalImages[i].originalname);
-    };
-  };
-
-  const houseTypeInput = req.body.house_type;
-  const priceInput = parseInt(req.body.Price.replace(/\D/g, '')) + 0.00;
-  const areaInput = req.body.Area.replace(/\D/g, '');
-  const roomCount = req.body.Room_count.replace(/\D/g, '');
-  const bathCountInput = req.body.Bath_count.replace(/\D/g, '');
-  const descriptionInput = req.body.Description;
-  const status = "AVAILABLE";
-  const d = new Date();
-  const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
-                    (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
-                      d.getDate().toString().padStart(2, "0") + ' ' +
-                      d.getHours().toString().padStart(2, "0") + ':' +
-                      d.getMinutes().toString().padStart(2, "0") + ':' +
-                      d.getSeconds().toString().padStart(2, "0");
-
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
-    const propertyId = "PROP" + Math.floor(Math.random() * 10000);
 
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      //  SELECT PROPERTY ID QUERY.
+    const selectPropertyIdQuery = 'SELECT property_id FROM property_table';
+                        
+    connection.query(selectPropertyIdQuery, (err, selectPropertyIdResult) => {
       if (err) {throw err};
+
+      let propertyId = '';
+
+        //  GENERATE PROPERTY ID.
+      function poreprtyIdFunction() {
+        const randomIndex = Math.random().toString().substring(2, 6);
+        propertyId = "PROP" + randomIndex;
+      };
+
+      poreprtyIdFunction();
+
+      if(selectPropertyIdResult.length > 0) {
+        for(let i = 0; i < selectPropertyIdResult.length; i++) {
+          if(selectPropertyIdResult[0].property_id == propertyId) {
+            poreprtyIdFunction();
+
+            i = 0;
+          };
+        };     
+      };
       
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
+        //  USER INPUTS.
+      const locationInput = req.body.Location;
+      const addressInput = req.body.Address;
+      const mainImage = req.files['Main_image'][0];
+      const fieldName = mainImage.fieldname;
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname;
+      const fileName = mainImage.originalname;
+      const mimeType = mainImage.mimetype;
+      const additionalImages = req.files['Additional_images'];
 
-      } else {
-          //  INITIALIZED VALUE FOR insertPropertyValue.
-        const insertPropertyValue = [userId,
-                                    propertyId,
-                                    locationInput,
-                                    addressInput,
-                                    mainImage
-        ];
+        //  INITIALIZED VALUE FOR additionalImagesInput.
+      const additionalImagesInput = [];
 
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyValue.push(additionalImagesInput[i]);
-          };
+        //  .
+      if(additionalImages != undefined) {
+        for(let i = 0; i < additionalImages.length; i++) {
+          additionalImagesInput.push([propertyId,
+                                      additionalImages[i].fieldname,
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + additionalImages[i].originalname,
+                                      additionalImages[i].originalname,
+                                      additionalImages[i].mimetype
+                                    ]);
         };
+      };
 
-        insertPropertyValue.push(houseTypeInput,
-                                priceInput,
-                                areaInput,
-                                roomCount,
-                                bathCountInput,
-                                descriptionInput,
-                                status,
-                                dateCreated
+      const houseTypeInput = req.body.house_type;
+      const priceInput = req.body.Price;
+      const areaInput = req.body.Area;
+      const roomCount = req.body.Room_count;
+      const bathCountInput = req.body.Bath_count;
+      const descriptionInput = req.body.Description;
+      const status = "AVAILABLE";
 
-        );
+      const d = new Date();
+      const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                        (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                          d.getDate().toString().padStart(2, "0") + ' ' +
+                          d.getHours().toString().padStart(2, "0") + ':' +
+                          d.getMinutes().toString().padStart(2, "0") + ':' +
+                          d.getSeconds().toString().padStart(2, "0");
 
-          //  .
-        if(insertPropertyValue.length > 0) {
-          for(let i = 0; i < insertPropertyValue.length; i++) {
-            if(insertPropertyValue[i] == "") {
-              insertPropertyValue[i] = null;
-            };
-          };
-        };
+        //  SELECT TYPE OF USER QUERY
+      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
-          //  INSERT PROPERTY QUERY.
-        let insertPropertyQuery = 'INSERT INTO property_table (user_id, property_id, location, address, main_image';
-
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyQuery += ', image_' + (i + 1);
-          };
-        };
-
-        insertPropertyQuery += ', property_type, price, area, room_count, bath_count, description, status, date_created) VALUES (?, ?, ?, ?, ?';
-
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyQuery += ', ?';
-          };
-        };
-
-        insertPropertyQuery += ', ?, ?, ?, ?, ?, ?, ?, ?)';
-
-        connection.query(insertPropertyQuery, insertPropertyValue, (err, insertPropertyResult) => {
-          if (err) {throw err};
-
-          async function imageUploader() {
-            const avatarFile = req.files['Main_image'][0]
-            const { data, error } = await supabase
-            .storage
-            .from('D.T. Comia Realty and Marketing')
-            .upload('PROPERTY/' + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname, avatarFile.buffer, {
-              cacheControl: '3600',
-              upsert: false
-            })
-
-            if(req.files['Additional_images'] != undefined) {
-              for(let i = 0; i < req.files['Additional_images'].length; i++) {
-                const avatarFile = req.files['Additional_images'][i]
-                const { data, error } = await supabase
-                .storage
-                .from('D.T. Comia Realty and Marketing')
-                .upload('PROPERTY/' + userId + '/' + propertyId + '/' + req.files['Additional_images'][i].originalname, avatarFile.buffer, {
-                  cacheControl: '3600',
-                  upsert: false
-                })
-              };
-            };
-          };  
-
-          /*
-            EXAMPLE FOLDER STRUCTURE:
-              resources/
-                PROPERTY/
-                  [USER ID(1)]
-                    [PROPERTY ID(1)]
-                      FILE(ORIGINAL NAME)
-                    [PROPERTY ID(2)]
-                      FILE(ORIGINAL NAME)(1)
-                      FILE(ORIGINAL NAME)(2)
-                  [USER ID(2)]
-                    [PROPERTY ID]
-                      FILE(ORIGINAL NAME)(1)
-                      FILE(ORIGINAL NAME)(2)
-                      FILE(ORIGINAL NAME)(3)
-          */
-
-          imageUploader().catch(console.error);
-
+      connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+        if (err) {throw err};
+        
+        if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
             //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
             //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
           res.json("");
-        });
-      };
+
+        } else {
+            //  INSERT PROPERTY QUERY.
+          let insertPropertyQuery = 'INSERT INTO property_table (user_id, property_id, location, address, property_type, price';
+
+            //  VALUE PROPERTY QUERY.
+          let valuePropertyQuery = 'VALUES (?, ?, ?, ?, ?, ?';
+
+            //  INITIALIZED VALUE FOR insertPropertyValue.
+          const insertPropertyValue = [userId,
+                                       propertyId,
+                                       locationInput,
+                                       addressInput,
+                                       houseTypeInput,
+                                       priceInput                                     
+                                      ];
+
+          if(areaInput != "") {
+            insertPropertyQuery += ', area';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(areaInput);
+          };
+
+          if(roomCount != "") {
+            insertPropertyQuery += ', room_count';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(roomCount);
+          };
+
+          if(bathCountInput != "") {
+            insertPropertyQuery += ', bath_count';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(bathCountInput);
+          };
+
+          if(descriptionInput != "") {
+            insertPropertyQuery += ', description';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(descriptionInput);
+          };
+
+          if(status != "") {
+            insertPropertyQuery += ', status';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(status);
+          };
+
+          insertPropertyQuery += ', date_created) ';
+          valuePropertyQuery += ', ?)';
+          insertPropertyValue.push(dateCreated);
+
+          connection.query(insertPropertyQuery + ' ' + valuePropertyQuery, insertPropertyValue, (err, insertPropertyResult) => {
+            if (err) {throw err};
+
+              //  INSERT IMAGE QUERY.
+            const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+
+              //  INITIALIZED VALUE FOR insertImageValue.
+            const insertImageValue = [propertyId,
+                                      fieldName,
+                                      path,
+                                      fileName,
+                                      mimeType
+                                    ];
+
+            connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
+              if (err) {throw err};
+
+              imageUploader(mainImage, propertyId, fieldName).catch(console.error);
+
+              if(additionalImagesInput.length > 0) {
+                for(let i = 0; i < additionalImagesInput.length; i++) {
+                    //  INSERT IMAGE QUERY.
+                  const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+
+                    //  INITIALIZED VALUE FOR insertImageValue.
+                  const insertImageValue = [additionalImagesInput[i][0],
+                                            additionalImagesInput[i][1],
+                                            additionalImagesInput[i][2],
+                                            additionalImagesInput[i][3],
+                                            additionalImagesInput[i][4],
+                                          ];
+
+                  connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
+                    if (err) {throw err};
+
+                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
+                  });
+                };     
+
+                  //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                  //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+                res.json("");
+              };
+            });
+          });
+        };
+      });
     });
   } else {    
       //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
       //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
     res.json("");
   };
-
 });
 
 app.post('/add-land', uploadMiddleware, function (req, res) {
-    //  USER INPUTS.
-  const locationInput = req.body.Location;
-  const addressInput = req.body.Address;
-  const mainImage = req.files['Main_image'][0].originalname;
-  const additionalImages = req.files['Additional_images'];
-
-    //  INITIALIZED VALUE FOR additionalImagesInput.
-  const additionalImagesInput = [];
-
-    //  .
-  if(additionalImages != undefined) {
-    for(let i = 0; i < additionalImages.length; i++) {
-      additionalImagesInput.push(additionalImages[i].originalname);
-    };
-  };
-
-  const landTypeInput = req.body.land_type;
-  const priceInput = parseInt(req.body.Price.replace(/\D/g, '')) + 0.00;
-  const areaInput = req.body.Area.replace(/\D/g, '');
-  const descriptionInput = req.body.Description;
-  const status = "AVAILABLE";
-  const d = new Date();
-  const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
-                    (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
-                      d.getDate().toString().padStart(2, "0") + ' ' +
-                      d.getHours().toString().padStart(2, "0") + ':' +
-                      d.getMinutes().toString().padStart(2, "0") + ':' +
-                      d.getSeconds().toString().padStart(2, "0");
-
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
-    const propertyId = "PROP" + Math.floor(Math.random() * 10000);
 
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      //  SELECT PROPERTY ID QUERY.
+    const selectPropertyIdQuery = 'SELECT property_id FROM property_table';
+                        
+    connection.query(selectPropertyIdQuery, (err, selectPropertyIdResult) => {
       if (err) {throw err};
+
+      let propertyId = '';
+
+        //  GENERATE PROPERTY ID.
+      function poreprtyIdFunction() {
+        const randomIndex = Math.random().toString().substring(2, 6);
+        propertyId = "PROP" + randomIndex;
+      };
+
+      poreprtyIdFunction();
+
+      if(selectPropertyIdResult.length > 0) {
+        for(let i = 0; i < selectPropertyIdResult.length; i++) {
+          if(selectPropertyIdResult[0].property_id == propertyId) {
+            poreprtyIdFunction();
+
+            i = 0;
+          };
+        };     
+      };
       
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
+        //  USER INPUTS.
+      const locationInput = req.body.Location;
+      const addressInput = req.body.Address;
+      const mainImage = req.files['Main_image'][0];
+      const fieldName = mainImage.fieldname;
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname;
+      const fileName = mainImage.originalname;
+      const mimeType = mainImage.mimetype;
+      const additionalImages = req.files['Additional_images'];
 
-      } else {
-          //  INITIALIZED VALUE FOR insertPropertyValue.
-        const insertPropertyValue = [userId,
-                                    propertyId,
-                                    locationInput,
-                                    addressInput,
-                                    mainImage
-        ];
+        //  INITIALIZED VALUE FOR additionalImagesInput.
+      const additionalImagesInput = [];
 
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyValue.push(additionalImagesInput[i]);
-          };
+        //  .
+      if(additionalImages != undefined) {
+        for(let i = 0; i < additionalImages.length; i++) {
+          additionalImagesInput.push([propertyId,
+                                      additionalImages[i].fieldname,
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + additionalImages[i].originalname,
+                                      additionalImages[i].originalname,
+                                      additionalImages[i].mimetype
+                                    ]);
         };
+      };
 
-        insertPropertyValue.push(landTypeInput,
-                                priceInput,
-                                areaInput,
-                                descriptionInput,
-                                status,
-                                dateCreated
+      const landType = req.body.land_type;
+      const priceInput = req.body.Price;
+      const areaInput = req.body.Area;
+      const descriptionInput = req.body.Description;
+      const status = "AVAILABLE";
 
-        );
+      const d = new Date();
+      const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                        (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                          d.getDate().toString().padStart(2, "0") + ' ' +
+                          d.getHours().toString().padStart(2, "0") + ':' +
+                          d.getMinutes().toString().padStart(2, "0") + ':' +
+                          d.getSeconds().toString().padStart(2, "0");
 
-          //  .
-        if(insertPropertyValue.length > 0) {
-          for(let i = 0; i < insertPropertyValue.length; i++) {
-            if(insertPropertyValue[i] == "") {
-              insertPropertyValue[i] = null;
-            };
-          };
-        };
+        //  SELECT TYPE OF USER QUERY
+      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
-          //  INSERT PROPERTY QUERY.
-        let insertPropertyQuery = 'INSERT INTO property_table (user_id, property_id, location, address, main_image';
-
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyQuery += ', image_' + (i + 1);
-          };
-        };
-
-        insertPropertyQuery += ', property_type, price, area, description, status, date_created) VALUES (?, ?, ?, ?, ?';
-
-          //  .
-        if(additionalImagesInput.length > 0) {
-          for(let i = 0; i < additionalImagesInput.length; i++) {
-            insertPropertyQuery += ', ?';
-          };
-        };
-
-        insertPropertyQuery += ', ?, ?, ?, ?, ?, ?)';
-
-        connection.query(insertPropertyQuery, insertPropertyValue, (err, insertPropertyResult) => {
-          if (err) {throw err};
-
-          async function imageUploader() {
-            const avatarFile = req.files['Main_image'][0]
-            const { data, error } = await supabase
-            .storage
-            .from('D.T. Comia Realty and Marketing')
-            .upload('PROPERTY/' + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname, avatarFile.buffer, {
-              cacheControl: '3600',
-              upsert: false
-            })
-
-            if(req.files['Additional_images'] != undefined) {
-              for(let i = 0; i < req.files['Additional_images'].length; i++) {
-                const avatarFile = req.files['Additional_images'][i]
-                const { data, error } = await supabase
-                .storage
-                .from('D.T. Comia Realty and Marketing')
-                .upload('PROPERTY/' + userId + '/' + propertyId + '/' + req.files['Additional_images'][i].originalname, avatarFile.buffer, {
-                  cacheControl: '3600',
-                  upsert: false
-                })
-              };
-            };
-          };  
-
-          /*
-            EXAMPLE FOLDER STRUCTURE:
-              resources/
-                PROPERTY/
-                  [USER ID(1)]
-                    [PROPERTY ID(1)]
-                      FILE(ORIGINAL NAME)
-                    [PROPERTY ID(2)]
-                      FILE(ORIGINAL NAME)(1)
-                      FILE(ORIGINAL NAME)(2)
-                  [USER ID(2)]
-                    [PROPERTY ID]
-                      FILE(ORIGINAL NAME)(1)
-                      FILE(ORIGINAL NAME)(2)
-                      FILE(ORIGINAL NAME)(3)
-          */
-
-          imageUploader().catch(console.error);
-
+      connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+        if (err) {throw err};
+        
+        if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
             //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
             //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
           res.json("");
-        });
-      };
+
+        } else {
+            //  INSERT PROPERTY QUERY.
+          let insertPropertyQuery = 'INSERT INTO property_table (user_id, property_id, location, address, property_type, price';
+
+            //  VALUE PROPERTY QUERY.
+          let valuePropertyQuery = 'VALUES (?, ?, ?, ?, ?, ?';
+
+            //  INITIALIZED VALUE FOR insertPropertyValue.
+          const insertPropertyValue = [userId,
+                                       propertyId,
+                                       locationInput,
+                                       addressInput,
+                                       landType,
+                                       priceInput                                     
+                                      ];
+
+          if(areaInput != "") {
+            insertPropertyQuery += ', area';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(areaInput);
+          };
+          
+          if(descriptionInput != "") {
+            insertPropertyQuery += ', description';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(descriptionInput);
+          };
+
+          if(status != "") {
+            insertPropertyQuery += ', status';
+            valuePropertyQuery += ', ?';
+            insertPropertyValue.push(status);
+          };
+
+          insertPropertyQuery += ', date_created) ';
+          valuePropertyQuery += ', ?)';
+          insertPropertyValue.push(dateCreated);
+
+          connection.query(insertPropertyQuery + ' ' + valuePropertyQuery, insertPropertyValue, (err, insertPropertyResult) => {
+            if (err) {throw err};
+
+              //  INSERT IMAGE QUERY.
+            const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+
+              //  INITIALIZED VALUE FOR insertImageValue.
+            const insertImageValue = [propertyId,
+                                      fieldName,
+                                      path,
+                                      fileName,
+                                      mimeType
+                                    ];
+
+            connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
+              if (err) {throw err};
+
+              imageUploader(mainImage, propertyId, fieldName).catch(console.error);
+
+              if(additionalImagesInput.length > 0) {
+                for(let i = 0; i < additionalImagesInput.length; i++) {
+                    //  INSERT IMAGE QUERY.
+                  const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+
+                    //  INITIALIZED VALUE FOR insertImageValue.
+                  const insertImageValue = [additionalImagesInput[i][0],
+                                            additionalImagesInput[i][1],
+                                            additionalImagesInput[i][2],
+                                            additionalImagesInput[i][3],
+                                            additionalImagesInput[i][4],
+                                          ];
+
+                  connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
+                    if (err) {throw err};
+
+                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
+                  });
+                };     
+
+                  //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                  //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+                res.json("");
+              };
+            });
+          });
+        };
+      });
     });
   } else {    
       //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
       //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
     res.json("");
   };
-
 });
 
   //  SELECT RESERVATION LISTINGS.
@@ -3644,19 +3815,31 @@ app.post('/reservation-listings', (req, res) => {
 
         } else {  
             //  SELECT RESERVATION LISTINGS QUERY.
-          const selectReservationListingsQuery = 'SELECT number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM(' +
-                                                   'SELECT ROW_NUMBER() OVER (ORDER BY reservation_period_from) AS number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL' +
-                                                   ' ) as reservation_table ' +
-                                                   'WHERE (number LIKE "%' + searchInput + '%" OR full_name LIKE "%' + searchInput + '%" OR contact_number LIKE "%' + searchInput + '%" OR property LIKE "%' + searchInput + '%" OR reservation_period_from LIKE "%' + searchInput + '%" OR reservation_period_to LIKE "%' + searchInput + '%" OR status LIKE "%' + searchInput + '%") ORDER BY ' + orderByInput + ' ' + orderInput + ' LIMIT 10 OFFSET ?';
+          let selectReservationListingsQuery = 'SELECT number, reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM(' +
+                                               'SELECT ROW_NUMBER() OVER (ORDER BY reservation_period_from) AS number, reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL' +
+                                               ' ) as reservation_table';
             
             //  DECLARES selectReservationListingsValue.
-          const selectReservationListingsValue = [userId, pageNumberInput];
+          const selectReservationListingsValue = [userId];
+
+          if(searchInput != "") {
+            selectReservationListingsQuery += ' WHERE (number LIKE "%' + searchInput + '%" OR full_name LIKE "%' + searchInput + '%" OR contact_number LIKE "%' + searchInput + '%" OR property LIKE "%' + searchInput + '%" OR reservation_period_from LIKE "%' + searchInput + '%" OR reservation_period_to LIKE "%' + searchInput + '%" OR status LIKE "%' + searchInput + '%")';
+          };
+
+          selectReservationListingsQuery += ' ORDER BY '+ orderByInput + ' ' + orderInput;
+          
+          selectReservationListingsQuery += ' LIMIT 10';
+
+          if(pageNumberInput != 0) {
+            selectReservationListingsQuery += ' OFFSET ?';
+            selectReservationListingsValue.push(pageNumberInput);
+          };
             
           connection.query(selectReservationListingsQuery, selectReservationListingsValue, (err, selectReservationListingsResult) => {
             if (err) {throw err};
 
                 //  SELECT PROPERTY LISTINGS QUERY.
-              const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND date_deleted IS NULL';
+              const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND date_deleted IS NULL ORDER BY date_created';
                   
               connection.query(selectPropertyListingsQuery, userId, (err, selectPropertyListingsResult) => {
                 if (err) {throw err};
@@ -3685,8 +3868,8 @@ app.post('/edit-info', (req, res) => {
     //  USER INPUTS
   const reservationIdInput = req.body.reservationIdInput;
   const nameInput = req.body.nameInput;
-  let contactNoInput = req.body.contactNoInput.replace(/\D/g, "");
-  const d = new Date();
+  const contactNoInput = req.body.contactNoInput.replace(/\D/g, "");
+  const d = new Date(req.body.reservedUntilInput);
   const reservedUntilInput = d.getFullYear().toString().padStart(4, "0")  + '-' +
                             (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
                              d.getDate().toString().padStart(2, "0") + ' ' +
@@ -3710,7 +3893,7 @@ app.post('/edit-info', (req, res) => {
 
       } else { 
           //  SELECT RESERVATION LISTINGS QUERY.
-        const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE reservation_id = ?';
+        const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE reservation_id = ?';
 
         connection.query(selectReservationListingsQuery, reservationIdInput, (err, selectReservationListingsResult) => {
           if(err) {throw err}; 
@@ -3784,35 +3967,35 @@ app.post('/change-status', (req, res) => {
           if(err) {throw err};
 
           if(statusInput != "On Going") {
-              //  UPDATE STATUS PROPERTY QUERY.
-            const updateStatusPropertyQuery = 'UPDATE property_table SET status = "AVAILABLE" WHERE user_id = ? AND  property_id = ?';
+              //  UPDATE STATUS HOUSE QUERY.
+            const updateStatusHouseQuery = 'UPDATE property_table SET status = "AVAILABLE" WHERE user_id = ? AND  property_id = ?';
 
-              //  DECLARES updateStatuPropertyValue.
-            const updateStatusPropertyValue = [agentIdInput, propertyIdInput];
+              //  DECLARES updateStatusHouseValue.
+            const updateStatusHouseValue = [agentIdInput, propertyIdInput];
 
-            connection.query(updateStatusPropertyQuery, updateStatusPropertyValue, (err, updateStatusPropertyResult) => {
+            connection.query(updateStatusHouseQuery, updateStatusHouseValue, (err, updateStatusHouseResult) => {
               if(err) {throw err};
-          
+
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
               res.json("");
-              
+
             });
 
           } else {
-              //  UPDATE STATUS PROPERTY QUERY.
-            const updateStatusPropertyQuery = 'UPDATE property_table SET status = "RESERVED" WHERE user_id = ? AND  property_id = ?';
+              //  UPDATE STATUS HOUSE QUERY.
+            const updateStatusHouseQuery = 'UPDATE property_table SET status = "RESERVED" WHERE user_id = ? AND  property_id = ?';
 
-              //  DECLARES updateStatuPropertyValue.
-            const updateStatusPropertyValue = [agentIdInput, propertyIdInput];
+              //  DECLARES updateStatusHouseValue.
+            const updateStatusHouseValue = [agentIdInput, propertyIdInput];
 
-            connection.query(updateStatusPropertyQuery, updateStatusPropertyValue, (err, updateStatusPropertyResult) => {
+            connection.query(updateStatusHouseQuery, updateStatusHouseValue, (err, updateStatusHouseResult) => {
               if(err) {throw err};
-          
+
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
               res.json("");
-              
+
             });
 
           };
@@ -3956,7 +4139,7 @@ app.get('/all-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ALL RESERVATION LISTINGS QUERY.
-        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL';
+        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL';
               
         connection.query(selectAllReservationListingsQuery, userId, (err, selectAllReservationListingsResult) => {
           if (err) {throw err};
@@ -3998,7 +4181,7 @@ app.get('/on-going-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going" AND date_archived IS NULL';
+        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going" AND date_archived IS NULL';
               
         connection.query(selectOnGoingReservationListingsQuery, userId, (err, selectOnGoingReservationListingsResult) => {
           if (err) {throw err};
@@ -4040,7 +4223,7 @@ app.get('/completed-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed" AND date_archived IS NULL';
+        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed" AND date_archived IS NULL';
               
         connection.query(selectCompletedReservationListingsQuery, userId, (err, selectCompletedReservationListingsResult) => {
           if (err) {throw err};
@@ -4082,7 +4265,7 @@ app.get('/cancelled-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled" AND date_archived IS NULL';
+        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled" AND date_archived IS NULL';
               
         connection.query(selectCancelledReservationListingsQuery, userId, (err, selectCancelledReservationListingsResult) => {
           if (err) {throw err};
@@ -4108,6 +4291,8 @@ app.get('/cancelled-reservation-listings', (req, res) => {
 app.get('/deleted-listings', (req, res) => {
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
+    const d = new Date();
+    d.setDate(d.getDate() - 30);
 
       //  SELECT TYPE OF USER QUERY
     const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
@@ -4121,19 +4306,27 @@ app.get('/deleted-listings', (req, res) => {
         res.json("");  
 
       } else { 
-        const d = new Date();
-        d.setDate(d.getDate() - 30);
 
           //  SELECT DELETE PROPERTY LISTINGS QUERY.
-        const selectDeletedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, main_image, image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, image_9, image_10, property_type, FORMAT(price, 2) AS price_formatted, FORMAT(area, 2) AS area_formatted, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND (date_deleted IS NOT NULL AND date_deleted > ?) ORDER BY date_deleted';
+        const selectDeletedPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table ' +
+                                                   'WHERE user_id = ? AND (date_deleted IS NOT NULL AND date_deleted > ?)' +
+                                                   'ORDER BY date_deleted';
 
           // DECLARES selectDeletedPropertyListingsValue.
         const selectDeletedPropertyListingsValue = [userId, d];
 
-        connection.query(selectDeletedPropertyListingsQuery, selectDeletedPropertyListingsValue, (err, selectDeletedPropertyListingsResult) => {
+          //  SELECT DELETED IMAGE LISTINGS QUERY.
+        const selectDeletedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+
+        connection.query(selectDeletedImageListingsQuery, (err, selectDeletedImageListingsResult) => {
           if (err) {throw err};
-              
-            res.json({deletedPropertyListings: selectDeletedPropertyListingsResult});
+
+          connection.query(selectDeletedPropertyListingsQuery, selectDeletedPropertyListingsValue, (err, selectDeletedPropertyListingsResult) => {
+            if (err) {throw err};
+                
+              res.json({deletedPropertyListings: selectDeletedPropertyListingsResult, deletedImageListings: selectDeletedImageListingsResult});
+
+          });
 
         });
 
@@ -4168,11 +4361,10 @@ app.post('/restore-all-property', (req, res) => {
         res.json("");
 
       } else {
-          //  RESTORE ALL PROPERTY QUERY.
-        let restoreAllPropertyQuery = '';
 
-        if(propertyIdInput.length > 1) {
-          restoreAllPropertyQuery += 'UPDATE property_table SET date_deleted = NULL WHERE user_id = "' + userId + '" AND ';
+        if(propertyIdInput.length > 0) {
+            //  RESTORE ALL PROPERTY QUERY.
+          let restoreAllPropertyQuery = 'UPDATE property_table SET date_deleted = NULL WHERE user_id = "' + userId + '" AND (';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
@@ -4183,23 +4375,37 @@ app.post('/restore-all-property', (req, res) => {
             };
           };
 
+          restoreAllPropertyQuery += ')';
+
           connection.query(restoreAllPropertyQuery, propertyIdInput, (err, restoreAllPropertyResult) => {
             if (err) {throw err};
 
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
-            res.json("");
-          });
+              //  UPDATE ARCHIVE QUERY.
+            let updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE (';
+            
+              //  SELECT EVERY propertyIdInput VALUES.
+            for(let i = 0; i < propertyIdInput.length; i++) {
+              updateArchiveQuery += 'property_id = ?';
+              
+              if(propertyIdInput.length > 1 && i < propertyIdInput.length - 1) {
+                updateArchiveQuery += ' OR ';
+              };
+            };
 
-        } else if(propertyIdInput.length > 0) {
-          restoreAllPropertyQuery += 'UPDATE property_table SET date_deleted = NULL WHERE user_id = "' + userId + '" AND property_id = ?';
-          
-          connection.query(restoreAllPropertyQuery, propertyIdInput, (err, restoreAllPropertyResult) => {
-            if (err) {throw err};
+            updateArchiveQuery += ')';
 
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
+              //  DECLARES updateArchiveValue.
+            const updateArchiveValue = [null, propertyIdInput];
+
+            connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+              if(err) {throw err};
+              
+                //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+                //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+              res.json("");
+              
+            }); 
+
           });
 
         } else {
@@ -4241,11 +4447,10 @@ app.post('/delete-all-property', (req, res) => {
         res.json("");
 
       } else {
-          //  DELETE ALL PROPERTY QUERY.
-        let deleteAllPropertyQuery = '';
 
-        if(propertyIdInput.length > 1) {
-          deleteAllPropertyQuery += 'UPDATE property_table SET date_deleted = "1970-01-01 00:00:00" WHERE user_id = "' + userId + '" AND ';
+        if(propertyIdInput.length > 0) {
+            //  DELETE ALL PROPERTY QUERY.
+          let deleteAllPropertyQuery = 'UPDATE property_table SET date_deleted = "1970-01-01 00:00:00" WHERE user_id = "' + userId + '" AND (';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
@@ -4256,23 +4461,15 @@ app.post('/delete-all-property', (req, res) => {
             };
           };
 
+          deleteAllPropertyQuery += ')';
+
           connection.query(deleteAllPropertyQuery, propertyIdInput, (err, deleteAllPropertyResult) => {
             if (err) {throw err};
 
               //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
               //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRON-END.
             res.json("");
-          });
 
-        } else if(propertyIdInput.length > 0) {
-          deleteAllPropertyQuery += 'UPDATE property_table SET date_deleted = "1970-01-01 00:00:00" WHERE user_id = "' + userId + '" AND property_id = ?';
-          
-          connection.query(deleteAllPropertyQuery, propertyIdInput, (err, deleteAllPropertyResult) => {
-            if (err) {throw err};
-
-              //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-              //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-            res.json("");
           });
 
         } else {
