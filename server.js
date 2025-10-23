@@ -3402,7 +3402,7 @@ app.post('/mark-sold', (req, res) => {
 async function imageUploader(propertyImage, propertyId, fileName) {
   const { data, error } = await supabase
     .storage
-    .from('D.T.C omia Realty and Marketing')
+    .from(process.env.SUPABASE_BUCKET)
     .upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer, {
       cacheControl: '3600',
       upsert: false
