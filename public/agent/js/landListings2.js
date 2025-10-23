@@ -93,12 +93,6 @@ async function landListings2() {
 
         removeDelete.innerHTML = "x";
         removeDelete.classList.add('removeDelete');
-
-        if(data.landListings[i].status == "RESERVED") {
-            removeDelete.disabled = true;
-            
-        };
-
         price.innerHTML = "&#8369;" + data.landListings[i].price;
         address.innerHTML = data.landListings[i].address;
         viewDetail.classList.add('viewDetails')

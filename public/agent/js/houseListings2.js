@@ -97,12 +97,6 @@ async function houseListings2() {
 
         removeDelete.innerHTML = "x";
         removeDelete.classList.add('removeDelete');
-
-        if(data.houseListings[i].status == "RESERVED") {
-            removeDelete.disabled = true;
-
-        };
-
         price.innerHTML = "&#8369;" + data.houseListings[i].price;
         address.innerHTML = data.houseListings[i].address;
         bedIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/bed.png";
