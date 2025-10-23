@@ -64,6 +64,11 @@ function enableFeaturedFunction() {
             featuredCheckbox.type = "checkbox";
             featuredCheckbox.name = "Featured checkbox " + featuredCheckBoxNumber;
             featuredCheckbox.id = "featuredCheckBox" + featuredCheckBoxNumber;
+
+            if(landListings2.children[i].children[3].style.color == 'red') {
+                featuredCheckbox.disabled = true;
+            };
+
             featuredLabel.htmlFor = "featuredCheckBox" + featuredCheckBoxNumber;
             featuredLabel.classList.add('featuredCheckbox');
             featured.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/agent uncheckbox.png";
