@@ -89,10 +89,20 @@ async function historyPropertiesListings() {
 
                     property.classList.add('property');
                     imageContainer.classList.add('imageContainer');
-                    propertyImage.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].main_image;
-                    propertyImage.alt =  data.propertyListings[j].main_image;
-                    propertyImage.type = "";
-                    price.innerHTML = "&#8369;" + data.propertyListings[j].price_formatted;
+
+                    for(let k = 0; k < data.imageListings.length; k++) {
+                        if(data.propertyListings[j].property_id == data.imageListings[k].property_id) {
+                            if(data.imageListings[k].field_name == "Main_image") {
+                                propertyImage.src = data.imageListings[k].path;
+                                propertyImage.alt = data.imageListings[k].file_name;
+                                propertyImage.type = data.imageListings[k].mime_type;
+
+                                break;
+                            };
+                        };
+                    };
+
+                    price.innerHTML = "&#8369;" + data.propertyListings[j].price;
                     address.innerHTML = data.propertyListings[j].address;
                     bedIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/green bed.png";
                     bedIcon.alt = "Bed icon";
@@ -327,9 +337,18 @@ async function historyPropertiesListings() {
 
                     details.classList.add('details');
                     imageContainerModal.classList.add('imageContainer');
-                    propertyMainImage.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].main_image;
-                    propertyMainImage.alt = data.propertyListings[j].main_image;
-                    propertyMainImage.type = "";
+
+                    for(let k = 0; k < data.imageListings.length; k++) {
+                        if(data.propertyListings[j].property_id == data.imageListings[k].property_id) {
+                            if(data.imageListings[k].field_name == "Main_image") {
+                                propertyMainImage.src = data.imageListings[k].path;
+                                propertyMainImage.alt = data.imageListings[k].file_name;
+                                propertyMainImage.type = data.imageListings[k].mime_type;
+
+                                break;
+                            };
+                        };
+                    };
                     
                     propertyModal.appendChild(details);
                     details.appendChild(imageContainerModal);
@@ -369,7 +388,7 @@ async function historyPropertiesListings() {
                     imageContainerModal.appendChild(status);
             
                     const priceModal = document.createElement('p');
-                    priceModal.innerHTML = "&#8369;" + data.propertyListings[i].price_formatted;
+                    priceModal.innerHTML = "&#8369;" + data.propertyListings[i].price;
                     details.appendChild(priceModal);
 
 
@@ -460,7 +479,7 @@ async function historyPropertiesListings() {
                     bathrRoomsCount.innerHTML = data.propertyListings[i].bath_count;
                     area.innerHTML = "Area";
                     measurments.classList.add('measurements');
-                    measurments.innerHTML = data.propertyListings[i].area_formatted + "sq";
+                    measurments.innerHTML = data.propertyListings[i].area + "sq";
                     images.classList.add('images');
 
                     details.appendChild(propertyType);
@@ -480,137 +499,26 @@ async function historyPropertiesListings() {
                         //  INITIALIZE THE VALUE FOR imageCount.
                     let imageCount = 0;
 
-                        //  IF EITHER OF IMAGE_1... AREN'T EMPTY,
-                        //  UPADTES THE imageCount VALUE,
-                        //  CREATES IMAGE ELEMENTS,
-                        //  DISPLAYS FETCHED IMAGE FROM DATABASE
-                        //  AND ADDS TO DIV ELEMENT.
-                    if(data.propertyListings[j].image_1 != null) {
-                        imageCount++;
+                    for(let k = 0; k < data.imageListings.length; k++) {
+                        if(data.propertyListings[j].property_id == data.imageListings[j].property_id) {
+                            if(data.imageListings[k].field_name == "Additional_images") {
+                                imageCount++;
 
-                        const image1 = document.createElement('img');
+                                const image = document.createElement('img');
 
-                        image1.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_1;
-                        image1.alt =  data.propertyListings[j].image_1;
-                        image1.type = "";
-                        
-                        div.appendChild(image1);
+                                image.src = data.imageListings[k].path;
+                                image.alt = data.imageListings[k].file_name;
+                                image.type = data.imageListings[k].mime_type;
+
+                                div.appendChild(image);
+                            };
+                        };
                     };
-
-                    if(data.propertyListings[j].image_2 != null) {
-                        imageCount++;
-
-                        const image2 = document.createElement('img');
-
-                        image2.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_2;
-                        image2.alt =  data.propertyListings[j].image_2;
-                        image2.type = "";
-                        
-                        div.appendChild(image2);
-                    };
-
-                    if(data.propertyListings[j].image_3 != null) {
-                        imageCount++;
-
-                        const image3 = document.createElement('img');
-
-                        image3.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_3;
-                        image3.alt =  data.propertyListings[j].image_3;
-                        image3.type = "";
-                        
-                        div.appendChild(image3);
-                    };
-
-                    if(data.propertyListings[j].image_4 != null) {
-                        imageCount++;
-
-                        const image4 = document.createElement('img');
-
-                        image4.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_4;
-                        image4.alt =  data.propertyListings[j].image_4;
-                        image4.type = "";
-                        
-                        div.appendChild(image4);
-                    };
-
-                    if(data.propertyListings[j].image_5 != null) {
-                        imageCount++;
-
-                        const image5 = document.createElement('img');
-
-                        image5.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_5;
-                        image5.alt =  data.propertyListings[j].image_5;
-                        image5.type = "";
-                        
-                        div.appendChild(image5);
-                    };
-
-                    if(data.propertyListings[j].image_6 != null) {
-                        imageCount++;
-
-                        const image6 = document.createElement('img');
-
-                        image6.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_6;
-                        image6.alt =  data.propertyListings[j].image_6;
-                        image6.type = "";
-                        
-                        div.appendChild(image6);
-                    };
-
-                    if(data.propertyListings[j].image_7 != null) {
-                        imageCount++;
-
-                        const image7 = document.createElement('img');
-
-                        image7.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_7;
-                        image7.alt =  data.propertyListings[j].image_7;
-                        image7.type = "";
-                        
-                        div.appendChild(image7);
-                    };
-
-                    if(data.propertyListings[j].image_8 != null) {
-                        imageCount++;
-
-                        const image8 = document.createElement('img');
-
-                        image8.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_8;
-                        image8.alt =  data.propertyListings[j].image_8;
-                        image8.type = "";
-                        
-                        div.appendChild(image8);
-                    };
-
-                    if(data.propertyListings[j].image_9 != null) {
-                        imageCount++;
-
-                        const image9 = document.createElement('img');
-
-                        image9.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_9;
-                        image9.alt =  data.propertyListings[j].image_9;
-                        image9.type = "";
-                        
-                        div.appendChild(image9);
-                    };
-
-                    if(data.propertyListings[j].image_10 != null) {
-                        imageCount++;
-
-                        const image10 = document.createElement('img');
-
-                        image10.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.propertyListings[j].user_id + '/' + data.propertyListings[j].property_id + '/' + data.propertyListings[j].image_10;
-                        image10.alt =  data.propertyListings[j].image_1;
-                        image10.type = "";
-                        
-                        div.appendChild(image10);
-                    };
-
-
 
                         // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
                     let translateCarousel = 0;
-                    
-                    if(data.propertyListings[j].image_2 != null) {
+                                
+                    if(div.children.length > 1) {
                         const previousButton = document.createElement('button');
                         const previous = document.createElement('img');
                         const nextButton = document.createElement('button');

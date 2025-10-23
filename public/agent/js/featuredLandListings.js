@@ -72,29 +72,27 @@ async function featuredLandListings() {
         const removeDelete = document.createElement('button');
         const price = document.createElement('p');
         const address = document.createElement('p');
-        const bedIcon = document.createElement('img');
-        const bedCount = document.createElement('p');
-        const bathtubIcon = document.createElement('img');
-        const bathtubCount = document.createElement('p');
         const viewDetail = document.createElement('button');
 
         property.classList.add('property');
         imageContainer.classList.add('imageContainer');
-        propertyImage.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].main_image;
-        propertyImage.alt =  data.featuredLandListings[i].main_image;
-        propertyImage.type = "";
+
+        for(let j = 0; j < data.featuredImageListings.length; j++) {
+            if(data.featuredLandListings[i].property_id == data.featuredImageListings[j].property_id) {
+                if(data.featuredImageListings[j].field_name == "Main_image") {
+                    propertyImage.src = data.featuredImageListings[j].path;
+                    propertyImage.alt = data.featuredImageListings[j].file_name;
+                    propertyImage.type = data.featuredImageListings[j].mime_type;
+
+                    break;
+                };
+            };
+        };
+
         removeDelete.innerHTML = "x";
         removeDelete.classList.add('removeDelete');
-        price.innerHTML = "&#8369;" + data.featuredLandListings[i].price_formatted;
+        price.innerHTML = "&#8369;" + data.featuredLandListings[i].price;
         address.innerHTML = data.featuredLandListings[i].address;
-        bedIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/bed.png";
-        bedIcon.alt = "Bed icon";
-        bedIcon.type = "";
-        bedCount.innerHTML = data.featuredLandListings[i].room_count;
-        bathtubIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/bathtub.png";
-        bathtubIcon.alt = "Bathtub icon";
-        bathtubIcon.type = "";
-        bathtubCount.innerHTML = data.featuredLandListings[i].bath_count;
         viewDetail.classList.add('viewDetails')
         viewDetail.innerHTML = "VIEW DETAILS";
 
@@ -104,10 +102,6 @@ async function featuredLandListings() {
         imageContainer.appendChild(removeDelete);
         property.appendChild(price);
         property.appendChild(address);
-        property.appendChild(bedIcon);
-        property.appendChild(bedCount);
-        property.appendChild(bathtubIcon);
-        property.appendChild(bathtubCount);
         property.appendChild(viewDetail);
 
         property.addEventListener("mouseenter", propertyMousEnter);
@@ -213,9 +207,18 @@ async function featuredLandListings() {
 
         details.classList.add('details');
         imageContainerModal.classList.add('imageContainer');
-        propertyMainImage.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].main_image;
-        propertyMainImage.alt = data.featuredLandListings[i].main_image;
-        propertyMainImage.type = "";
+
+        for(let j = 0; j < data.featuredImageListings.length; j++) {
+            if(data.featuredLandListings[i].property_id == data.featuredImageListings[j].property_id) {
+                if(data.featuredImageListings[j].field_name == "Main_image") {
+                    propertyMainImage.src = data.featuredImageListings[j].path;
+                    propertyMainImage.alt = data.featuredImageListings[j].file_name;
+                    propertyMainImage.type = data.featuredImageListings[j].mime_type;
+
+                    break;
+                };
+            };
+        };
         
         propertyModal.appendChild(details);
         details.appendChild(imageContainerModal);
@@ -237,7 +240,7 @@ async function featuredLandListings() {
         imageContainerModal.appendChild(status);
             
         const priceModal = document.createElement('p');
-        priceModal.innerHTML = "&#8369;" + data.featuredLandListings[i].price_formatted;
+        priceModal.innerHTML = "&#8369;" + data.featuredLandListings[i].price;
         details.appendChild(priceModal);
           
             
@@ -280,34 +283,22 @@ async function featuredLandListings() {
         const propertyType = document.createElement('p');
         const hr = document.createElement('hr');
         const locationModal = document.createElement('a');
-        const bedRooms = document.createElement('p');
-        const bedRoomsCount = document.createElement('p');
-        const bathRooms = document.createElement('p');
-        const bathrRoomsCount = document.createElement('p');
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
         const div = document.createElement('div');
          
         propertyType.innerHTML = data.featuredLandListings[i].property_type;
-        locationModal.href = "";
+        locationModal.href = "../customer/gpsSystem.html?role=agent";
         locationModal.innerHTML = "View Location";
-        bedRooms.innerHTML = "Bedrooms";
-        bedRoomsCount.innerHTML = data.featuredLandListings[i].room_count;
-        bathRooms.innerHTML = "Bathrooms";
-        bathrRoomsCount.innerHTML = data.featuredLandListings[i].bath_count;
         area.innerHTML = "Area";
         measurments.classList.add('measurements');
-        measurments.innerHTML = data.featuredLandListings[i].area_formatted + "sq";
+        measurments.innerHTML = data.featuredLandListings[i].area + "sq";
         images.classList.add('images');
 
         details.appendChild(propertyType);
         details.appendChild(hr);
         details.appendChild(locationModal);
-        details.appendChild(bedRooms);
-        details.appendChild(bedRoomsCount);
-        details.appendChild(bathRooms);
-        details.appendChild(bathrRoomsCount);
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
@@ -318,157 +309,26 @@ async function featuredLandListings() {
             //  INITIALIZE THE VALUE FOR imageCount.
         let imageCount = 0;
 
-            //  IF EITHER OF IMAGE_1... AREN'T EMPTY,
-            //  UPADTES THE imageCount VALUE,
-            //  CREATES IMAGE ELEMENTS,
-            //  DISPLAYS FETCHED IMAGE FROM DATABASE
-            //  AND ADDS TO DIV ELEMENT.
-        if(data.featuredLandListings[i].image_1 != null) {
-            imageCount++;
+        for(let j = 0; j < data.featuredImageListings.length; j++) {
+            if(data.featuredLandListings[i].property_id == data.featuredImageListings[j].property_id) {
+                if(data.featuredImageListings[j].field_name == "Additional_images") {
+                    imageCount++;
 
-            const imageDiv = document.createElement('div');
-            const image1 = document.createElement('img');
+                    const image = document.createElement('img');
 
-            image1.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_1;
-            image1.alt =  data.featuredLandListings[i].image_1;
-            image1.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image1);
+                    image.src = data.featuredImageListings[j].path;
+                    image.alt = data.featuredImageListings[j].file_name;
+                    image.type = data.featuredImageListings[j].mime_type;
+
+                    div.appendChild(image);
+                };
+            };
         };
-
-        if(data.featuredLandListings[i].image_2 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image2 = document.createElement('img');
-
-            image2.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_2;
-            image2.alt =  data.featuredLandListings[i].image_2;
-            image2.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image2);
-        }
-
-        if(data.featuredLandListings[i].image_3 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image3 = document.createElement('img');
-
-            image3.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_3;
-            image3.alt =  data.featuredLandListings[i].image_3;
-            image3.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image3);
-        };
-
-        if(data.featuredLandListings[i].image_4 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image4 = document.createElement('img');
-
-            image4.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_4;
-            image4.alt =  data.featuredLandListings[i].image_4;
-            image4.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image4);
-        };
-
-        if(data.featuredLandListings[i].image_5 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image5 = document.createElement('img');
-
-            image5.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_5;
-            image5.alt =  data.featuredLandListings[i].image_5;
-            image5.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image5);
-        };
-
-        if(data.featuredLandListings[i].image_6 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image6 = document.createElement('img');
-
-            image6.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_6;
-            image6.alt =  data.featuredLandListings[i].image_6;
-            image6.type = "";
-
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image6);
-        };
-
-        if(data.featuredLandListings[i].image_7 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image7 = document.createElement('img');
-
-            image7.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_7;
-            image7.alt =  data.featuredLandListings[i].image_7;
-            image7.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image7);
-        };
-
-        if(data.featuredLandListings[i].image_8 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image8 = document.createElement('img');
-
-            image8.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_8;
-            image8.alt =  data.featuredLandListings[i].image_8;
-            image8.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image8);
-        };
-
-        if(data.featuredLandListings[i].image_9 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image9 = document.createElement('img');
-
-            image9.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_9;
-            image9.alt =  data.featuredLandListings[i].image_9;
-            image9.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image9);
-        };
-
-        if(data.featuredLandListings[i].image_10 != null) {
-            imageCount++;
-
-            const imageDiv = document.createElement('div');
-            const image10 = document.createElement('img');
-
-            image10.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/' + data.featuredLandListings[i].user_id + '/' + data.featuredLandListings[i].property_id + '/' + data.featuredLandListings[i].image_10;
-            image10.alt =  data.featuredLandListings[i].image_1;
-            image10.type = "";
-            
-            div.appendChild(imageDiv);
-            imageDiv.appendChild(image10);
-        };
-
-
 
             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
         let translateCarousel = 0;
-
-        if(data.featuredLandListings[i].image_2 != null) {
+                    
+        if(div.children.length > 1) {
             const previousButton = document.createElement('button');
             const previous = document.createElement('img');
             const nextButton = document.createElement('button');
@@ -575,6 +435,5 @@ async function featuredLandListings() {
     };
 
 };
-
 
 featuredLandListings().catch(console.error);

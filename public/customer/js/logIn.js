@@ -131,12 +131,13 @@ async function submitButton() {
         if(data.account == "ACCOUNT MATCHED!") {
             accountInputField.children[1].value = '';
             passwordInputField.children[1].value = '';
-        
+            
             if(data.typeOfUser != "Customer") {
                 window.location = "../agent/houseListingsPage.html";    
 
             } else {
                 window.location = "./homePage.html";
+                
             };
 
         };
