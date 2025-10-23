@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer  = require('multer');
 const fs = require('node:fs');
+const nodemailer = require("nodemailer");
 const session = require('express-session');
 const path = require('path');
 const Brevo = require('@getbrevo/brevo');
