@@ -24,16 +24,14 @@ const hostname = process.env.SERVER_HOST_NAME;
 const port = process.env.SERVER_PORT;
 const apiInstance = new Brevo.TransactionalEmailsApi();
 // Configure API key authorization: api-key
-apiInstance.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 const sendSmtpEmail = new Brevo.SendSmtpEmail();
-
-sendSmtpEmail.sender = {"name": process.env.SENDER_NAME, "email": process.env.SENDER_EMAIL};
 const upload = multer({ storage: multer.memoryStorage() });
 // Create a single supabase client for interacting with your database
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 
 
+connection.connect();
 app.use(bodyParser.json());
 app.use(cors({
   origin: 'https://dt-comia-realty-and-marketing-production.up.railway.app', // Allow only a specific origin
@@ -46,10 +44,8 @@ app.use(session({
   cookie: { secure: false }
 }))
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-connection.connect();
+apiInstance.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+sendSmtpEmail.sender = {"name": process.env.SENDER_NAME, "email": process.env.SENDER_EMAIL};
 
 
 
