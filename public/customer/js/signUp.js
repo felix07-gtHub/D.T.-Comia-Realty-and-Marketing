@@ -1,6 +1,6 @@
 const firstName = document.querySelector('#flexBox > #signUp > form input[name="First name"]');
 const lastName = document.querySelector('#flexBox > #signUp > form input[name="Last name"]');
-const email = document.querySelector('#flexBox > #signUp > form input[name="Email address"]');
+const emailAddress = document.querySelector('#flexBox > #signUp > form input[name="Email address"]');
 const password = document.querySelector('#flexBox > #signUp > form input[name="Password"]');
 
     //  FUNCTION FOR VALID INPUTS mouseenter.
@@ -15,7 +15,7 @@ function validInputsMousEnter(e) {
 
 firstName.addEventListener("mouseenter", validInputsMousEnter);
 lastName.addEventListener("mouseenter", validInputsMousEnter);
-email.addEventListener("mouseenter", validInputsMousEnter);
+emailAddress.addEventListener("mouseenter", validInputsMousEnter);
 password.addEventListener("mouseenter", validInputsMousEnter);
 
     //  FUNCTION FOR VALID INPUTS mouseleave.
@@ -30,7 +30,7 @@ function validInputsMousEave(e) {
 
 firstName.addEventListener("mouseleave", validInputsMousEave);
 lastName.addEventListener("mouseleave", validInputsMousEave);
-email.addEventListener("mouseleave", validInputsMousEave);
+emailAddress.addEventListener("mouseleave", validInputsMousEave);
 password.addEventListener("mouseleave", validInputsMousEave);
 
     //  FUNCTION FOR INVALID INPUTS mouseenter.
@@ -53,13 +53,7 @@ function invalidInputsMousEave(e) {
     e.target.style.boxShadow = '0px 0px 10px red';
 };
 
-    /*
-        IF INPUTS ARE INVALID AND THE USER INPUTS A VALUE INPUTS RESETS.
-        IF USER INPUTS A VALUE IT ENABLES DISCARD BUTTON 
-        IF THE USER DELETE THE VALUE OF THE ENTIRE INPUTS IT DISABLES THE DISCARD BUTTON
-        UNLESS THE INPUTS SHOWS ERROR EVEN WITHOUT VALUE
-        THIS HAPPENS WHEN THE USER INPUTS A VALUE IN A NON-REQUIRED FIELD AND SAVES IT.
-    */
+    //  .
 function inputChange() {
     if(firstName.value != "") {   
         firstName.removeEventListener("mouseenter", invalidInputsMousEnter);
@@ -93,19 +87,19 @@ function inputChange() {
 
     };
 
-    if(email.value != "") {
-        email.removeEventListener("mouseenter", invalidInputsMousEnter);
-        email.removeEventListener("mouseleave", invalidInputsMousEave);
+    if(emailAddress.value != "") {
+        emailAddress.removeEventListener("mouseenter", invalidInputsMousEnter);
+        emailAddress.removeEventListener("mouseleave", invalidInputsMousEave);
 
-        email.style.backgroundColor = 'transparent';
-        email.style.color = 'black';
-        email.style.border = 'solid 1px #4f4b3a';
-        email.style.transform = 'none';
-        email.style.transition = 'none';
-        email.style.boxShadow = 'none';  
+        emailAddress.style.backgroundColor = 'transparent';
+        emailAddress.style.color = 'black';
+        emailAddress.style.border = 'solid 1px #4f4b3a';
+        emailAddress.style.transform = 'none';
+        emailAddress.style.transition = 'none';
+        emailAddress.style.boxShadow = 'none';  
 
-        email.addEventListener("mouseenter", validInputsMousEnter);
-        email.addEventListener("mouseleave", validInputsMousEave);
+        emailAddress.addEventListener("mouseenter", validInputsMousEnter);
+        emailAddress.addEventListener("mouseleave", validInputsMousEave);
 
     };
 
@@ -129,14 +123,14 @@ function inputChange() {
 
 lastName.addEventListener("input", inputChange);
 firstName.addEventListener("input", inputChange);
-email.addEventListener("input", inputChange);
+emailAddress.addEventListener("input", inputChange);
 password.addEventListener("input", inputChange);
 
     //  FUNCTION FOR SUBMITTING FORM.
 async function submitButton() {
     const firstNameInput = firstName.value;
     const lastNameInput = lastName.value;
-    const emailAddressInput = email.value;
+    const emailAddressInput = emailAddress.value;
     const passwordInput = password.value;
 
     const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/sign-up', {
@@ -166,21 +160,9 @@ async function submitButton() {
             firstName.style.color = 'black';
             firstName.style.border = 'solid red';
             firstName.style.boxShadow = '0px 0px 10px red';
-                
+                    
             firstName.addEventListener("mouseenter", invalidInputsMousEnter);
             firstName.addEventListener("mouseleave", invalidInputsMousEave);
-
-        } else {            
-            firstName.removeEventListener("mouseenter", invalidInputsMousEnter);
-            firstName.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            firstName.style.backgroundColor = 'transparent';
-            firstName.style.color = 'black';
-            firstName.style.border = 'solid 1px #4f4b3a';
-            firstName.style.boxShadow = 'none';  
-
-            firstName.addEventListener("mouseenter", validInputsMousEnter);
-            firstName.addEventListener("mouseleave", validInputsMousEave);
 
         };
 
@@ -192,47 +174,23 @@ async function submitButton() {
             lastName.style.color = 'black';
             lastName.style.border = 'solid red';
             lastName.style.boxShadow = '0px 0px 10px red';
-                
+                    
             lastName.addEventListener("mouseenter", invalidInputsMousEnter);
             lastName.addEventListener("mouseleave", invalidInputsMousEave);
 
-        } else {          
-            lastName.removeEventListener("mouseenter", invalidInputsMousEnter);
-            lastName.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            lastName.style.backgroundColor = 'transparent';
-            lastName.style.color = 'black';
-            lastName.style.border = 'solid 1px #4f4b3a';
-            lastName.style.boxShadow = 'none';  
-
-            lastName.addEventListener("mouseenter", validInputsMousEnter);
-            lastName.addEventListener("mouseleave", validInputsMousEave);
-
         };
-        
-        if(data.email != "EMAIL ADDRESS FOUND!") {
-            email.removeEventListener("mouseenter", validInputsMousEnter);
-            email.removeEventListener("mouseleave", validInputsMousEave);
 
-            email.style.backgroundColor = '#faebcf';
-            email.style.color = 'black';
-            email.style.border = 'solid red';
-            email.style.boxShadow = '0px 0px 10px red';
-                
-            email.addEventListener("mouseenter", invalidInputsMousEnter);
-            email.addEventListener("mouseleave", invalidInputsMousEave);
+        if(data.emailAddress != "EMAIL ADDRESS FOUND!") {
+            emailAddress.removeEventListener("mouseenter", validInputsMousEnter);
+            emailAddress.removeEventListener("mouseleave", validInputsMousEave);
 
-        } else {            
-            email.removeEventListener("mouseenter", invalidInputsMousEnter);
-            email.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            email.style.backgroundColor = 'transparent';
-            email.style.color = 'black';
-            email.style.border = 'solid 1px #4f4b3a';
-            email.style.boxShadow = 'none';  
-
-            email.addEventListener("mouseenter", validInputsMousEnter);
-            email.addEventListener("mouseleave", validInputsMousEave);
+            emailAddress.style.backgroundColor = '#faebcf';
+            emailAddress.style.color = 'black';
+            emailAddress.style.border = 'solid red';
+            emailAddress.style.boxShadow = '0px 0px 10px red';
+                    
+            emailAddress.addEventListener("mouseenter", invalidInputsMousEnter);
+            emailAddress.addEventListener("mouseleave", invalidInputsMousEave);
 
         };
 
@@ -244,42 +202,29 @@ async function submitButton() {
             password.style.color = 'black';
             password.style.border = 'solid red';
             password.style.boxShadow = '0px 0px 10px red';
-                
+                    
             password.addEventListener("mouseenter", invalidInputsMousEnter);
             password.addEventListener("mouseleave", invalidInputsMousEave);
-
-        } else {            
-            password.removeEventListener("mouseenter", invalidInputsMousEnter);
-            password.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            password.style.backgroundColor = 'transparent';
-            password.style.color = 'black';
-            password.style.border = 'solid 1px #4f4b3a';
-            password.style.boxShadow = 'none';  
-
-            password.addEventListener("mouseenter", validInputsMousEnter);
-            password.addEventListener("mouseleave", validInputsMousEave);
 
         };
 
         if(
             data.firstName != "FIRST NAME NOT FOUND!" &&
             data.lastName != "LAST NAME NOT FOUND!" &&
-            data.email != "EMAIL ADDRESS NOT FOUND!" &&
+            data.emailAddress != "EMAIL ADDRESS NOT FOUND!" &&
             data.password != "PASSWORD NOT FOUND!"
         ) {
             firstName.value = '';
             lastName.value = '';
-            email.value = '';
+            emailAddress.value = '';
             password.value = '';
 
             window.location = "./emailSent.html?emailAddress";
 
         };
 
-    };
+    }
     
 };
-
 
 document.querySelector('#flexBox > #signUp > form > input[name="Submit button"]').addEventListener("click", submitButton);

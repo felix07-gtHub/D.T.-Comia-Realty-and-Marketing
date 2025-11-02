@@ -33,6 +33,7 @@ function invalidInputsMousEave(e) {
     e.target.style.transition = 'none';
 };
 
+    //  .
 function inputChange() {
     if(recoveryEmailAddressInputField.style.border != "none" && recoveryEmailAddressInputField.children[1].value != "") {   
         recoveryEmailAddressInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
@@ -66,7 +67,7 @@ async function submitButton() {
     });
     const data = await response.json();
 
-     if(data.dateAttempted != undefined) {
+    if(data.dateAttempted != undefined) {
        alert("Too much attempt, try again after 5 hours.");
         
     } else {
@@ -81,18 +82,6 @@ async function submitButton() {
                 
             recoveryEmailAddressInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             recoveryEmailAddressInputField.addEventListener("mouseleave", invalidInputsMousEave);
-
-        } else {            
-            recoveryEmailAddressInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
-            recoveryEmailAddressInputField.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            recoveryEmailAddressInputField.style.border = 'none';
-            recoveryEmailAddressInputField.style.boxShadow = 'none';  
-            recoveryEmailAddressInputField.style.border = 'none';
-            recoveryEmailAddressInputField.style.boxShadow = 'none';  
-
-            recoveryEmailAddressInputField.addEventListener("mouseenter", validInputsMousEnter);
-            recoveryEmailAddressInputField.addEventListener("mouseleave", validInputsMousEave);
 
         };
 

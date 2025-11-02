@@ -45,13 +45,7 @@ function invalidInputsMousEave(e) {
     e.target.style.transition = 'none';
 };
 
-    /*
-        IF INPUTS ARE INVALID AND THE USER INPUTS A VALUE INPUTS RESETS.
-        IF USER INPUTS A VALUE IT ENABLES DISCARD BUTTON 
-        IF THE USER DELETE THE VALUE OF THE ENTIRE INPUTS IT DISABLES THE DISCARD BUTTON
-        UNLESS THE INPUTS SHOWS ERROR EVEN WITHOUT VALUE
-        THIS HAPPENS WHEN THE USER INPUTS A VALUE IN A NON-REQUIRED FIELD AND SAVES IT.
-    */
+    //  .
 function inputChange() {
     if(newPasswordInputField.style.border != "none" && newPasswordInputField.children[1].value != "") { 
         newPasswordInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
@@ -91,7 +85,7 @@ async function submitButton() {
     const newPasswordInput = newPasswordInputField.children[1].value;
     const confirmPasswordInput = confirmPasswordInputField.children[1].value;
 
-    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/password-change', {
+    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/forgot-password-change', {
         method: 'POST',
         headers: {                    
                     'User-Agent': 'undici-stream-example',
@@ -120,21 +114,9 @@ async function submitButton() {
             newPasswordInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             newPasswordInputField.addEventListener("mouseleave", invalidInputsMousEave);
 
-        } else {            
-            newPasswordInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
-            newPasswordInputField.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            newPasswordInputField.style.border = 'none';
-            newPasswordInputField.style.boxShadow = 'none';  
-            newPasswordInputField.style.border = 'none';
-            newPasswordInputField.style.boxShadow = 'none';    
-
-            newPasswordInputField.addEventListener("mouseenter", validInputsMousEnter);
-            newPasswordInputField.addEventListener("mouseleave", validInputsMousEave);
-
         };
 
-        if(data.confirmPassword != "CONFIRM PASSWORD FOUND!") {
+        if(data.confirmPassword != "CONFIRM PASSWORD MATCHED!") {
             confirmPasswordInputField.removeEventListener("mouseenter", validInputsMousEnter);
             confirmPasswordInputField.removeEventListener("mouseleave", validInputsMousEave);
 
@@ -146,21 +128,9 @@ async function submitButton() {
             confirmPasswordInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             confirmPasswordInputField.addEventListener("mouseleave", invalidInputsMousEave);
 
-        } else {            
-            confirmPasswordInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
-            confirmPasswordInputField.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            confirmPasswordInputField.style.border = 'none';
-            confirmPasswordInputField.style.boxShadow = 'none';  
-            confirmPasswordInputField.style.border = 'none';
-            confirmPasswordInputField.style.boxShadow = 'none';  
-
-            confirmPasswordInputField.addEventListener("mouseenter", validInputsMousEnter);
-            confirmPasswordInputField.addEventListener("mouseleave", validInputsMousEave);
-
         };
 
-        if(data.newPassword != "NEW PASSWORD NOT FOUND!" && data.confirmPassword != "CONFIRM PASSWORD  NOT FOUND!") {
+        if(data.newPassword != "NEW PASSWORD NOT FOUND!" && data.confirmPassword != "CONFIRM PASSWORD  NOT MATCH!") {
             window.location = "./passwordUpdated.html";
 
         };

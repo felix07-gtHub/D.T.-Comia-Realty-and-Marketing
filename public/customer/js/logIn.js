@@ -1,6 +1,5 @@
 const accountInputField = document.querySelector('.input-field:nth-child(2)');
 const passwordInputField = document.querySelector('.input-field:nth-child(3)');
-const backLogIn = document.querySelector('.main-container > a');
 
     //  FUNCTION FOR VALID INPUTS mouseenter.
 function validInputsMousEnter(e) {
@@ -36,13 +35,7 @@ function invalidInputsMousEave(e) {
     e.target.style.transition = 'none';
 };
 
-    /*
-        IF INPUTS ARE INVALID AND THE USER INPUTS A VALUE INPUTS RESETS.
-        IF USER INPUTS A VALUE IT ENABLES DISCARD BUTTON 
-        IF THE USER DELETE THE VALUE OF THE ENTIRE INPUTS IT DISABLES THE DISCARD BUTTON
-        UNLESS THE INPUTS SHOWS ERROR EVEN WITHOUT VALUE
-        THIS HAPPENS WHEN THE USER INPUTS A VALUE IN A NON-REQUIRED FIELD AND SAVES IT.
-    */
+    //  .
 function inputChange() {
     if(accountInputField.style.border != "none" && accountInputField.children[1].value != "") {   
         accountInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
@@ -104,27 +97,11 @@ async function submitButton() {
             accountInputField.style.boxShadow = '0px 0px 10px red';
             passwordInputField.style.border = 'solid 1.25px red';
             passwordInputField.style.boxShadow = '0px 0px 10px red';
-                
+                    
             accountInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             accountInputField.addEventListener("mouseleave", invalidInputsMousEave);
             passwordInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             passwordInputField.addEventListener("mouseleave", invalidInputsMousEave);
-
-        } else {            
-            accountInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
-            accountInputField.removeEventListener("mouseleave", invalidInputsMousEave);
-            passwordInputField.removeEventListener("mouseenter", invalidInputsMousEnter);
-            passwordInputField.removeEventListener("mouseleave", invalidInputsMousEave);
-
-            accountInputField.style.border = 'none';
-            accountInputField.style.boxShadow = 'none';  
-            passwordInputField.style.border = 'none';
-            passwordInputField.style.boxShadow = 'none';  
-
-            accountInputField.addEventListener("mouseenter", validInputsMousEnter);
-            accountInputField.addEventListener("mouseleave", validInputsMousEave);
-            passwordInputField.addEventListener("mouseenter", validInputsMousEnter);
-            passwordInputField.addEventListener("mouseleave", validInputsMousEave);
 
         };
 
@@ -139,21 +116,13 @@ async function submitButton() {
                 window.location = "./homePage.html";
                 
             };
-
         };
-        
+
     } else {
         alert("We're unable to complete your request, please reset access and try again");
-        
-    }
+
+    };
 
 };
 
 document.querySelector('.main-container button').addEventListener("click", submitButton);
-
-        //  RELOADS PAGE.
-function backLogInFucntion() {
-    location.reload();
-};
-
-backLogIn.addEventListener("click", backLogInFucntion);

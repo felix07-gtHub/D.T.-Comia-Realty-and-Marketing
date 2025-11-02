@@ -117,13 +117,20 @@ async function user() {
             const dropDown = document.createElement('div');
             const ul = document.createElement('ul');
 
-            
-                profileButton.type = "image";
-                profileButton.name = "Profile button";
-                profileButton.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png';
+            profileButton.type = "image";
+            profileButton.name = "Profile button";
+
+            if(data.userImage.length > 0) {
+                profileButton.src = data.userImage[0].path;
+                profileButton.alt = data.userImage[0].file_name;
+                profileButton.type = data.userImage[0].mime_type;
+            } else {
+                profileButton.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
                 profileButton.alt = "Profile icon";
-                profileButton.id = "profileIcon";
-           
+                profileButton.type = "";
+            };
+            
+            profileButton.id = "profileIcon";
 
             div.id = "user";
             user.innerHTML = data.user[0].user_name;
@@ -153,6 +160,9 @@ async function user() {
 
 
 
+            const viewProfileLi = document.createElement('li');
+            const viewProfile = document.createElement('a');
+            const viewProfileIcon = document.createElement('img');
             const savedPropertiesLi = document.createElement('li');
             const savedProperties = document.createElement('a');
             const savedPropertiesIcon = document.createElement('img');
@@ -163,6 +173,11 @@ async function user() {
             const logOutIcon = document.createElement('img');
             const logOut = document.createElement('p');
 
+            viewProfile.href = "./profilePage.html";
+            viewProfile.innerHTML = "VIEW PROFILE";
+            viewProfileIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
+            viewProfileIcon.alt = "View profile Icon";
+            viewProfileIcon.type = "";
             savedProperties.href = "./savedPropertiesPage.html";
             savedProperties.innerHTML = "SAVED PROPERTIES";
             savedPropertiesIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/brown full heart.png";
@@ -194,6 +209,9 @@ async function user() {
 
             
 
+            ul.appendChild(viewProfileLi)
+            viewProfileLi.appendChild(viewProfile);
+            viewProfile.appendChild(viewProfileIcon);
             ul.appendChild(savedPropertiesLi);
             savedPropertiesLi.appendChild(savedProperties);
             savedProperties.appendChild(savedPropertiesIcon);

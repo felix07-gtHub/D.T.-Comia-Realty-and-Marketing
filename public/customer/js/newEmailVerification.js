@@ -1,26 +1,26 @@
 const text = document.querySelector('.main-container p');
 const link = document.querySelector('.main-container a');
 
-let emailAddressInput = '';
+let newEmailAddressInput = '';
 let token = '';
 
 if(window.location.search != '') {
         // Get query params from URL
     const params = new URLSearchParams(window.location.search);
-    emailAddressInput = params.get("emailAddress");
+    newEmailAddressInput = params.get("newEmailAddress");
     tokenInput = params.get("token");
 };
 
     //  FUNCTION FOR VERIFYING EMAIL.
 async function emailVerification() {
-    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/email-verification', {
+    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/new-email-verification', {
         method: 'POST',
         headers: {
         'User-Agent': 'undici-stream-example',
         'Content-Type': 'application/json',
         },
         credentials: "include",
-        body: JSON.stringify({emailAddressInput, tokenInput}),
+        body: JSON.stringify({newEmailAddressInput, tokenInput}),
     });
     const data = await response.json();  
 
@@ -37,7 +37,7 @@ async function emailVerification() {
         } else {
                 //  FUNCTION FOR SENDING EMAIL.
             async function emailSender() {
-                const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/email-verification-link', {
+                const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/new-email-verification-link', {
                     method: 'POST',
                     headers: {
                                 'User-Agent': 'undici-stream-example',
@@ -52,7 +52,7 @@ async function emailVerification() {
 
             link.href = data.link;
             link.innerHTML = "(Resend link)";
-        
+
         };
 
     };
