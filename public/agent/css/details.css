@@ -207,8 +207,10 @@
     margin: 0px;
     color: #354024;
     font-weight: bold;
+    text-align: left;
 }
 
+.propertyDetails > .propertyModal > .details > p:nth-child(3),
 .propertyDetails > .propertyModal > .details > button + p {
     width: 100%;
     text-decoration: none;
@@ -218,6 +220,7 @@
     padding-left: 7.5px;
     box-sizing: border-box;
     font-weight: bold;
+    text-align: left;
 }
 
 .propertyDetails > .propertyModal > .details > hr {
@@ -234,79 +237,28 @@
     padding-left: 7.5px;
     box-sizing: border-box;
     text-decoration: none;
+    text-align: left;
 }
 
-.propertyDetails > .propertyModal > .details > p:nth-child(7),
-.propertyDetails > .propertyModal > .details > p:nth-child(9),
-.propertyDetails > .propertyModal > .details > p:nth-child(11) {
+.propertyDetails > .propertyModal > .details > a + p,
+.propertyDetails > .propertyModal > .details > a + p + p + p,
+.propertyDetails > .propertyModal > .details > a + p + p + p + p + p {
     margin: 3.25px 0px;
     font-size: 15px;
     color: #354024;
     width: 50%;
     padding-left: 7.5px;
     box-sizing: border-box;
+    text-align: left;
 }
 
-.propertyDetails > .propertyModal > .details > p:nth-child(8),
-.propertyDetails > .propertyModal > .details > p:nth-child(10),
-.propertyDetails > .propertyModal > .details > p:nth-child(12) {
+.propertyDetails > .propertyModal > .details > a + p + p,
+.propertyDetails > .propertyModal > .details > a + p + p + p + p,
+.propertyDetails > .propertyModal > .details > a + p + p + p + p + p + p {
     margin: 3.25px 0px;
     font-size: 15px;
     width: 50%;
-    
-}
-
-.propertyDetails > .propertyModal > .details > .measurements {
-    font-size: 15px;
-}
-
-    /* CONFIRM */
-.propertyDetails > .propertyModal > .details > .reserveModal > button {
-    background-color: #e5d7c4;
-    color: #354024;
-    border-radius: 6px;
-    width: 100px;
-    height: 35px;
-    font-size: 15px;
-    
-    border: solid 1px #354024;
-    cursor: pointer;
-    margin: 6px;
-    font-weight: lighter;
-}
-
-.propertyDetails > .propertyModal > .details > .reserveModal > button:hover {
-    background-color: #00000099;
-    color: #a6a6a6;
-    border: none;
-    transform: scale(1.05);
-    transition: transform 0.25s;
-    box-shadow: 0px 0px 10px #00000050;
-}
-
-.propertyDetails > .propertyModal > .details > .reserveModal > a {
-    background-color: #00bf63;
-    color: #354024;
-    border-radius: 6px;
-    width: 100px;
-    height: 35px;
-    font-size: 15px;
-    border: none;
-    cursor: pointer;
-    margin: 6px;
-    font-weight: lighter;
-    text-decoration: none;
-    display: inline-block;
-    align-content: center;
-}
-
-.propertyDetails > .propertyModal > .details > .reserveModal > a:hover {
-    background-color: #00bf63;
-    color: #ffffff;
-    border: none;
-    transform: scale(1.05);
-    transition: transform 0.25s;
-    box-shadow: 0px 0px 10px #00000050;
+    text-align: left;
 }
 
     /* DESCRIPTION */
@@ -319,4 +271,5 @@
     padding: 12px;
     box-sizing: border-box;
     margin: 15px;
+    text-align: left;
 }

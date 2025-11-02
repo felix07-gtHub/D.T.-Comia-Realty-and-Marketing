@@ -228,7 +228,7 @@ async function deletedListings() {
             imageContainerModal.appendChild(status);
             
             const priceModal = document.createElement('p');
-            priceModal.innerHTML = "&#8369;" + data.deletedPropertyListings[i].price_formated;
+            priceModal.innerHTML = "&#8369;" + data.deletedPropertyListings[i].price;
             details.appendChild(priceModal);
 
 
@@ -496,14 +496,14 @@ function selectAllFunction() {
                 selectCount += 1;
 
                 listings.children[i].querySelector('.imageContainer > input').checked = true;
-                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "";
+                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/agent checkbox.png";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].alt = "Checked checkbox";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].type = "";
             } else {
                 selectCount = 0;
 
                 listings.children[i].querySelector('.imageContainer > input').checked = false;
-                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "";
+                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/agent uncheckbox.png";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].alt = "Empty checkbox";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].type = "";
             }

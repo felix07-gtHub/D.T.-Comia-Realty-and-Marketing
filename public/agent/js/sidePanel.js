@@ -18,23 +18,33 @@ async function user() {
   const navUserName = document.querySelector('nav > #user > p:nth-child(1)');
   const sidepanelProfilePicture = document.querySelector('.side-panel img');
   const sidepaneluserName = document.querySelector('.profile-div p');
-
   
-    navProfilePicture.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/prof.png';
+  if(data.userImage.length > 0) {
+    navProfilePicture.src = data.userImage[0].path;
+    navProfilePicture.alt = data.userImage[0].file_name;
+    navProfilePicture.type = data.userImage[0].mime_type;
+  } else {
+    navProfilePicture.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/prof.png";
     navProfilePicture.alt = "Profile icon";
     navProfilePicture.type = "";
-    
-    sidepanelProfilePicture.src = 'https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/prof.png';
-    sidepanelProfilePicture.alt = "Profile icon";
-    sidepanelProfilePicture.type = "";
+  };
 
   navUserName.innerHTML = data.user[0].user_name;
 
+  if(data.userImage.length > 0) {
+    sidepanelProfilePicture.src = data.userImage[0].path;
+    sidepanelProfilePicture.alt = data.userImage[0].file_name;
+    sidepanelProfilePicture.type = data.userImage[0].mime_type;
+  } else {
+    sidepanelProfilePicture.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/AGENT ICONS/prof.png";
+    sidepanelProfilePicture.alt = "Profile icon";
+    sidepanelProfilePicture.type = "";
+  };
+  
   sidepaneluserName.innerHTML = data.user[0].user_name;
 };
 
 user().catch(console.error);
-
         
     //  SHOW THE side-panel AND SHIFT titleBar TO THE RIGHT..
 function toggleSidebarOnTablet() {
@@ -68,7 +78,6 @@ function toggleSidebarOnPhone() {
 
     //  FUNCTION FOR showHideSidebar.
 function showHideSideBar() {
-    const nav = document.querySelector('nav');
     const burgerBtn = document.querySelector('.burger-btn');
     const sidePanel = document.querySelector('.side-panel');
 

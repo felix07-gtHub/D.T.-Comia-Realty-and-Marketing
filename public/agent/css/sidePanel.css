@@ -54,25 +54,10 @@ nav > h1 {
     }    
 }
 
-nav > div:nth-child(4) {
-    display: flex;
-    width: 100%;
-    margin-left: auto;
-    max-width: fit-content;
-}
-
-nav > div:nth-child(4) > p {
-    margin: 0px;
-    color: #f5f8f6;
-}
-
-nav > div:nth-child(4) > hr {
-    margin: 0px 6.25px;
-}
-
 nav > hr {
   margin: 0px 12.5px;
   height: 100%;
+  margin-left: auto;
 }
 
 nav > a {
@@ -84,6 +69,7 @@ nav > a > #profileIcon {
     width: 100%;
     height: 100%;
     border-radius: 100%;
+    border: 2.5px solid #f5f8f6;
 }
 
     /* USER */
@@ -113,7 +99,6 @@ nav > #user > p:nth-child(2) {
     font-size: 12.5px;
     margin: 0px;
 }
-
 
 .main-container {
   display: flex;
