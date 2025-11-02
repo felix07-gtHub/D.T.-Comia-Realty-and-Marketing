@@ -4,8 +4,6 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer  = require('multer');
-const fs = require('node:fs');
-const nodemailer = require("nodemailer");
 const session = require('express-session');
 const path = require('path');
 const Brevo = require('@getbrevo/brevo');
@@ -54,6 +52,8 @@ let token = '';
 
   //  GENERATE TOKEN.
 function tokenFunction() {
+  token = '';
+
   for (let i = 0; i < 32; i++) {
     const randomIndex = Math.floor(Math.random() * 63);
     token += characters.charAt(randomIndex);
@@ -108,10 +108,22 @@ app.post('/sign-up', (req, res) => {
   const emailAddressInput = req.body.emailAddressInput;
   const passwordInput = req.body.passwordInput;
 
-    //  SELECT EMAIL ADDRESS QUERY.
-  const selectEmailAddressQuery = 'SELECT email_address FROM main_user_table WHERE email_address = ?';
+  const d = new Date();
+  d.setDate(d.getDate() - 30);
+  const thirtyDaysLeaved = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                          (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                           d.getDate().toString().padStart(2, "0") + ' ' +
+                           d.getHours().toString().padStart(2, "0") + ':' +
+                           d.getMinutes().toString().padStart(2, "0") + ':' +
+                           d.getSeconds().toString().padStart(2, "0");
 
-  connection.query(selectEmailAddressQuery, emailAddressInput, (err, selectEmailAddressResult) => {
+    //  SELECT EMAIL ADDRESS QUERY.
+  const selectEmailAddressQuery = 'SELECT email_address FROM main_user_table WHERE email_address = ? AND date_leaved > ?';
+
+    //  DECLARES selectEmailAddressValue.
+  const selectEmailAddressValue = [emailAddressInput, thirtyDaysLeaved];
+
+  connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
     if(err) {throw err};
 
       //  FIRST NAME.
@@ -236,7 +248,7 @@ app.post('/sign-up', (req, res) => {
         password != "PASSWORD NOT FOUND!"
     ) {
         //  SELECT PROXY USER QUERY.
-      const selectProxyUserQuery = 'SELECT first_name, last_name, email_address, password, token, date_expired, attempt_count FROM proxy_user_table WHERE email_address = ?';
+      const selectProxyUserQuery = 'SELECT first_name, last_name, email_address, password, token, date_expired, attempt_count, date_attempted FROM proxy_user_table WHERE email_address = ?';
 
       connection.query(selectProxyUserQuery, emailAddressInput, (err, selectProxyUserResult) => {
         if(err) {throw err};
@@ -296,12 +308,12 @@ app.post('/sign-up', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].first_name + ' ' + selectProxyUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
 
                 res.json({
                           firstName: firstName2,
                           lastName: lastName2,
-                          email: emailAddress,
+                          emailAddress: emailAddress,
                           password: password
                         });
 
@@ -369,12 +381,12 @@ app.post('/sign-up', (req, res) => {
                 connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].first_name + ' ' + selectProxyUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html</a>");
-
+                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+                  
                   res.json({
                             firstName: firstName2,
                             lastName: lastName2,
-                            email: emailAddress,
+                            emailAddress: emailAddress,
                             password: password
                           });
 
@@ -446,19 +458,19 @@ app.post('/sign-up', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(emailAddressInput, firstNameInput + ' ' + firstNameInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html</a>");
+              emailSender(emailAddressInput, firstNameInput + ' ' + lastNameInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
 
               res.json({
                         firstName: firstName2,
                         lastName: lastName2,
-                        email: emailAddress,
+                        emailAddress: emailAddress,
                         password: password
                       });
 
             });
 
           });
-        
+
         };
 
       });
@@ -467,7 +479,7 @@ app.post('/sign-up', (req, res) => {
       res.json({
                 firstName: firstName2,
                 lastName: lastName2,
-                email: emailAddress,
+                emailAddress: emailAddress,
                 password: password
               });
     };
@@ -476,8 +488,8 @@ app.post('/sign-up', (req, res) => {
 
 });
 
-  //  EMAIL VERIFICATION.
-app.post('/email-verification-link', (req, res) => {
+  //  PROXY USER VERIFICATION.
+app.post('/proxy-user-verification-link', (req, res) => {
     //  USER INPUTS.
   const emailAddressInput = req.body.emailAddressInput;
   const tokenInput = req.body.tokenInput;
@@ -488,11 +500,11 @@ app.post('/email-verification-link', (req, res) => {
   connection.query(selectProxyUserQuery, tokenInput, (err, selectProxyUserResult) => {
     if(err) {throw err};
 
-      if(selectProxyUserResult.length > 0) {
-        if(emailAddressInput != selectProxyUserResult[0].email_address) {
-            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-          res.json("");
+    if(selectProxyUserResult.length > 0) {
+      if(emailAddressInput != selectProxyUserResult[0].email_address) {
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
 
       } else {
         if(parseInt(selectProxyUserResult[0].attempt_count) < 5) {
@@ -549,7 +561,7 @@ app.post('/email-verification-link', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].first_name + ' ' + selectProxyUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html</a>");
+              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -619,7 +631,7 @@ app.post('/email-verification-link', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].first_name + ' ' + selectProxyUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerification.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -638,7 +650,7 @@ app.post('/email-verification-link', (req, res) => {
 
         };
         
-      };
+      }
 
     } else {
         //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
@@ -651,8 +663,8 @@ app.post('/email-verification-link', (req, res) => {
 
 });
 
-  //  EMAIL VERIFICATION.
-app.post('/email-verification', (req, res) => {
+  //  PROXY USER VERIFICATION.
+app.post('/proxy-user-verification', (req, res) => {
     //  USER INPUTS.
   const emailAddressInput = req.body.emailAddressInput;
   const tokenInput = req.body.tokenInput;
@@ -673,7 +685,7 @@ app.post('/email-verification', (req, res) => {
       } else {
         if(parseInt(selectProxyUserResult[0].attempt_count) < 5) {
           const dateExpired = new Date(selectProxyUserResult[0].date_expired);
-          const d = new Date();
+          const d = new Date();     
 
           if(d < dateExpired) {
             const typeOfUser = "Customer";
@@ -688,17 +700,17 @@ app.post('/email-verification', (req, res) => {
 
               //  GENERATE USER ID.
             function userIdFunction() {
-              const randomIndex = Math.floor(Math.random() * 9999);
+              const randomIndex = Math.random().toString().substring(2, 6);
               userId = "USER" + randomIndex;
             };
+
+            userIdFunction();
 
               //  SELECT USER ID QUERY.
             const selectUserIdQuery = 'SELECT user_id FROM main_user_table WHERE user_id LIKE "%' + userId.substring(4, 8) + '"';
 
             connection.query(selectUserIdQuery, (err, sselectUserIdResult) => {
               if(err) {throw err};
-
-              userIdFunction();
 
               if(sselectUserIdResult.length > 0) {
                 for(let i = 0; i < sselectUserIdResult.length; i++) {
@@ -717,19 +729,18 @@ app.post('/email-verification', (req, res) => {
               link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/logIn.html";
 
                 //  INSERT USER QUERY.
-              const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, recovery_email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+              const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
 
                 //  VALUE FOR insertProxyUserValue.
               const insertUserValue = [
-                                       userId,
-                                       typeOfUser,
-                                       selectProxyUserResult[0].first_name,
-                                       selectProxyUserResult[0].last_name,
-                                       userId,
-                                       selectProxyUserResult[0].email_address,
-                                       selectProxyUserResult[0].email_address,
-                                       selectProxyUserResult[0].password,
-                                       dateJoined
+                                      userId,
+                                      typeOfUser,
+                                      selectProxyUserResult[0].first_name,
+                                      selectProxyUserResult[0].last_name,
+                                      userId,
+                                      selectProxyUserResult[0].email_address,
+                                      selectProxyUserResult[0].password,
+                                      dateJoined
                                       ];
 
               connection.query(insertUserQuery, insertUserValue, (err, insertUserResult) => {
@@ -749,7 +760,7 @@ app.post('/email-verification', (req, res) => {
                   res.json({text: text, link: link});
 
                 });
-                    
+                      
               });
 
             });
@@ -767,7 +778,6 @@ app.post('/email-verification', (req, res) => {
 
           if(dateAttempted < d) {
             const dateExpired = new Date(selectProxyUserResult[0].date_expired);
-            const d = new Date();
 
             if(d < dateExpired) {
               const typeOfUser = "Customer";
@@ -782,17 +792,17 @@ app.post('/email-verification', (req, res) => {
 
                 //  GENERATE USER ID.
               function userIdFunction() {
-                const randomIndex = Math.floor(Math.random() * 9999);
+                const randomIndex = Math.random().toString().substring(2, 6);
                 userId = "USER" + randomIndex;
               };
+
+              userIdFunction();
 
                 //  SELECT USER ID QUERY.
               const selectUserIdQuery = 'SELECT user_id FROM main_user_table WHERE user_id LIKE "%' + userId.substring(4, 8) + '"';
 
               connection.query(selectUserIdQuery, (err, sselectUserIdResult) => {
                 if(err) {throw err};
-
-                userIdFunction();
 
                 if(sselectUserIdResult.length > 0) {
                   for(let i = 0; i < sselectUserIdResult.length; i++) {
@@ -843,7 +853,7 @@ app.post('/email-verification', (req, res) => {
                     res.json({text: text, link: link});
 
                   });
-                      
+                        
                 });
 
               });
@@ -869,37 +879,6 @@ app.post('/email-verification', (req, res) => {
 
   });
 
-});
-
-  //  USER.
-app.get('/user', (req, res) => {
-  if(req.session.userId != undefined) {
-    const userId = req.session.userId;
-    
-      //  SELECT USER QUERY.
-    const selectUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectUserQuery, userId, (err, selectUserResult) => {
-      if(err) {throw err};
-          
-      res.json({user: selectUserResult});
-    });
-  } else {  
-      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-    res.json("");
-  };
-
-});
-
-  //  DELETE THE USER SESSION.
-app.get('/log-out', (req, res) => {
-  req.session.destroy;
-  res.clearCookie('connect.sid');
-
-    //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-    //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-  res.json("");
 });
 
   //  LOG IN.
@@ -929,38 +908,60 @@ app.post('/log-in', (req, res) => {
       account = "ACCOUNT NOT FOUND!";
     };
 
-    if(account == "ACCOUNT MATCHED!") {   
-        //  SELECT LOG IN QUERY.
-      const selectLogInQuery = 'SELECT account, attempt_count FROM log_in_table WHERE account= ?';
+    if(account == "ACCOUNT MATCHED!") {    
+      if(selectUserResult[0].date_leaved != null) {
+        const dateLeaved = new Date(selectUserResult[0].date_leaved);
 
-      connection.query(selectLogInQuery, accountInput, (err, selectLogInResult) => {
-        if(err) {throw err};
+        const d = new Date();
+        d.setDate(d.getDate() - 30);
+        const thirtyDaysLeaved = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                d.getDate().toString().padStart(2, "0") + ' ' +
+                                d.getHours().toString().padStart(2, "0") + ':' +
+                                d.getMinutes().toString().padStart(2, "0") + ':' +
+                                d.getSeconds().toString().padStart(2, "0");
 
-        if(selectLogInResult.length > 0) {
-            //  DELETE PROXY USER QUERY.
-          const deleteLogInQuery = 'DELETE FROM log_in_table WHERE account = ?';
+        if(dateLeaved > d) {
+            //  RETRIEVE ACCOUNT QUERY.
+          const retrieveAccountQuery = 'UPDATE main_user_table SET date_leaved = NULL WHERE (user_name = ? OR email_address = ?) AND date_leaved > ?';
 
-          connection.query(deleteLogInQuery, accountInput, (err, deleteLogInResult) => {
-            if(err) {throw err};
+            //  DECALRES retrieveAccountValue.
+          const retrieveAccountValue = [accountInput, accountInput, thirtyDaysLeaved];
 
+          connection.query(retrieveAccountQuery, retrieveAccountValue, (err, retrieveAccountResult) => {
+            if (err) {throw err};   
+
+            const typeOfUser = selectUserResult[0].type_of_user; 
             const userId = selectUserResult[0].user_id;
-
             req.session.userId = userId;
 
-            res.json({account: account});
+            res.json({account: account, typeOfUser: typeOfUser});
 
           });
 
         } else {
-          const userId = selectUserResult[0].user_id;
-
-          req.session.userId = userId;
-
-          res.json({account: account});
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
 
         };
 
-      });
+      } else {
+          //  DELETE PROXY USER QUERY.
+        const deleteLogInQuery = 'DELETE FROM log_in_table WHERE account = ?';
+
+        connection.query(deleteLogInQuery, accountInput, (err, deleteLogInResult) => {
+          if(err) {throw err};  
+
+          const typeOfUser = selectUserResult[0].type_of_user; 
+          const userId = selectUserResult[0].user_id;
+          req.session.userId = userId;
+
+          res.json({account: account, typeOfUser: typeOfUser});
+
+        });
+
+      };
     
     } else if(account == "ACCOUNT DOESN'T MATCH!") {
         //  SELECT LOG IN QUERY.
@@ -1001,9 +1002,9 @@ app.post('/log-in', (req, res) => {
 
             //  VALUE FOR insertLogInValue.
           const insertLogInValue = [
-                              accountInput,
-                              1
-                              ];
+                                    accountInput,
+                                    1
+                                   ];
 
           connection.query(insertLogInQuery, insertLogInValue, (err, insertLogInResult) => {
             if(err) {throw err};
@@ -1025,13 +1026,51 @@ app.post('/log-in', (req, res) => {
 
 });
 
+  //  USER.
+app.get('/user', (req, res) => {
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  SELECT USER QUERY.
+    const selectUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ? AND date_leaved IS NULL';
+
+    connection.query(selectUserQuery, userId, (err, selectUserResult) => {
+      if(err) {throw err};
+
+        //  SELECT USER IMAGE QUERY.
+      const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
+
+      connection.query(selectUserImageQuery, userId, (err, selectUserImageResult) => {
+        if (err) {throw err};
+            
+        res.json({user: selectUserResult, userImage: selectUserImageResult});
+      });
+    });
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+
+});
+
+  //  DELETE THE USER SESSION.
+app.get('/log-out', (req, res) => {
+  req.session.destroy;
+  res.clearCookie('connect.sid');
+
+    //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+    //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+  res.json("");
+});
+
   //  FORGOT PASSWORD.
 app.post('/forgot-password', (req, res) => {
     //  USER INPUTS.
   const recoveryEmailAddressInput = req.body.recoveryEmailAddressInput;
 
     //  SELECT USER QUERY.
-  const selectUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE recovery_email_address = ?';
+  const selectUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE recovery_email_address = ? AND date_leaved IS NULL';
 
   connection.query(selectUserQuery, recoveryEmailAddressInput, (err, selectUserResult) => {
     if(err) {throw err};
@@ -1047,16 +1086,16 @@ app.post('/forgot-password', (req, res) => {
 
     if(recoveryEmailAddress != "RECOVERY EMAIL ADDRESS NOT FOUND!") {
 
-        //  SELECT FORGET PASSWORD QUERY.
-      const selectForgetPasswordQuery = 'SELECT first_name, last_name, recovery_email_address, token, date_expired, attempt_count FROM forget_password_table WHERE recovery_email_address = ?';
+        //  SELECT FORGOT PASSWORD QUERY.
+      const selectForgotPasswordQuery = 'SELECT password, recovery_email_address, token, date_expired, attempt_count FROM forgot_password_table WHERE recovery_email_address = ?';
 
-      connection.query(selectForgetPasswordQuery, recoveryEmailAddressInput, (err, selectForgetPasswordResult) => {
+      connection.query(selectForgotPasswordQuery, recoveryEmailAddressInput, (err, selectForgotPasswordResult) => {
         if(err) {throw err};
 
-        if(selectForgetPasswordResult.length > 0) {
-          if(parseInt(selectForgetPasswordResult[0].attempt_count) < 5) {
+        if(selectForgotPasswordResult.length > 0) {
+          if(parseInt(selectForgotPasswordResult[0].attempt_count) < 5) {
               //  SELECT TOKEN QUERY.
-            const selectTokenQuery = 'SELECT token FROM forget_password_table';
+            const selectTokenQuery = 'SELECT token FROM forgot_password_table';
 
             connection.query(selectTokenQuery, (err, selectTokenResult) => {
               if(err) {throw err};
@@ -1064,7 +1103,7 @@ app.post('/forgot-password', (req, res) => {
               tokenFunction();
 
               if(selectTokenResult.length > 0) {
-                for(let i = 0; i < selectForgetPasswordResult.length; i++) {
+                for(let i = 0; i < selectForgotPasswordResult.length; i++) {
                   if(selectTokenResult.token == token) {
                     token = '';
                     tokenFunction();
@@ -1094,21 +1133,21 @@ app.post('/forgot-password', (req, res) => {
                                   d.getSeconds().toString().padStart(2, "0");
 
                 //  INSERT PROXY USER QUERY.
-              const insertForgetPasswordQuery = 'UPDATE forget_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+              const insertForgotPasswordQuery = 'UPDATE forgot_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
 
-                //  VALUE FOR insertForgetPasswordValue.
-              const insertForgetPasswordValue = [
+                //  VALUE FOR insertForgotPasswordValue.
+              const insertForgotPasswordValue = [
                                                  token,
                                                  dateExpired,
-                                                 parseInt(selectForgetPasswordResult[0].attempt_count) + 1,
+                                                 parseInt(selectForgotPasswordResult[0].attempt_count) + 1,
                                                  dateAttempted,
-                                                 selectForgetPasswordResult[0].token
+                                                 selectForgotPasswordResult[0].token
                                                ];
 
-              connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
+              connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
 
                 res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1124,7 +1163,7 @@ app.post('/forgot-password', (req, res) => {
 
             if(dateAttempted < d) {
                 //  SELECT TOKEN QUERY.
-              const selectTokenQuery = 'SELECT token FROM forget_password_table';
+              const selectTokenQuery = 'SELECT token FROM forgot_password_table';
 
               connection.query(selectTokenQuery, (err, selectTokenResult) => {
                 if(err) {throw err};
@@ -1132,7 +1171,7 @@ app.post('/forgot-password', (req, res) => {
                 tokenFunction();
 
                 if(selectTokenResult.length > 0) {
-                  for(let i = 0; i < selectForgetPasswordResult.length; i++) {
+                  for(let i = 0; i < selectForgotPasswordResult.length; i++) {
                     if(selectTokenResult.token == token) {
                       token = '';
                       tokenFunction();
@@ -1162,21 +1201,21 @@ app.post('/forgot-password', (req, res) => {
                                     d.getSeconds().toString().padStart(2, "0");
 
                   //  INSERT PROXY USER QUERY.
-                const insertForgetPasswordQuery = 'UPDATE forget_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+                const insertForgotPasswordQuery = 'UPDATE forgot_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
 
-                  //  VALUE FOR insertForgetPasswordValue.
-                const insertForgetPasswordValue = [
+                  //  VALUE FOR insertForgotPasswordValue.
+                const insertForgotPasswordValue = [
                                                    token,
                                                    dateExpired,
                                                    1,
                                                    dateAttempted,
-                                                   selectForgetPasswordResult[0].token
+                                                   selectForgotPasswordResult[0].token
                                                  ];
 
-                connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
+                connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                  emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
 
                   res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1193,7 +1232,7 @@ app.post('/forgot-password', (req, res) => {
 
         } else {
             //  SELECT TOKEN QUERY.
-          const selectTokenQuery = 'SELECT token FROM forget_password_table';
+          const selectTokenQuery = 'SELECT token FROM forgot_password_table';
 
           connection.query(selectTokenQuery, (err, selectTokenResult) => {
             if(err) {throw err};
@@ -1201,7 +1240,7 @@ app.post('/forgot-password', (req, res) => {
             tokenFunction();
 
             if(selectTokenResult.length > 0) {
-              for(let i = 0; i < selectForgetPasswordResult.length; i++) {
+              for(let i = 0; i < selectForgotPasswordResult.length; i++) {
                 if(selectTokenResult.token == token) {
                   token = '';
                   tokenFunction();
@@ -1231,12 +1270,10 @@ app.post('/forgot-password', (req, res) => {
                                 d.getSeconds().toString().padStart(2, "0");
 
               //  INSERT PROXY USER QUERY.
-            const insertForgetPasswordQuery = 'INSERT INTO forget_password_table (first_name, last_name, password, recovery_email_address, token, date_expired, attempt_count, date_attempted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            const insertForgotPasswordQuery = 'INSERT INTO forgot_password_table (password, recovery_email_address, token, date_expired, attempt_count, date_attempted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
-              //  VALUE FOR insertForgetPasswordValue.
-            const insertForgetPasswordValue = [
-                                               selectUserResult[0].first_name,
-                                               selectUserResult[0].last_name,
+              //  VALUE FOR insertForgotPasswordValue.
+            const insertForgotPasswordValue = [
                                                selectUserResult[0].password,
                                                selectUserResult[0].recovery_email_address,
                                                token,
@@ -1245,10 +1282,10 @@ app.post('/forgot-password', (req, res) => {
                                                dateAttempted
                                              ];
 
-            connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
+            connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].first_name + ' ' + selectUserResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
 
               res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1276,21 +1313,21 @@ app.post('/password-change-link', (req, res) => {
   const tokenInput = req.body.tokenInput;
 
     //  SELECT PROXY USER QUERY.
-  const selectForgetPasswordQuery = 'SELECT first_name, last_name, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forget_password_table WHERE token = ?';
+  const selectForgotPasswordQuery = 'SELECT password, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forgot_password_table WHERE token = ?';
 
-  connection.query(selectForgetPasswordQuery, tokenInput, (err, selectForgetPasswordResult) => {
+  connection.query(selectForgotPasswordQuery, tokenInput, (err, selectForgotPasswordResult) => {
     if(err) {throw err};
 
-      if(selectForgetPasswordResult.length > 0) {
-        if(recoveryEmailAddressInput != selectForgetPasswordResult[0].recovery_email_address) {
-            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-          res.json("");
+    if(selectForgotPasswordResult.length > 0) {
+      if(recoveryEmailAddressInput != selectForgotPasswordResult[0].recovery_email_address) {
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
 
       } else {
-        if(parseInt(selectForgetPasswordResult[0].attempt_count) < 5) {
+        if(parseInt(selectForgotPasswordResult[0].attempt_count) < 5) {
             //  SELECT TOKEN QUERY.
-          const selectTokenQuery = 'SELECT token FROM forget_password_table';
+          const selectTokenQuery = 'SELECT token FROM forgot_password_table';
 
           connection.query(selectTokenQuery, (err, selectTokenResult) => {
             if(err) {throw err};
@@ -1298,7 +1335,7 @@ app.post('/password-change-link', (req, res) => {
             tokenFunction();
 
             if(selectTokenResult.length > 0) {
-              for(let i = 0; i < selectForgetPasswordResult.length; i++) {
+              for(let i = 0; i < selectForgotPasswordResult.length; i++) {
                 if(selectTokenResult.token == token) {
                   token = '';
                   tokenFunction();
@@ -1328,21 +1365,21 @@ app.post('/password-change-link', (req, res) => {
                                 d.getSeconds().toString().padStart(2, "0");
 
               //  INSERT PROXY USER QUERY.
-            const insertForgetPasswordQuery = 'UPDATE forget_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+            const insertForgotPasswordQuery = 'UPDATE forgot_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
 
-              //  VALUE FOR insertForgetPasswordValue.
-            const insertForgetPasswordValue = [
+              //  VALUE FOR insertForgotPasswordValue.
+            const insertForgotPasswordValue = [
                                                token,
                                                dateExpired,
-                                               parseInt(selectForgetPasswordResult[0].attempt_count) + 1,
+                                               parseInt(selectForgotPasswordResult[0].attempt_count) + 1,
                                                dateAttempted,
-                                               selectForgetPasswordResult[0].token
+                                               selectForgotPasswordResult[0].token
                                               ];
 
-            connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
+            connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+              emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1360,7 +1397,7 @@ app.post('/password-change-link', (req, res) => {
 
           if(dateAttempted < d) {
               //  SELECT TOKEN QUERY.
-            const selectTokenQuery = 'SELECT token FROM forget_password_table';
+            const selectTokenQuery = 'SELECT token FROM forgot_password_table';
 
             connection.query(selectTokenQuery, (err, selectTokenResult) => {
               if(err) {throw err};
@@ -1368,7 +1405,7 @@ app.post('/password-change-link', (req, res) => {
               tokenFunction();
 
               if(selectTokenResult.length > 0) {
-                for(let i = 0; i < selectForgetPasswordResult.length; i++) {
+                for(let i = 0; i < selectForgotPasswordResult.length; i++) {
                   if(selectTokenResult.token == token) {
                     token = '';
                     tokenFunction();
@@ -1398,21 +1435,21 @@ app.post('/password-change-link', (req, res) => {
                                   d.getSeconds().toString().padStart(2, "0");
 
                 //  INSERT PROXY USER QUERY.
-              const insertForgetPasswordQuery = 'UPDATE forget_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+              const insertForgotPasswordQuery = 'UPDATE forgot_password_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
 
-                //  VALUE FOR insertForgetPasswordValue.
-              const insertForgetPasswordValue = [
+                //  VALUE FOR insertForgotPasswordValue.
+              const insertForgotPasswordValue = [
                                                 token,
                                                 dateExpired,
                                                 1,
                                                 dateAttempted,
-                                                selectForgetPasswordResult[0].token
+                                                selectForgotPasswordResult[0].token
                                                ];
 
-              connection.query(insertForgetPasswordQuery, insertForgetPasswordValue, (err, insertForgetPasswordResult) => {
+              connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgetPasswordResult[0].recovery_email_address, selectForgetPasswordResult[0].first_name + ' ' + selectForgetPasswordResult[0].last_name, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1450,27 +1487,27 @@ app.post('/password-verification', (req, res) => {
   const recoveryEmailAddressInput = req.body.recoveryEmailAddressInput;
   const tokenInput = req.body.tokenInput;
 
-    //  SELECT FORGET PASSWORD QUERY.
-  const selectForgetPasswordQuery = 'SELECT first_name, last_name, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forget_password_table WHERE token = ?';
+    //  SELECT FORGOT PASSWORD QUERY.
+  const selectForgotPasswordQuery = 'SELECT password, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forgot_password_table WHERE token = ?';
 
-  connection.query(selectForgetPasswordQuery, tokenInput, (err, selectForgetPasswordResult) => {
+  connection.query(selectForgotPasswordQuery, tokenInput, (err, selectForgotPasswordResult) => {
     if(err) {throw err};
 
     let text = "Link expired.";
     let link = "./emailSent.html";
 
-    if(selectForgetPasswordResult.length > 0) {
-      if(recoveryEmailAddressInput != selectForgetPasswordResult[0].recovery_email_address) {
+    if(selectForgotPasswordResult.length > 0) {
+      if(recoveryEmailAddressInput != selectForgotPasswordResult[0].recovery_email_address) {
         res.json({text: text, link: link});
 
       } else {
-        if(parseInt(selectForgetPasswordResult[0].attempt_count) < 5) {
-          const dateExpired = new Date(selectForgetPasswordResult[0].date_expired);
+        if(parseInt(selectForgotPasswordResult[0].attempt_count) < 5) {
+          const dateExpired = new Date(selectForgotPasswordResult[0].date_expired);
           const d = new Date();     
 
           if(d < dateExpired) {
             text = "Password verified.";
-            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + selectForgetPasswordResult[0].token;
+            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
             res.json({text: text, link: link});
 
@@ -1480,7 +1517,7 @@ app.post('/password-verification', (req, res) => {
           };
 
         } else {
-          const dateAttempted = new Date(selectForgetPasswordResult[0].date_attempted);
+          const dateAttempted = new Date(selectForgotPasswordResult[0].date_attempted);
           dateAttempted.setHours(dateAttempted.getHours() + 5);
 
           const d = new Date();     
@@ -1490,7 +1527,7 @@ app.post('/password-verification', (req, res) => {
 
             if(d < dateExpired) {
               text = "Password verified.";
-              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgetPasswordResult[0].recovery_email_address + "&token=" + selectForgetPasswordResult[0].token;
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
               res.json({text: text, link: link});
           
@@ -1517,28 +1554,28 @@ app.post('/password-verification', (req, res) => {
 
 });
 
-  //  PASSWORD CHANGE.
-app.post('/password-change', (req, res) => {
+  //  forgot-PASSWORD CHANGE.
+app.post('/forgot-password-change', (req, res) => {
     //  USER INPUTS.
   const recoveryEmailAddressInput = req.body.recoveryEmailAddressInput;
   const tokenInput = req.body.tokenInput;
   const newPasswordInput = req.body.newPasswordInput;
   const confirmPasswordInput = req.body.confirmPasswordInput;
 
-    //  SELECT FORGET PASSWORD QUERY.
-  const selectForgetPasswordQuery = 'SELECT first_name, last_name, password, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forget_password_table WHERE token = ?';
+    //  SELECT FORGOT PASSWORD QUERY.
+  const selectForgotPasswordQuery = 'SELECT password, recovery_email_address, token, date_expired, attempt_count, date_attempted FROM forgot_password_table WHERE token = ?';
 
-  connection.query(selectForgetPasswordQuery, tokenInput, (err, selectForgetPasswordResult) => {
+  connection.query(selectForgotPasswordQuery, tokenInput, (err, selectForgotPasswordResult) => {
     if(err) {throw err};
 
-    if(selectForgetPasswordResult.length > 0) {
-      if(recoveryEmailAddressInput != selectForgetPasswordResult[0].recovery_email_address) {
+    if(selectForgotPasswordResult.length > 0) {
+      if(recoveryEmailAddressInput != selectForgotPasswordResult[0].recovery_email_address) {
           //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
           //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
         res.json("");
 
       } else {
-        if(selectForgetPasswordResult[0].password != newPasswordInput) {
+        if(selectForgotPasswordResult[0].password != newPasswordInput) {
             //  LENGTH.
           let length = '';
 
@@ -1596,7 +1633,7 @@ app.post('/password-change', (req, res) => {
             // SAME.
           let same = '';
 
-          if(selectForgetPasswordResult[0].password != newPasswordInput) {
+          if(selectForgotPasswordResult[0].password != newPasswordInput) {
             same = "NEW PASSWORD IS NOT THE SAME AS THE OLD PASSWORD!";
           } else {
             same = "NEW PASSWORD IS THE SAME AS THE OLD PASSWORD!";
@@ -1623,39 +1660,28 @@ app.post('/password-change', (req, res) => {
           let confirmPassword = '';
 
           if(confirmPasswordInput != newPasswordInput) {
-            confirmPassword = "CONFIRM PASSWORD NOT FOUND!";
+            confirmPassword = "CONFIRM PASSWORD NOT MATCH!";
           } else {
-            confirmPassword = "CONFIRM PASSWORD FOUND!";
+            confirmPassword = "CONFIRM PASSWORD MATCHED!";
           };
 
-          if(newPassword != "NEW PASSWORD NOT FOUND!" && confirmPassword != "CONFIRM PASSWORD NOT FOUND!") {
-              //  UPADTE CUSTOMER PASSWORD QUERY.
-            const updateCustomerPasswordQuery = 'UPDATE main_user_table SET password = ? WHERE recovery_email_address = ?';
+          if(newPassword != "NEW PASSWORD NOT FOUND!" && confirmPassword != "CONFIRM PASSWORD NOT MATCH!") {
+              //  UPADTE PASSWORD QUERY.
+            const updatePasswordQuery = 'UPDATE main_user_table SET password = ? WHERE recovery_email_address = ?';
 
-              //  VALUE FOR updateeCustomerPasswordValue.
-            const updateeCustomerPasswordValue = [newPasswordInput, recoveryEmailAddressInput];
+              //  VALUE FOR updatePasswordValue.
+            const updatePasswordValue = [newPasswordInput, recoveryEmailAddressInput];
 
-            connection.query(updateCustomerPasswordQuery, updateeCustomerPasswordValue, (err, updateeCustomerPasswordResult) => {
+            connection.query(updatePasswordQuery, updatePasswordValue, (err, updatePasswordResult) => {
               if(err) {throw err};
 
-                //  UPADTE AGENT PASSWORD QUERY.
-              const updateAgentPasswordQuery = 'UPDATE main_user_table SET password = ? WHERE recovery_email_address = ?';
+                //  DELETE FORGOT PASSWORD QUERY.
+              const deleteForgotPasswordQuery = 'DELETE FROM forgot_password_table WHERE token = ?';
 
-                //  VALUE FOR updateAgentPasswordValue.
-              const updateAgentPasswordValue = [newPasswordInput, recoveryEmailAddressInput];
-
-              connection.query(updateAgentPasswordQuery, updateAgentPasswordValue, (err, updateAgentPasswordResult) => {
+              connection.query(deleteForgotPasswordQuery, tokenInput, (err, deleteForgotPasswordResult) => {
                 if(err) {throw err};
 
-                  //  DELETE FORGET PASSWORD QUERY.
-                const deleteForgetPasswordQuery = 'DELETE FROM forget_password_table WHERE token = ?';
-
-                connection.query(deleteForgetPasswordQuery, tokenInput, (err, deleteForgetPasswordResult) => {
-                  if(err) {throw err};
-
-                  res.json({newPassword: newPassword, confirmPassword: confirmPassword});
-
-                });
+                res.json({newPassword: newPassword, confirmPassword: confirmPassword});
 
               });
 
@@ -1686,6 +1712,1227 @@ app.post('/password-change', (req, res) => {
 
 });
 
+  //  USER INFORMATION.
+app.get('/user-information', (req, res) => {
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  SELECT USER INFORMATION QUERY.
+    const selectUserInformationQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ? AND date_leaved IS NULL';
+
+    connection.query(selectUserInformationQuery, userId, (err, selectUserInformationResult) => {
+      if(err) {throw err};
+
+        //  SELECT USER IMAGE QUERY.
+      const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
+
+      connection.query(selectUserImageQuery, userId, (err, selectUserImageResult) => {
+        if (err) {throw err};
+
+          //  SELECT USER RESERVATION QUERY.
+        const selectUserReservationQuery = 'SELECT reservation_id, agent_id, customer_id, full_name, contact_number, email_address, property_id, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "On going"';
+            
+        connection.query(selectUserReservationQuery, userId, (err, selectUserReservationResult) => {
+          if (err) {throw err};
+
+        const emailAddress = selectUserInformationResult[0].email_address;
+        const recoveryEmailAddres = selectUserInformationResult[0].recovery_email_address;
+
+          //  SELECT EMAIL ADDRESS QUERY.
+        const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE (old_email_Address = ? || old_email_address = ?)';
+          //  DECLARES selectEmailAddressValue.
+
+        const selectEmailAddressValue = [emailAddress, recoveryEmailAddres];
+
+        connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
+          if(err) {throw err};
+            
+            res.json({userInformation: selectUserInformationResult,
+                      userImage: selectUserImageResult,
+                      userReservation: selectUserReservationResult,
+                      emailAddress: selectEmailAddressResult
+                    });
+          });
+        });
+      });
+    });
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+
+});
+
+  //  PREVIEW PHOTO.
+app.post('/preview-photo', upload.single('Photo'), function (req, res) {
+    //  USER INPUTS
+  const photo = req.file;
+  const buffer = photo.buffer.toString('base64');
+  const fileName = photo.originalname;
+  const mimeType = photo.mimetype;
+  
+  if(req.session.userId != undefined) {
+      res.json({buffer: buffer,
+                fileName: fileName,
+                mimeType: mimeType
+      });
+      
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+
+});
+
+app.post('/upload-photo', upload.single('Photo'), function (req, res) { 
+  const d = new Date();
+
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  USER INPUTS.
+    const photo = req.file;
+    const fieldName = photo.fieldname;
+
+    const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+    const fileName = uniqueSuffix + '-' + photo.originalname;
+
+    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/USER/" + userId  + '/' + fileName;
+    const mimeType = photo.mimetype;
+
+      //  SELECT USER IMAGE QUERY.
+    const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
+
+    connection.query(selectUserImageQuery, userId, (err, selectUserImageResult) => {
+      if(err) {throw err};
+
+      if(selectUserImageResult.length > 0) {
+          //  UPDATE PHOTO QUERY.
+        const updatePhotoQuery = 'UPDATE user_image_table SET field_name = ?, path = ?, file_name = ?, mime_type = ? WHERE user_id = ?';
+
+          //  INITIALIZED VALUE FOR updatePhotoValue.
+        const updatePhotoValue = [fieldName,
+                                  path,
+                                  fileName,
+                                  mimeType,
+                                  userId
+                                ];
+
+        connection.query(updatePhotoQuery, updatePhotoValue, (err, updatePhotoResult) => {
+          if (err) {throw err};
+
+          async function photoUploader() {
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
+                contentType: mimeType
+              });
+          };  
+
+          photoUploader().catch(console.error);
+
+          /*
+            EXAMPLE FOLDER STRUCTURE:
+              resources/
+                USER/
+                  [USER ID(1)]
+                    FILE NAME
+                  [USER ID(2)]
+                    FILE NAME(1)
+                    FILE NAME(2)
+                    FILE NAME(3)
+          */
+          
+          res.json({path: path,
+                    fileName: fileName,
+                    mimeType: mimeType
+          });
+        });
+      } else {
+          //  INSERT PHOTO QUERY.
+        const insertPhotoQuery = 'INSERT INTO user_image_table (user_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+
+          //  INITIALIZED VALUE FOR insertPhotoValue.
+        const insertPhotoValue = [userId,
+                                  fieldName,
+                                  path,
+                                  fileName,
+                                  mimeType
+                                ];
+
+        connection.query(insertPhotoQuery, insertPhotoValue, (err, insertPhotoResult) => {
+          if (err) {throw err};
+
+          async function photoUploader() {
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
+                contentType: mimeType
+              });
+          };  
+
+          photoUploader().catch(console.error);
+
+          /*
+            EXAMPLE FOLDER STRUCTURE:
+              resources/
+                USER/
+                  [USER ID(1)]
+                    FILE NAME
+                  [USER ID(2)]
+                    FILE NAME(1)
+                    FILE NAME(2)
+                    FILE NAME(3)
+          */
+          
+          res.json({path: path,
+                    fileName: fileName,
+                    mimeType: mimeType
+          });
+        });
+      };
+    });
+  } else {    
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+});
+
+  //  DELETE ACCOUNT.
+app.get('/delete-account', (req, res) => {
+    //  USER INPUTS.
+  const d = new Date();
+  const dateToday = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                    (d.getMonth() + 1).toString().padStart(2, "0") + '-' +
+                     d.getDate().toString().padStart(2, "0") + ' ' +
+                     d.getHours().toString().padStart(2, "0") + ':' +
+                     d.getMinutes().toString().padStart(2, "0") + ':' +
+                     d.getSeconds().toString().padStart(2, "0");
+  
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  DELETE ACCOUNT QUERY.
+    const deleteAccountQuery = 'UPDATE main_user_table SET date_leaved = ? WHERE user_id = ?';
+
+      //  DECLARES deleteAccountValue.
+    const deleteAccountValue = [dateToday, userId];
+
+    connection.query(deleteAccountQuery, deleteAccountValue, (err, deleteAccountResult) => {
+      if (err) {throw err}; 
+    
+        //  DELETE PROPERTY QUERY.
+      const deletePropertyQuery = 'UPDATE property_table SET date_deleted = ? WHERE user_id = ?';
+
+        //  DECLARES deletePropertyValue.
+      const deletePropertyValue = [dateToday, userId];
+
+      connection.query(deletePropertyQuery, deletePropertyValue, (err, deletePropertyResult) => {
+        if (err) {throw err}; 
+
+          //  UPDATE ARCHIVE QUERY.
+        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE (customer_id = ? OR agent_id = ?)';
+
+          //  DECLARES updateArchiveValue.
+        const updateArchiveValue = [dateToday, userId, userId];
+
+        connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+          if(err) {throw err};
+
+          req.session.destroy;
+          res.clearCookie('connect.sid');
+              
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+              
+        }); 
+
+      });
+
+    });
+
+  } else {    
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+});
+
+  //  DELETE PHOTO.
+app.get('/delete-photo', (req, res) => {
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  DELETE PHOTO QUERY.
+    const deletePhotoQuery = 'DELETE FROM user_image_table WHERE user_id = ?';
+
+    connection.query(deletePhotoQuery, userId, (err, deletePhotoResult) => {
+      if (err) {throw err};
+
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+    });
+
+  } else {    
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+})
+
+  //  PROFILE PASSWORD CHANGE.
+app.post('/profile-password-change', (req, res) => {
+    //  USER INPUTS.
+  const oldPasswordInput = req.body.oldPasswordInput;
+  const newPasswordInput = req.body.newPasswordInput;
+  const confirmPasswordInput = req.body.confirmPasswordInput;
+
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+      //  SELECT PASSWORD QUERY.
+    const selectPasswordQuery = 'SELECT password FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectPasswordQuery, userId, (err, selectPasswordResult) => {
+      if(err) {throw err};
+
+        //  OLD PASSWORD.
+      let oldPassword = '';
+
+      if(selectPasswordResult[0].password != oldPasswordInput) {
+        oldPassword = "OLD PASSWORD NOT MATCH!";
+      } else {
+        oldPassword = "OLD PASSWORD MATCH!";
+      };
+
+        //  LENGTH.
+      let length = '';
+
+      if(newPasswordInput.length > 5) {
+        length = "NEW PASSWORD MEETS THE REQUIRED LENGTH!";
+      } else {
+        length = "NEW PASSWORD DIDN'T MEET THE REQUIRED LENGTH!";
+      };
+
+        //  LOWER CASE LETTER.
+      let lowerCase;
+
+      if(newPasswordInput.match(/[a-z]/) != null) {
+        lowerCase = "NEW PASSWORD HAS LOWER CASE!";  
+      } else {
+        lowerCase = "NEW PASSWORD HAS NO LOWER CASE!";
+      };
+
+        //  NUMBER.
+      let number;
+
+      if(newPasswordInput.match(/\d/) != null) {
+        number = "NEW PASSWORD HAS NUMBER!";
+      } else {
+        number = "NEW PASSWORD HAS NO NUMBER!";
+      };
+
+        //  SPACE.
+      let space;
+
+      if(newPasswordInput.match(" ") != null) {
+        space = "NEW PASSWORD HAS SAPCE!";
+      } else {
+        space = "NEW PASSWORD HAS NO SPACE!";
+      };
+
+        //  SPECIAL CHARACTER.
+      let specialCharacter;
+
+      if(newPasswordInput.match(/\W/) != null) {
+        specialCharacter = "NEW PASSWORD HAS SPECIAL CHARACTER!";
+      } else {
+        specialCharacter = "NEW PASSWORD HAS NO SPECIAL CHARACTER!";
+      };
+
+        //  UPPER CASE LETTER.
+      let upperCase;
+
+      if(newPasswordInput.match(/[A-Z]/) != null) {
+        upperCase = "NEW PASSWORD HAS UPPER CASE!";
+      } else {
+        upperCase = "NEW PASSWORD HAS NO UPPER CASE!";
+      };
+
+        // SAME.
+      let same = '';
+
+      if(selectPasswordResult.length > 0) {
+        if(selectPasswordResult[0].password != newPasswordInput) {
+          same = "NEW PASSWORD IS NOT THE SAME AS THE OLD PASSWORD!";
+        } else {
+          same = "NEW PASSWORD IS THE SAME AS THE OLD PASSWORD!";
+        };
+      };
+
+        //  NEW PASSWORD.
+      let newPassword = '';
+
+      if(
+        length != "NEW PASSWORD DIDN'T MEET THE REQUIRED LENGTH!" &&
+        lowerCase != "NEW PASSWORD HAS NO LOWER CASE!" &&
+        number != "NEW PASSWORD HAS NO NUMBER!" &&
+        specialCharacter != "NEW PASSWORD HAS NO SPECIAL CHARACTER!" &&
+        space != "NEW PASSWORD HAS SPACE!" &&
+        upperCase != "NEW PASSWORD HAS NO UPPER CASE!" &&
+        same != "NEW PASSWORD IS THE SAME AS THE OLD PASSWORD!"
+      ) {
+        newPassword = "NEW PASSWORD FOUND!";
+      } else {
+        newPassword = "NEW PASSWORD NOT FOUND!";
+      };
+
+        // CONFIRM PASSWORD.
+      let confirmPassword = '';
+
+      if(confirmPasswordInput != newPasswordInput) {
+        confirmPassword = "CONFIRM PASSWORD NOT MATCH!";
+      } else {
+        confirmPassword = "CONFIRM PASSWORD MATCHED!";
+      };
+
+      if(
+          oldPassword != "OLD PASSWORD NOT MATCH!" &&
+          newPassword != "NEW PASSWORD NOT FOUND!" &&
+          confirmPassword != "CONFIRM PASSWORD NOT FOUND!"
+        ) {
+          //  UPADTE PASSWORD QUERY.
+        const updatePasswordQuery = 'UPDATE main_user_table SET password = ? WHERE user_id = ?';
+
+          //  VALUE FOR updatePasswordValue.
+        const updatePasswordValue = [newPasswordInput, userId];
+
+        connection.query(updatePasswordQuery, updatePasswordValue, (err, updatePasswordResult) => {
+          if(err) {throw err};
+
+          res.json({oldPassword: oldPassword,
+                    newPassword: newPassword,
+                    confirmPassword: confirmPassword
+                  });
+
+        });
+
+      } else {
+        res.json({oldPassword: oldPassword,
+                  newPassword: newPassword, 
+                  confirmPassword: confirmPassword
+                });
+                  
+            };
+
+    });
+
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+
+});
+
+  //  DELETE ACCOUNT.
+app.get('/delete-account', (req, res) => {
+    //  USER INPUTS.
+  const d = new Date();
+  const dateToday = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                    (d.getMonth() + 1).toString().padStart(2, "0") + '-' +
+                     d.getDate().toString().padStart(2, "0") + ' ' +
+                     d.getHours().toString().padStart(2, "0") + ':' +
+                     d.getMinutes().toString().padStart(2, "0") + ':' +
+                     d.getSeconds().toString().padStart(2, "0");
+  
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  DELETE ACCOUNT QUERY.
+    const deleteAccountQuery = 'UPDATE main_user_table SET date_leaved = ? WHERE user_id = ?';
+
+      //  DECLARES deleteAccountValue.
+    const deleteAccountValue = [dateToday, userId];
+
+    connection.query(deleteAccountQuery, deleteAccountValue, (err, deleteAccountResult) => {
+      if (err) {throw err}; 
+    
+        //  DELETE PROPERTY QUERY.
+      const deletePropertyQuery = 'UPDATE property_table SET date_deleted = ? WHERE user_id = ?';
+
+        //  DECLARES deletePropertyValue.
+      const deletePropertyValue = [dateToday, userId];
+
+      connection.query(deletePropertyQuery, deletePropertyValue, (err, deletePropertyResult) => {
+        if (err) {throw err}; 
+
+          //  UPDATE ARCHIVE QUERY.
+        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE (customer_id = ? OR agent_id = ?)';
+
+          //  DECLARES updateArchiveValue.
+        const updateArchiveValue = [dateToday, userId, userId];
+
+        connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+          if(err) {throw err};
+
+          req.session.destroy;
+          res.clearCookie('connect.sid');
+              
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+              
+        }); 
+
+      });
+
+    });
+
+  } else {    
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+})
+
+  //  UPDATE INFO.
+app.post('/update-info', (req, res) => {
+    //  USER INPUTS.
+  const userNameInput = req.body.userNameInput;
+  const firstNameInput = req.body.firstNameInput;
+  const lastNameInput = req.body.lastNameInput; 
+
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+    
+      //  SELECT USER NAME QUERY.
+    const selectUserNameQuery = 'SELECT user_name FROM main_user_table WHERE user_id != ? AND user_name = ?';
+
+      //  DECLARES selectUserNameValue.
+    const selectUserNameValue = [userId, userNameInput];
+
+    connection.query(selectUserNameQuery, selectUserNameValue, (err, selectUserNameResult) => {
+      if(err) {throw err};
+
+        //  USER NAME.
+      let userName = '';
+
+      if(selectUserNameResult.length > 0) {
+        userName = "USER NAME AREADY IN USED!";
+      } else {
+        userName = "USER NAME IS NOT IN USE!";
+      };
+
+      if(userName != "USER NAME AREADY IN USED!") {   
+          //  UPDATE INFO QUERY.
+        const updateInfoQuery = 'UPDATE main_user_table SET first_name = ?, last_name = ?, user_name = ? WHERE user_id = ?';
+
+          //  DECLARES updateInfoValue.
+        const updateInfoValue = [firstNameInput, lastNameInput, userNameInput, userId];
+
+        connection.query(updateInfoQuery, updateInfoValue, (err, updateInfoResult) => {
+          if(err) {throw err};
+
+          res.json({userName: userName});
+                
+        });
+
+      } else {
+        res.json({userName: userName});
+
+      };
+
+    });
+
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+  
+});
+
+  //  VERIFY CONTACT NUMBER.
+app.post('/verify-contact-number', (req, res) => {
+    //  USER INPUTS
+  const contactNumberInput = req.body.contactNumberInput;
+  
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+      //  UPDATE INFO QUERY.
+    const updateInfoQuery = 'UPDATE main_user_table SET contact_number = ? WHERE user_id = ?';
+
+      //  DECLARES updateInfoValue.
+    const updateInfoValue = [contactNumberInput, userId];
+
+    connection.query(updateInfoQuery, updateInfoValue, (err, updateInfoResult) => {
+      if(err) {throw err};
+            
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+            
+    });
+
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+
+});
+
+  //  VERIFY TELEPHONE NUMBER.
+app.post('/verify-telephone-number', (req, res) => {
+    //  USER INPUTS
+  const telephoneNumberInput = req.body.telephoneNumberInput;
+  
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+      //  UPDATE INFO QUERY.
+    const updateInfoQuery = 'UPDATE main_user_table SET telephone_number = ? WHERE user_id = ?';
+
+      //  DECLARES updateInfoValue.
+    const updateInfoValue = [telephoneNumberInput, userId];
+
+    connection.query(updateInfoQuery, updateInfoValue, (err, updateInfoResult) => {
+      if(err) {throw err};
+            
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+            
+    });
+
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+
+  };
+
+});
+
+  //  VERIFY NEW EMAIL ADDRESS.
+app.post('/verify-new-email-address', (req, res) => {
+    //  USER INPUTS.
+  const typeEmailAddressInput = req.body.typeEmailAddress;
+  const oldEmailAddressInput = req.body.oldEmailAddressInput;
+  const newEmailAddressInput = req.body.newEmailAddressInput;
+  
+    //  SELECT ALL EMAIL ADDRESS QUERY.
+  const selectEmailAddressQuery = 'SELECT email_address, recovery_email_address FROM main_user_table WHERE (email_address = ? OR recovery_email_address = ?) AND date_leaved IS NULL';
+
+    //  DECLARES selectUseEmailAddressValue.
+  const selectEmailAddressValue = [newEmailAddressInput, newEmailAddressInput];
+
+  connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
+    if(err) {throw err};
+
+      //  AT.
+    let at = '';
+
+    if(newEmailAddressInput.match("@") != null) {
+      at = "EMAIL ADDRESS IS AN EMAIL!";
+    } else {
+      at = "EMAIL ADDRESS IS NOT AN EMAIL!";
+    };
+
+      //  USED.
+    let used = '';
+
+    if(selectEmailAddressResult.length > 0) {
+      used = "EMAIL ADDRESS AREADY IN USED!";
+    } else {
+      used = "EMAIL ADDRESS IS NOT IN USE!";
+    };
+
+      //  EMAIL ADDRESS.
+    let emailAddress = '';
+
+    if(at != "EMAIL ADDRESS IS NOT AN EMAIL!" && used != "EMAIL ADDRESS AREADY IN USED!") {
+      emailAddress = "EMAIL ADDRESS FOUND!";
+    } else {
+      emailAddress = "EMAIL ADDRESS NOT FOUND!";
+    };
+
+    if(emailAddress != "EMAIL ADDRESS NOT FOUND!") {          
+        //  SELECT EMAIL ADDRESS QUERY.
+      const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE new_email_address = ?';
+
+      connection.query(selectEmailAddressQuery, newEmailAddressInput, (err, selectEmailAddressResult) => {
+        if(err) {throw err};
+
+        if(selectEmailAddressResult.length > 0) {
+          if(parseInt(selectEmailAddressResult[0].attempt_count) < 5) {
+              //  SELECT TOKEN QUERY.
+            const selectTokenQuery = 'SELECT token FROM email_address_table';
+
+            connection.query(selectTokenQuery, (err, selectTokenResult) => {
+              if(err) {throw err};
+
+              tokenFunction();
+
+              if(selectTokenResult.length > 0) {
+                for(let i = 0; i < selectEmailAddressResult.length; i++) {
+                  if(selectTokenResult.token == token) {
+                    token = '';
+                    tokenFunction();
+
+                    i = 0;
+
+                  };
+
+                };
+                  
+              };
+
+              const d = new Date();
+              const dateAttempted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                   (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                    d.getDate().toString().padStart(2, "0") + ' ' +
+                                    d.getHours().toString().padStart(2, "0") + ':' +
+                                    d.getMinutes().toString().padStart(2, "0") + ':' +
+                                    d.getSeconds().toString().padStart(2, "0");
+
+              d.setMinutes(d.getMinutes() + 30);
+              const dateExpired = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                 (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                  d.getDate().toString().padStart(2, "0") + ' ' +
+                                  d.getHours().toString().padStart(2, "0") + ':' +
+                                  d.getMinutes().toString().padStart(2, "0") + ':' +
+                                  d.getSeconds().toString().padStart(2, "0");
+
+                //  INSERT PROXY USER QUERY.
+              const insertProxyUserQuery = 'UPDATE email_address_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+
+                //  VALUE FOR insertProxyUserValue.
+              const insertProxyUserValue = [
+                                            token,
+                                            dateExpired,
+                                            parseInt(selectEmailAddressResult[0].attempt_count) + 1,
+                                            dateAttempted,
+                                            selectEmailAddressResult[0].token
+                                           ];
+
+              connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
+                if(err) {throw err};
+
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+
+                res.json({emailAddress: emailAddress});
+
+              });
+
+            });
+
+          } else {
+            const dateAttempted = new Date(selectEmailAddressResult[0].date_attempted);
+            dateAttempted.setHours(dateAttempted.getHours() + 5);
+
+            const d = new Date();         
+
+            if(dateAttempted < d) {
+                //  SELECT TOKEN QUERY.
+              const selectTokenQuery = 'SELECT token FROM email_address_table';
+
+              connection.query(selectTokenQuery, (err, selectTokenResult) => {
+                if(err) {throw err};
+
+                tokenFunction();
+
+                if(selectTokenResult.length > 0) {
+                  for(let i = 0; i < selectEmailAddressResult.length; i++) {
+                    if(selectTokenResult.token == token) {
+                      token = '';
+                      tokenFunction();
+
+                      i = 0;
+
+                    };
+
+                  };
+                
+                };
+
+                const d = new Date();
+                const dateAttempted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                     (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                      d.getDate().toString().padStart(2, "0") + ' ' +
+                                      d.getHours().toString().padStart(2, "0") + ':' +
+                                      d.getMinutes().toString().padStart(2, "0") + ':' +
+                                      d.getSeconds().toString().padStart(2, "0");
+
+                d.setMinutes(d.getMinutes() + 30);
+                const dateExpired = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                   (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                    d.getDate().toString().padStart(2, "0") + ' ' +
+                                    d.getHours().toString().padStart(2, "0") + ':' +
+                                    d.getMinutes().toString().padStart(2, "0") + ':' +
+                                    d.getSeconds().toString().padStart(2, "0");
+
+                  //  INSERT PROXY USER QUERY.
+                const insertProxyUserQuery = 'UPDATE email_address_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+
+                  //  VALUE FOR insertProxyUserValue.
+                const insertProxyUserValue = [
+                                              token,
+                                              dateExpired,
+                                              1,
+                                              dateAttempted,
+                                              selectEmailAddressResult[0].token
+                                             ];
+
+                connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
+                  if(err) {throw err};
+
+                  emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+                  
+                  res.json({emailAddress: emailAddress});
+
+                });
+
+              });
+
+            } else {
+              res.json({dateAttempted: dateAttempted});
+
+            };
+
+          };
+
+        } else {
+            //  SELECT TOKEN QUERY.
+          const selectTokenQuery = 'SELECT token FROM email_address_table';
+
+          connection.query(selectTokenQuery, (err, selectTokenResult) => {
+            if(err) {throw err};
+
+            tokenFunction();
+
+            if(selectTokenResult.length > 0) {
+              for(let i = 0; i < selectEmailAddressResult.length; i++) {
+                if(selectTokenResult.token == token) {
+                  token = '';
+                  tokenFunction();
+
+                  i = 0;
+
+                };
+
+              };
+                
+            };
+
+            const d = new Date();
+            const dateAttempted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                 (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                  d.getDate().toString().padStart(2, "0") + ' ' +
+                                  d.getHours().toString().padStart(2, "0") + ':' +
+                                  d.getMinutes().toString().padStart(2, "0") + ':' +
+                                  d.getSeconds().toString().padStart(2, "0");
+
+            d.setMinutes(d.getMinutes() + 30);
+            const dateExpired = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                              (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                d.getDate().toString().padStart(2, "0") + ' ' +
+                                d.getHours().toString().padStart(2, "0") + ':' +
+                                d.getMinutes().toString().padStart(2, "0") + ':' +
+                                d.getSeconds().toString().padStart(2, "0");
+
+              //  INSERT PROXY USER QUERY.
+            const insertProxyUserQuery = 'INSERT INTO email_address_table (type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted) VALUES (?, ?, ?, ?, ?, ?, ?)';
+
+              //  VALUE FOR insertProxyUserValue.
+            const insertProxyUserValue = [
+                                          typeEmailAddressInput,
+                                          oldEmailAddressInput,
+                                          newEmailAddressInput,
+                                          token,
+                                          dateExpired,
+                                          1,
+                                          dateAttempted
+                                         ];
+
+            connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
+              if(err) {throw err};
+
+              emailSender(newEmailAddressInput, newEmailAddressInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + newEmailAddressInput + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+
+              res.json({emailAddress: emailAddress});
+
+            });
+
+          });
+
+        };
+
+      });
+
+    } else {
+      res.json({emailAddress: emailAddress});
+
+    };
+
+  });
+  
+});
+
+  //  NEW EMAIL VERIFICATION.
+app.post('/new-email-verification-link', (req, res) => {
+    //  USER INPUTS.
+  const newEmailAddressInput = req.body.newEmailAddressInput;
+  const tokenInput = req.body.tokenInput;  
+
+    //  SELECT EMAIL ADDRESS QUERY.
+  const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE token = ?';
+
+  connection.query(selectEmailAddressQuery, tokenInput, (err, selectEmailAddressResult) => {
+    if(err) {throw err};
+
+    if(selectEmailAddressResult.length > 0) {
+      if(newEmailAddressInput != selectEmailAddressResult[0].old_email_address) {
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      } else {
+        if(parseInt(selectEmailAddressResult[0].attempt_count) < 5) {
+            //  SELECT TOKEN QUERY.
+          const selectTokenQuery = 'SELECT token FROM email_address_table';
+
+          connection.query(selectTokenQuery, (err, selectTokenResult) => {
+            if(err) {throw err};
+
+            tokenFunction();
+
+            if(selectTokenResult.length > 0) {
+              for(let i = 0; i < selectEmailAddressResult.length; i++) {
+                if(selectTokenResult.token == token) {
+                  token = '';
+                  tokenFunction();
+
+                  i = 0;
+
+                };
+
+              };
+                
+            };
+
+            const d = new Date();
+            const dateAttempted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                 (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                  d.getDate().toString().padStart(2, "0") + ' ' +
+                                  d.getHours().toString().padStart(2, "0") + ':' +
+                                  d.getMinutes().toString().padStart(2, "0") + ':' +
+                                  d.getSeconds().toString().padStart(2, "0");
+
+            d.setMinutes(d.getMinutes() + 30);
+            const dateExpired = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                               (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                d.getDate().toString().padStart(2, "0") + ' ' +
+                                d.getHours().toString().padStart(2, "0") + ':' +
+                                d.getMinutes().toString().padStart(2, "0") + ':' +
+                                d.getSeconds().toString().padStart(2, "0");
+
+              //  INSERT PROXY USER QUERY.
+            const insertProxyUserQuery = 'UPDATE email_address_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+
+              //  VALUE FOR insertProxyUserValue.
+            const insertProxyUserValue = [
+                                          token,
+                                          dateExpired,
+                                          parseInt(selectEmailAddressResult[0].attempt_count) + 1,
+                                          dateAttempted,
+                                          selectEmailAddressResult[0].token
+                                         ];
+
+            connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
+              if(err) {throw err};
+
+              emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+
+              res.json({emailAddress: emailAddress});
+
+            });
+
+          });
+
+        } else {
+          const dateAttempted = new Date(selectEmailAddressResult[0].date_attempted);
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
+
+          const d = new Date();         
+
+          if(dateAttempted < d) {
+              //  SELECT TOKEN QUERY.
+            const selectTokenQuery = 'SELECT token FROM email_address_table';
+
+            connection.query(selectTokenQuery, (err, selectTokenResult) => {
+              if(err) {throw err};
+
+              tokenFunction();
+
+              if(selectTokenResult.length > 0) {
+                for(let i = 0; i < selectEmailAddressResult.length; i++) {
+                  if(selectTokenResult.token == token) {
+                  token = '';
+                  tokenFunction();
+
+                  i = 0;
+
+                  };
+
+                };
+              
+              };
+
+              const d = new Date();
+              const dateAttempted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                   (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                    d.getDate().toString().padStart(2, "0") + ' ' +
+                                    d.getHours().toString().padStart(2, "0") + ':' +
+                                    d.getMinutes().toString().padStart(2, "0") + ':' +
+                                    d.getSeconds().toString().padStart(2, "0");
+
+              d.setMinutes(d.getMinutes() + 30);
+              const dateExpired = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                                 (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                                  d.getDate().toString().padStart(2, "0") + ' ' +
+                                  d.getHours().toString().padStart(2, "0") + ':' +
+                                  d.getMinutes().toString().padStart(2, "0") + ':' +
+                                  d.getSeconds().toString().padStart(2, "0");
+
+                //  INSERT PROXY USER QUERY.
+              const insertProxyUserQuery = 'UPDATE email_address_table SET token = ?, date_expired = ?, attempt_count = ?, date_attempted = ? WHERE token = ?';
+
+                //  VALUE FOR insertProxyUserValue.
+              const insertProxyUserValue = [
+                                            token,
+                                            dateExpired,
+                                            1,
+                                            dateAttempted,
+                                            selectEmailAddressResult[0].token
+                                           ];
+
+              connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
+                if(err) {throw err};
+
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+                
+                res.json({emailAddress: emailAddress});
+
+              });
+
+            });
+
+          } else {
+            res.json({dateAttempted: dateAttempted});
+
+          };
+
+        };
+        
+      }
+
+    } else {
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+
+  });
+
+});
+
+  //  NEW EMAIL VERIFICATION.
+app.post('/new-email-verification', (req, res) => {
+    //  USER INPUTS.
+  const newEmailAddressInput = req.body.newEmailAddressInput;
+  const tokenInput = req.body.tokenInput;
+
+    //  SELECT EMAIL ADDRESS QUERY.
+  const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE token = ?';
+
+  connection.query(selectEmailAddressQuery, tokenInput, (err, selectEmailAddressResult) => {
+    if(err) {throw err};
+
+    let text = "Link expired.";
+    let link = "./emailSent.html";
+
+    if(selectEmailAddressResult.length > 0) {
+      if(newEmailAddressInput != selectEmailAddressResult[0].new_email_address) {
+        res.json({text: text, link: link});
+
+      } else {
+        if(parseInt(selectEmailAddressResult[0].attempt_count) < 5) {
+          const dateExpired = new Date(selectEmailAddressResult[0].date_expired);
+          const d = new Date();     
+
+          if(d < dateExpired) {
+            const userId = req.session.userId;
+
+            text = "Your account has been successfully verified.";
+            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
+
+            if(selectEmailAddressResult[0].type_of_email_address != "Main") {
+                //  UPDATE RECOVERY QUERY.
+              const updateRecoveryQuery = 'UPDATE main_user_table SET recovery_email_address = ? WHERE user_id = ?';
+
+                //  DECLARES updateRecoveryValue.
+              const updateRecoveryValue = [newEmailAddressInput, userId];
+
+              connection.query(updateRecoveryQuery, updateRecoveryValue, (err, updateRecoveryResult) => {
+                if(err) {throw err};
+
+                  //  DELETE EMAIL ADDRESS QUERY.
+                const deleteEmailAddressQuery = 'DELETE FROM email_address_table WHERE token = ?';
+
+                  //  DECLARE deleteEmailAddressValue.
+                const deleteEmailAddressValue = selectEmailAddressResult[0].token;
+
+                connection.query(deleteEmailAddressQuery, deleteEmailAddressValue, (err, deleteEmailAddressResult) => {
+                  if(err) {throw err};
+
+                  res.json({text: text, link: link});
+
+                });
+                      
+              });
+              
+            } else {
+                //  UPDATE RECOVERY QUERY.
+              const updateRecoveryQuery = 'UPDATE main_user_table SET email_address = ? WHERE user_id = ?';
+
+                //  DECLARES updateRecoveryValue.
+              const updateRecoveryValue = [newEmailAddressInput, userId];
+
+              connection.query(updateRecoveryQuery, updateRecoveryValue, (err, updateRecoveryResult) => {
+                if(err) {throw err};
+
+                  //  DELETE EMAIL ADDRESS QUERY.
+                const deleteEmailAddressQuery = 'DELETE FROM email_address_table WHERE token = ?';
+
+                  //  DECLARE deleteEmailAddressValue.
+                const deleteEmailAddressValue = selectEmailAddressResult[0].token;
+
+                connection.query(deleteEmailAddressQuery, deleteEmailAddressValue, (err, deleteEmailAddressResult) => {
+                  if(err) {throw err};
+
+                  res.json({text: text, link: link});
+
+                });
+                      
+              });
+            
+            };
+
+          } else {
+            res.json({text: text, link: link});
+
+          };
+
+        } else {
+          const dateAttempted = new Date(selectEmailAddressResult[0].date_attempted);
+          dateAttempted.setHours(dateAttempted.getHours() + 5);
+
+          const d = new Date();     
+
+          if(dateAttempted < d) {
+            const dateExpired = new Date(selectEmailAddressResult[0].date_expired);
+
+            if(d < dateExpired) {
+              const userId = req.session.userId;
+
+              text = "Your account has been successfully verified.";
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
+
+              if(selectEmailAddressResult[0].type_of_email_address != "Main") {
+                  //  UPDATE RECOVERY QUERY.
+                const updateRecoveryQuery = 'UPDATE main_user_table SET recovery_email_address = ? WHERE user_id = ?';
+
+                  //  DECLARES updateRecoveryValue.
+                const updateRecoveryValue = [newEmailAddressInput, userId];
+
+                connection.query(updateRecoveryQuery, updateRecoveryValue, (err, updateRecoveryResult) => {
+                  if(err) {throw err};
+
+                    //  DELETE EMAIL ADDRESS QUERY.
+                  const deleteEmailAddressQuery = 'DELETE FROM email_address_table WHERE token = ?';
+
+                    //  DECLARE deleteEmailAddressValue.
+                  const deleteEmailAddressValue = selectEmailAddressResult[0].token;
+
+                  connection.query(deleteEmailAddressQuery, deleteEmailAddressValue, (err, deleteEmailAddressResult) => {
+                    if(err) {throw err};
+
+                    res.json({text: text, link: link});
+
+                  });
+                        
+                });
+                
+              } else {
+                  //  UPDATE RECOVERY QUERY.
+                const updateRecoveryQuery = 'UPDATE main_user_table SET email_address = ? WHERE user_id = ?';
+
+                  //  DECLARES updateRecoveryValue.
+                const updateRecoveryValue = [newEmailAddressInput, userId];
+
+                connection.query(updateRecoveryQuery, updateRecoveryValue, (err, updateRecoveryResult) => {
+                  if(err) {throw err};
+
+                    //  DELETE EMAIL ADDRESS QUERY.
+                  const deleteEmailAddressQuery = 'DELETE FROM email_address_table WHERE token = ?';
+
+                    //  DECLARE deleteEmailAddressValue.
+                  const deleteEmailAddressValue = selectEmailAddressResult[0].token;
+
+                  connection.query(deleteEmailAddressQuery, deleteEmailAddressValue, (err, deleteEmailAddressResult) => {
+                    if(err) {throw err};
+
+                    res.json({text: text, link: link});
+
+                  });
+                        
+                });
+              
+              };
+
+            } else {
+              res.json({text: text, link: link});
+
+            };
+
+          } else {
+            res.json({dateAttempted: dateAttempted}); 
+
+          };
+
+        };
+
+      };
+
+    } else {
+      res.json({text: text, link: link});
+
+    };
+
+  });
+
+});
+
+
 
 
 /*
@@ -1706,7 +2953,7 @@ app.get('/featured-property', (req, res) => {
     if (err) {throw err};
 
       //  SELECT FEATURED IMAGE LISTINGS QUERY.
-    const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+    const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
     connection.query(selectFeaturedImageListingsQuery, (err, selectFeaturedImageListingsResult) => {
       if (err) {throw err};
@@ -1848,7 +3095,7 @@ app.post('/house-listings', (req, res) => {
     if (err) {throw err};
 
       //  SELECT IMAGE LISTINGS QUERY.
-    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
     connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
@@ -1979,7 +3226,7 @@ app.post('/land-listings', (req, res) => {
     if (err) {throw err};
 
       //  SELECT IMAGE LISTINGS QUERY.
-    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
     connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
@@ -2138,7 +3385,7 @@ app.get('/saved-property', (req, res) => {
     if (err) {throw err};
 
       //  SELECT IMAGE LISTINGS QUERY.
-    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
     connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
@@ -2359,7 +3606,7 @@ app.get('/history-property', (req, res) => {
     if (err) {throw err};
 
       //  SELECT IMAGE LISTINGS QUERY.
-    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+    const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
     connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
       if (err) {throw err};
@@ -2660,7 +3907,7 @@ app.post('/tour-reservation-active', (req, res) => {
   const sortInput = req.body.sortInput.toLowerCase();
 
     //  SELECT USER LISTINGS QUERY.
-  const selectUserListingsQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE date_leaved IS NULL';
+  const selectUserListingsQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE date_leaved IS NULL';
 
   connection.query(selectUserListingsQuery, (err, selectUserListingsResult) => {
     if (err) {throw err};
@@ -2674,7 +3921,7 @@ app.post('/tour-reservation-active', (req, res) => {
       if (err) {throw err};
 
         //  SELECT IMAGE LISTINGS QUERY.
-      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
       connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
         if (err) {throw err};
@@ -2834,7 +4081,7 @@ app.post('/tour-reservation-history', (req, res) => {
   };
 
     //  SELECT USER LISTINGS QUERY.
-  const selectUserListingsQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE date_leaved IS NULL';
+  const selectUserListingsQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE date_leaved IS NULL';
 
   connection.query(selectUserListingsQuery, (err, selectUserListingsResult) => {
     if (err) {throw err};
@@ -2848,7 +4095,7 @@ app.post('/tour-reservation-history', (req, res) => {
       if (err) {throw err};
 
         //  SELECT IMAGE LISTINGS QUERY.
-      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+      const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
       connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
         if (err) {throw err};
@@ -2923,7 +4170,7 @@ app.get('/featured-house-listings', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -2943,7 +4190,7 @@ app.get('/featured-house-listings', (req, res) => {
           if (err) {throw err};
 
             //  SELECT FEATURED IMAGE LISTINGS QUERY.
-          const selectFeaturedmageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+          const selectFeaturedmageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
           connection.query(selectFeaturedmageListingsQuery, (err, selectFeaturedImageListingsResult) => {
             if (err) {throw err};
@@ -2984,7 +4231,7 @@ app.get('/featured-land-listings', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3004,7 +4251,7 @@ app.get('/featured-land-listings', (req, res) => {
           if (err) {throw err};
 
             //  SELECT FEATURED IMAGE LISTINGS QUERY.
-          const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+          const selectFeaturedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
           connection.query(selectFeaturedImageListingsQuery, (err, selectFeaturedImageListingsResult) => {
             if (err) {throw err};
@@ -3048,7 +4295,7 @@ app.post('/remove-featured', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3092,7 +4339,7 @@ app.get('/house-listings-2', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3112,7 +4359,7 @@ app.get('/house-listings-2', (req, res) => {
           if (err) {throw err};
 
             //  SELECT IMAGE LISTINGS QUERY.
-          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
           connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
             if (err) {throw err};
@@ -3151,7 +4398,7 @@ app.get('/land-listings-2', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3171,7 +4418,7 @@ app.get('/land-listings-2', (req, res) => {
           if (err) {throw err};
 
             //  SELECT IMAGE LISTINGS QUERY.
-          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+          const selectImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
           connection.query(selectImageListingsQuery, (err, selectImageListingsResult) => {
             if (err) {throw err};
@@ -3220,7 +4467,7 @@ app.post('/delete-property', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3284,7 +4531,7 @@ app.post('/add-featured', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3346,7 +4593,7 @@ app.post('/mark-sold', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3395,13 +4642,28 @@ app.post('/mark-sold', (req, res) => {
 
 });
 
-async function imageUploader(propertyImage, propertyId, fileName) {
-  const { data, error } = await supabase
-    .storage
-    .from(process.env.SUPABASE_BUCKET)
-    .upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer, {
-      cacheControl: '3600',
-      upsert: false
+  //  TRIGGER THE OPEN STREET MAP END-POINT THROUGH THIS API SINCE BACK-END IS CORS ENABLED.
+app.post('/search-location', async (req, res) => {
+  const searchInput = req.body.locationValue;
+
+    //  END-POINT PROVIDED BY NOMINATIM TO FETCH DATA FROM OPEN STREET MAP.
+  const response = await fetch('https://nominatim.openstreetmap.org/search?q=' + searchInput + '&format=json',);
+  const data = await response.json();
+
+    //  INITIALIZED displayNameValue.
+  const displayNameValue = [];
+
+    //  PUSH EVERY FETCHED DISPLAY NAME TO displayNameValue.
+  for(let i = 0; i < data.length; i++) {
+    displayNameValue.push(data[i].display_name);
+  }
+
+  res.json({location: displayNameValue});
+})
+
+async function imageUploader(propertyImage, propertyId, fileName, mimeType) {
+  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName + '-' + uniqueSuffix, propertyImage.buffer, {
+      contentType: mimeType,
     });
 };  
 
@@ -3411,20 +4673,22 @@ async function imageUploader(propertyImage, propertyId, fileName) {
       PROPERTY/
         [USER ID(1)]
           [PROPERTY ID(1)]
-            FILE(ORIGINAL NAME)
+            FILE NAME
           [PROPERTY ID(2)]
-            FILE(ORIGINAL NAME)(1)
-            FILE(ORIGINAL NAME)(2)
+            FILE NAME(1)
+            FILE NAME(2)
         [USER ID(2)]
           [PROPERTY ID]
-            FILE(ORIGINAL NAME)(1)
-            FILE(ORIGINAL NAME)(2)
-            FILE(ORIGINAL NAME)(3)
+            FILE NAME(1)
+            FILE NAME(2)
+            FILE NAME(3)
 */
 
-const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images', maxCount: 10 }])
+const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images', maxCount: 10 }]);
 
 app.post('/add-house', uploadMiddleware, function (req, res) {
+  const d = new Date();
+
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
 
@@ -3459,8 +4723,11 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
       const addressInput = req.body.Address;
       const mainImage = req.files['Main_image'][0];
       const fieldName = mainImage.fieldname;
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname;
-      const fileName = mainImage.originalname;
+
+      const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+      const fileName = uniqueSuffix + '-' + mainImage.originalname;
+
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const mimeType = mainImage.mimetype;
       const additionalImages = req.files['Additional_images'];
 
@@ -3470,10 +4737,12 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
         //  .
       if(additionalImages != undefined) {
         for(let i = 0; i < additionalImages.length; i++) {
+          const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+
           additionalImagesInput.push([propertyId,
                                       additionalImages[i].fieldname,
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + additionalImages[i].originalname,
-                                      additionalImages[i].originalname,
+                                      uniqueSuffix + '-' + additionalImages[i].originalname,
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + uniqueSuffix + '-' + additionalImages[i].originalname,
                                       additionalImages[i].mimetype
                                     ]);
         };
@@ -3486,8 +4755,6 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
       const bathCountInput = req.body.Bath_count;
       const descriptionInput = req.body.Description;
       const status = "AVAILABLE";
-
-      const d = new Date();
       const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
                         (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
                           d.getDate().toString().padStart(2, "0") + ' ' +
@@ -3496,7 +4763,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                           d.getSeconds().toString().padStart(2, "0");
 
         //  SELECT TYPE OF USER QUERY
-      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
       connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
         if (err) {throw err};
@@ -3560,7 +4827,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
             if (err) {throw err};
 
               //  INSERT IMAGE QUERY.
-            const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+            const insertImageQuery = 'INSERT INTO property_image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
 
               //  INITIALIZED VALUE FOR insertImageValue.
             const insertImageValue = [propertyId,
@@ -3573,12 +4840,12 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
             connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
               if (err) {throw err};
 
-              imageUploader(mainImage, propertyId, fieldName).catch(console.error);
+              imageUploader(mainImage, propertyId, fieldName, mimeType).catch(console.error);
 
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
                     //  INSERT IMAGE QUERY.
-                  const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+                  const insertImageQuery = 'INSERT INTO property_image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
 
                     //  INITIALIZED VALUE FOR insertImageValue.
                   const insertImageValue = [additionalImagesInput[i][0],
@@ -3591,7 +4858,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
                     if (err) {throw err};
 
-                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
+                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3], additionalImagesInput[i][4]).catch(console.error);
                   });
                 };     
 
@@ -3612,6 +4879,8 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
 });
 
 app.post('/add-land', uploadMiddleware, function (req, res) {
+  const d = new Date();
+
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
 
@@ -3646,8 +4915,11 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
       const addressInput = req.body.Address;
       const mainImage = req.files['Main_image'][0];
       const fieldName = mainImage.fieldname;
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + req.files['Main_image'][0].originalname;
-      const fileName = mainImage.originalname;
+
+      const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+      const fileName = uniqueSuffix + '-' + mainImage.originalname;
+
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const mimeType = mainImage.mimetype;
       const additionalImages = req.files['Additional_images'];
 
@@ -3657,10 +4929,12 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
         //  .
       if(additionalImages != undefined) {
         for(let i = 0; i < additionalImages.length; i++) {
+          const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+
           additionalImagesInput.push([propertyId,
                                       additionalImages[i].fieldname,
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY" + userId + '/' + propertyId + '/' + additionalImages[i].originalname,
-                                      additionalImages[i].originalname,
+                                      uniqueSuffix + '-' + additionalImages[i].originalname,
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + uniqueSuffix + '-' + additionalImages[i].originalname,
                                       additionalImages[i].mimetype
                                     ]);
         };
@@ -3681,7 +4955,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                           d.getSeconds().toString().padStart(2, "0");
 
         //  SELECT TYPE OF USER QUERY
-      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+      const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
       connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
         if (err) {throw err};
@@ -3733,7 +5007,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
             if (err) {throw err};
 
               //  INSERT IMAGE QUERY.
-            const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+            const insertImageQuery = 'INSERT INTO property_image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
 
               //  INITIALIZED VALUE FOR insertImageValue.
             const insertImageValue = [propertyId,
@@ -3751,7 +5025,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
                     //  INSERT IMAGE QUERY.
-                  const insertImageQuery = 'INSERT INTO image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
+                  const insertImageQuery = 'INSERT INTO property_image_table (property_id, field_name, path, file_name, mime_type) VALUES (?, ?, ?, ?, ?)';
 
                     //  INITIALIZED VALUE FOR insertImageValue.
                   const insertImageValue = [additionalImagesInput[i][0],
@@ -3799,7 +5073,7 @@ app.post('/reservation-listings', (req, res) => {
       userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3877,7 +5151,7 @@ app.post('/edit-info', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -3942,7 +5216,7 @@ app.post('/change-status', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4027,7 +5301,7 @@ app.post('/reservation-archive', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT AGENT QUERY
-    const selectAgentQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectAgentQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectAgentQuery, userId, (err, selectAgentQuery) => {
       if (err) {throw err};
@@ -4076,7 +5350,7 @@ app.post('/add-note', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4117,13 +5391,11 @@ app.post('/add-note', (req, res) => {
 
   //  SELECT ALL RESERVATION LISTINGS.
 app.get('/all-reservation-listings', (req, res) => {
-  let userId = '';
-
   if(req.session.userId != undefined) {
-    userId = req.session.userId;
+    const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4165,7 +5437,7 @@ app.get('/on-going-reservation-listings', (req, res) => {
     userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4207,7 +5479,7 @@ app.get('/completed-reservation-listings', (req, res) => {
     userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4249,7 +5521,7 @@ app.get('/cancelled-reservation-listings', (req, res) => {
     userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4289,9 +5561,15 @@ app.get('/deleted-listings', (req, res) => {
     const userId = req.session.userId;
     const d = new Date();
     d.setDate(d.getDate() - 30);
+    const thirtyDaysDeleted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                             (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                              d.getDate().toString().padStart(2, "0") + ' ' +
+                              d.getHours().toString().padStart(2, "0") + ':' +
+                              d.getMinutes().toString().padStart(2, "0") + ':' +
+                              d.getSeconds().toString().padStart(2, "0");
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4309,10 +5587,10 @@ app.get('/deleted-listings', (req, res) => {
                                                    'ORDER BY date_deleted';
 
           // DECLARES selectDeletedPropertyListingsValue.
-        const selectDeletedPropertyListingsValue = [userId, d];
+        const selectDeletedPropertyListingsValue = [userId, thirtyDaysDeleted];
 
           //  SELECT DELETED IMAGE LISTINGS QUERY.
-        const selectDeletedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM image_table';
+        const selectDeletedImageListingsQuery = 'SELECT property_id, field_name, path, file_name, mime_type FROM property_image_table';
 
         connection.query(selectDeletedImageListingsQuery, (err, selectDeletedImageListingsResult) => {
           if (err) {throw err};
@@ -4346,7 +5624,7 @@ app.post('/restore-all-property', (req, res) => {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4377,7 +5655,7 @@ app.post('/restore-all-property', (req, res) => {
             if (err) {throw err};
 
               //  UPDATE ARCHIVE QUERY.
-            let updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE (';
+            let updateArchiveQuery = 'UPDATE reservation_table SET date_archived = NULL WHERE (';
             
               //  SELECT EVERY propertyIdInput VALUES.
             for(let i = 0; i < propertyIdInput.length; i++) {
@@ -4390,10 +5668,7 @@ app.post('/restore-all-property', (req, res) => {
 
             updateArchiveQuery += ')';
 
-              //  DECLARES updateArchiveValue.
-            const updateArchiveValue = [null, propertyIdInput];
-
-            connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
+            connection.query(updateArchiveQuery, propertyIdInput, (err, updateArchiveResult) => {
               if(err) {throw err};
               
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
@@ -4427,12 +5702,20 @@ app.post('/restore-all-property', (req, res) => {
 app.post('/delete-all-property', (req, res) => {
     //  USER INPUTS.
   const propertyIdInput = req.body.propertyIdInput;
+  const d = new Date();
+  d.setDate(d.getDate() - 30);
+  const thirtyDaysDeleted = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                           (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                            d.getDate().toString().padStart(2, "0") + ' ' +
+                            d.getHours().toString().padStart(2, "0") + ':' +
+                            d.getMinutes().toString().padStart(2, "0") + ':' +
+                            d.getSeconds().toString().padStart(2, "0");
 
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
 
       //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, photo, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
     connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
       if (err) {throw err};
@@ -4446,7 +5729,7 @@ app.post('/delete-all-property', (req, res) => {
 
         if(propertyIdInput.length > 0) {
             //  DELETE ALL PROPERTY QUERY.
-          let deleteAllPropertyQuery = 'UPDATE property_table SET date_deleted = "1970-01-01 00:00:00" WHERE user_id = "' + userId + '" AND (';
+          let deleteAllPropertyQuery = 'UPDATE property_table SET date_deleted = "' + thirtyDaysDeleted + '" WHERE user_id = "' + userId + '" AND (';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
@@ -4486,7 +5769,6 @@ app.post('/delete-all-property', (req, res) => {
   };
 
 });
-
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
