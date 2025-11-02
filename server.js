@@ -4684,7 +4684,7 @@ async function imageUploader(propertyImage, propertyId, fileName, mimeType) {
             FILE NAME(3)
 */
 
-const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images', maxCount: 10 }]);
+const uploadMiddleware = upload.fields([{ name: 'Main_image'}, { name: 'Additional_images'}]);
 
 app.post('/add-house', uploadMiddleware, function (req, res) {
   const d = new Date();
