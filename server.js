@@ -1825,7 +1825,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
                 contentType: mimeType
               });
           };  
@@ -1865,7 +1865,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
                 contentType: mimeType
               });
           };  
@@ -4662,7 +4662,7 @@ app.post('/search-location', async (req, res) => {
 })
 
 async function imageUploader(propertyImage, propertyId, fileName, mimeType) {
-  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName + '-' + uniqueSuffix, propertyImage.buffer, {
+  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName + '-' + uniqueSuffix, propertyImage.buffer, {
       contentType: mimeType,
     });
 };  
