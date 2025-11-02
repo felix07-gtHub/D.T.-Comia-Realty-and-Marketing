@@ -1825,9 +1825,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
-                contentType: mimeType
-              });
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer);
           };  
 
           photoUploader().catch(console.error);
@@ -1865,9 +1863,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
-                contentType: mimeType
-              });
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer);
           };  
 
           photoUploader().catch(console.error);
@@ -4642,29 +4638,8 @@ app.post('/mark-sold', (req, res) => {
 
 });
 
-  //  TRIGGER THE OPEN STREET MAP END-POINT THROUGH THIS API SINCE BACK-END IS CORS ENABLED.
-app.post('/search-location', async (req, res) => {
-  const searchInput = req.body.locationValue;
-
-    //  END-POINT PROVIDED BY NOMINATIM TO FETCH DATA FROM OPEN STREET MAP.
-  const response = await fetch('https://nominatim.openstreetmap.org/search?q=' + searchInput + '&format=json',);
-  const data = await response.json();
-
-    //  INITIALIZED displayNameValue.
-  const displayNameValue = [];
-
-    //  PUSH EVERY FETCHED DISPLAY NAME TO displayNameValue.
-  for(let i = 0; i < data.length; i++) {
-    displayNameValue.push(data[i].display_name);
-  }
-
-  res.json({location: displayNameValue});
-})
-
-async function imageUploader(propertyImage, propertyId, fileName, mimeType) {
-  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName + '-' + uniqueSuffix, propertyImage.buffer, {
-      contentType: mimeType,
-    });
+async function imageUploader(propertyImage, propertyId, fileName) {
+  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer);
 };  
 
 /*
@@ -4840,7 +4815,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
             connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
               if (err) {throw err};
 
-              imageUploader(mainImage, propertyId, fieldName, mimeType).catch(console.error);
+              imageUploader(mainImage, propertyId, fileName).catch(console.error);
 
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
@@ -4858,7 +4833,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
                     if (err) {throw err};
 
-                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3], additionalImagesInput[i][4]).catch(console.error);
+                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
                   });
                 };     
 
@@ -5020,7 +4995,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
             connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
               if (err) {throw err};
 
-              imageUploader(mainImage, propertyId, fieldName).catch(console.error);
+              imageUploader(mainImage, propertyId, fileName).catch(console.error);
 
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
