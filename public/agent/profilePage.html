@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>D.T. Comia Realty and Markerting</title>
   <link rel="icon" href="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png">
-  <link rel="stylesheet" href="./css/sidePanel.css">
+  <link rel="stylesheet" href="./css/propfilePage.css">
 
 </head>
 <body>
@@ -15,16 +15,9 @@
     <button class="burger-btn">&#9776;</button>  
     <img src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/DT Comia Logo.png" alt="D.T. Comcia Realty and Markerting Logo" type="">
     <h1>D.T. COMIA REALTY & MARKETING</h1>
-    <div>
-      <p>Wed</p>
-      <hr>
-      <p>October 1, 2025</p>
-      <hr>
-      <p>7:21 AM</p>
-    </div>
     <hr>
-    <a>
-      <img src="" alt="Profile icon" type id="profileIcon">
+    <a href="./profilePage.html">
+      <img src="" alt="Profile icon" type="" id="profileIcon">
     </a>
     <div id="user">
       <p>Elle Luna Light</p>
@@ -32,70 +25,134 @@
     </div>
   </nav>
     <!---------------------------------------------------------------->
-  
-  <div class="main-container">
-    <div class="side-panel">
-      <div class="profile-div">
-        <img>
 
-        <p>Elle Luna Light</p>
-      </div>
-
-      <div class="side-panel-content">
-        <p>NAVIGATION</p>
-
-        <div class="agent-listings">
-          <a href="./houseListingsPage.html">
-            <img src="" alt="" type="">Listings
-            </a>
-        </div>
-
-        <div class="agent-add-prop">
-          <a href="./addHousePage.html">
-            <img src="" alt="" type="">Add property
-          </a>
-        </div>
-
-        <div class="calendar">
-          <a href="./reservationPeriod.html">
-            <img src="" alt="" type="">Reservations
-          </a>
-        </div>
-
-        <div class="recycle-bin">
-          <a href="./trashPage.html">
-            <img src="" alt="" type="">Trash
-          </a>
-        </div>
-
-        <div class="gps-manage-btn">
-          <a href="../customer/gpsSystem.html?role=agent">
-            <img src="" alt="" type=""> Manage GPS
-          </a>
-        </div>
-
-         
-        <div class="logout">
-          <a href="../customer/homePage.html">
-            <img src="" alt="" type="">Log out
-          </a>
-        </div>
-       
-
-      </div>
+  <div id="profile">
+    <div class="nav-bar">
+      <p>PROFILE</p>
     </div>
+
+    <hr>
+
+    <div class="profileMAIN-div">
+      <div class="acc-management-div">
+        <h3>Account Management</h3>
+
+        <div>
+          <div>
+            <form enctype="multipart/form-data" method="post" class="add-photo">
+              <input type="file" name="Photo" accept="image/*" id="photo">
+              <label for="photo">
+                <img src="" alt="profile" type="">
+              </label>
+            </form>
+
+            <button class="upload-button" disabled>Upload Photo</button>
+          </div>
+
+          <hr>
+
+          <div class="Password-inputs">
+            <p>Old Password</p>
+            <input type="password" name="Old password" maxlength="50">
+
+            <p>New Password</p>
+            <input type="password" name="New password" maxlength="50">
+
+            <p>Confirm Password</p>
+            <input type="password" name="Confirm password" maxlength="50">
+
+            <button class="update-button" disabled>Update Password</button>
+          </div>
+        </div>
+
+        <div class="delete-acc-div">
+          <img src="https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/red trash.png" alt="trash img" type="">
+            
+          <p>Delete Account</p>
+            
+          <p class="deletion-reminder">Deleting account is permanent. All your saved properties, messages, and personal data will be permanently removed and cannot be recovered.</p>
+            
+          <button class="delete-button" disabled>Delete Account</button>
+
+          <div class="deleteModal">
+            <h1>Delete Account</h1>
+            <p>Are you sure you want to delete your account?</p>
+
+            <div class="checkbox">
+              <input type="checkbox" name="Terms and conditions">
+
+              <p>
+                <strong>I understand that deleting my account is permanet.</strong>
+              </p>
+            </div>
+
+            <button>Cancel</button>
+            <button disabled>Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="profile-info-div">
+        <h3>Profile Information</h3>
+
+        <div>
+          <div class="Username-div">
+            <p>Username</p>
+            <input type="text" name="User name" required maxlength="50">
+          </div>
+            
+          <div class="name-div">
+            <div>
+              <p>First Name</p>
+              <input type="text" name="First name" required maxlength="50">
+            </div>
+              
+            <div>
+              <p>Last Name</p>
+              <input type="text" name="Last name" required maxlength="50">
+            </div>
+          </div>
+          
+          <div class="update-info-button-div">
+            <button class="update-info-button" disabled>Update Information</button>
+          </div>
+        </div>
       
-    <div>
-      <h1>PROFILE</h1>
-    </div>
+        <h3>Contact Information</h3>
 
+        <div class="left-right">
+          <p>Contact Number</p>
+          <div class="contact-tele-div">
+            <input type="number" name="Contact number">
+          </div>
+
+          <p>Telephone Number (optional)</p>
+          <div class="contact-tele-div">
+            <input type="number" name="Telephone number">
+          </div>
+
+          <p>Email Address (required)</p>
+          <div class="contact-tele-div">
+            <input type="text" name="Email address" required maxlength="50">
+          </div>
+
+          <p>Recovery Email Address</p>
+          <div class="contact-tele-div">
+            <input type="text" name="Recovery email address" maxlength="50">
+          </div>
+        </div>
+      </div>
+      
+    </div>
   </div>
   
   <p>2025. All rights reserved.</p>
   
 </body>
 
-        <!--PLACE DOWN HERE TO ALLOW ELEMENTS TO EXIST FIRST BEFORE ADDING EVENT LISTENER.--> 
-    <script src="./js/sidePanel.js" type="text/javascript"></script>  
+        <!--PLACE DOWN HERE TO ALLOW ELEMENTS TO EXIST FIRST BEFORE ADDING EVENT LISTENER.-->
+    <script src="./js/profilePage.js" type="text/javascript"></script>  
 
 </html> 
