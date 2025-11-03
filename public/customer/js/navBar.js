@@ -123,11 +123,9 @@ async function user() {
             if(data.userImage.length > 0) {
                 profileButton.src = data.userImage[0].path;
                 profileButton.alt = data.userImage[0].file_name;
-                profileButton.type = data.userImage[0].mime_type;
             } else {
                 profileButton.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
                 profileButton.alt = "Profile icon";
-                profileButton.type = "";
             };
             
             profileButton.id = "profileIcon";
