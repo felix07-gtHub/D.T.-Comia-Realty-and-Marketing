@@ -293,6 +293,94 @@ async function userInformation() {
     };
 
         //  .
+    async function photoChange() {
+        if(photo.value != "") {
+            const removeButton = document.createElement('input');
+
+            removeButton.type = "button";
+            removeButton.name = "Remove button";
+            removeButton.value = "x";
+            removeButton.addEventListener("click", removeFunction);
+            uploadButton.disabled = false;
+
+            addPhoto.appendChild(removeButton);
+
+            const formData = new FormData(addPhoto);
+
+            const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/preview-photo', {
+                method: 'POST',
+                headers: {                    
+                            'User-Agent': 'undici-stream-example',
+                },
+                credentials: "include",
+                body: formData,
+            });
+            const previewData = await response.json();
+
+            profile.src = "data:" + previewData.mimetype + ";base64," + previewData.buffer;
+            profile.alt = previewData.fileName;
+            profile.type = previewData.mimetype;
+        };    
+    };
+
+    photo.addEventListener("change", photoChange);
+
+        //  REMOVE PROFILE.
+    async function removeFunction() {
+        if(userData.userImage.length > 0) {
+            if(profile.src != userData.userImage[0].path) {
+                photo.value = "";
+                profile.src = userData.userImage[0].path;
+                profile.alt = userData.userImage[0].fileName;
+                profile.type = userData.userImage[0].mimetype;
+                uploadButton.disabled = true;
+            } else {
+                const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/delete-photo', {
+                    method: "GET",
+                    credentials: "include"
+                });
+
+                photo.value = "";
+                profile.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
+                profile.alt = "profile";
+                profile.type = "";
+                addPhoto.children[2].remove();
+                uploadButton.disabled = true;
+            };
+        } else {
+            photo.value = "";
+            profile.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
+            profile.alt = "profile";
+            profile.type = "";
+            addPhoto.children[2].remove();
+            uploadButton.disabled = true;
+        };
+    };
+
+        //  .
+    async function uploadPhoto() {
+        const formData = new FormData(addPhoto);
+
+        const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/upload-photo', {
+            method: 'POST',
+            headers: {                    
+                        'User-Agent': 'undici-stream-example',
+            },
+            credentials: "include",
+            body: formData,
+        });
+        const uploadData = await response.json();
+
+        photo.value = "";
+        profile.src = uploadData.path;
+        profile.alt = uploadData.fileName;
+        profile.type = uploadData.mimetype;
+        uploadButton.disabled = true;
+    }
+
+    uploadButton.addEventListener("click", uploadPhoto);
+
+        //  .
     function infoChange() {
         userName.removeEventListener("mouseenter", invalidInputsMousEnter);
         userName.removeEventListener("mouseleave", invalidInputsMousEave);
@@ -673,77 +761,6 @@ async function userInformation() {
 };
 
 userInformation().catch(console.error);
-
-    //  .
-async function photoChange() {
-    if(photo.value != "") {
-        const removeButton = document.createElement('input');
-
-        removeButton.type = "button";
-        removeButton.name = "Remove button";
-        removeButton.value = "x";
-        removeButton.addEventListener("click", removeFunction);
-        uploadButton.disabled = false;
-
-        addPhoto.appendChild(removeButton);
-
-        const formData = new FormData(addPhoto);
-
-        const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/preview-photo', {
-            method: 'POST',
-            headers: {                    
-                        'User-Agent': 'undici-stream-example',
-            },
-            credentials: "include",
-            body: formData,
-        });
-        const previewData = await response.json();
-
-        profile.src = "data:" + previewData.mimetype + ";base64," + previewData.buffer;
-        profile.alt = previewData.fileName;
-        profile.type = previewData.mimetype;
-    };    
-};
-
-photo.addEventListener("change", photoChange);
-
-    //  REMOVE PROFILE.
-async function removeFunction() {
-    photo.value = "";
-    profile.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/profile.png";
-    profile.alt = "profile";
-    profile.type = "";
-    addPhoto.children[2].remove();
-    uploadButton.disabled = true;
-
-    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/delete-photo', {
-        method: "GET",
-        credentials: "include"
-    });
-};
-
-    //  .
-async function uploadPhoto() {
-    const formData = new FormData(addPhoto);
-
-    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/upload-photo', {
-        method: 'POST',
-        headers: {                    
-                    'User-Agent': 'undici-stream-example',
-        },
-        credentials: "include",
-        body: formData,
-    });
-    const uploadData = await response.json();
-
-    photo.value = "";
-    profile.src = uploadData.path;
-    profile.alt = uploadData.fileName;
-    profile.type = uploadData.mimetype;
-    uploadButton.disabled = true;
-}
-
-uploadButton.addEventListener("click", uploadPhoto);
 
     //  .
 function passwordChange() {
