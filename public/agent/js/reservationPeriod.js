@@ -155,16 +155,7 @@ async function reservationListings() {
         contactNo.value = data.reservationListings[i].contact_number;
         property.name = "Property";
         property.disabled = true;
-        
-        for(let j = 0; j < data.propertyListings.length; j++) {
-            if(data.reservationListings[i].property_id == data.propertyListings[j].property_id) {
-                property.value = data.propertyListings[j].address;
-
-                break;
-
-            };
-
-        };
+        property.value = data.reservationListings[i].address;
 
     
 
