@@ -1768,9 +1768,22 @@ app.get('/user-information', (req, res) => {
 app.post('/preview-photo', upload.single('Photo'), function (req, res) {
     //  USER INPUTS
   const photo = req.file;
-  const buffer = photo.buffer.toString('base64');
-  const fileName = photo.originalname;
+  const fieldName = mainImage.fieldname;
   const mimeType = photo.mimetype;
+
+  const d = new Date();
+  const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                      (d.getMonth() + 1).toString().padStart(2, "0")  +
+                       d.getDate().toString().padStart(2, "0") +
+                       '-' +
+                       d.getHours().toString().padStart(2, "0") + 
+                       d.getMinutes().toString().padStart(2, "0") + 
+                       d.getSeconds().toString().padStart(2, "0") +
+                       '-' +
+                       Math.round(Math.random() * 1E9);
+
+  const fileName = fieldName + '-' + uniqueSuffix + '.' + photo.split('/')[1];
+  const buffer = photo.buffer.toString('base64');
   
   if(req.session.userId != undefined) {
       res.json({buffer: buffer,
@@ -1795,13 +1808,21 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
     
       //  USER INPUTS.
     const photo = req.file;
-    const fieldName = photo.fieldname;
+    const fieldName = mainImage.fieldname;
+    const mimeType = mainImage.mimetype;
+      
+    const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                        (d.getMonth() + 1).toString().padStart(2, "0")  +
+                         d.getDate().toString().padStart(2, "0") +
+                         '-' +
+                         d.getHours().toString().padStart(2, "0") + 
+                         d.getMinutes().toString().padStart(2, "0") + 
+                         d.getSeconds().toString().padStart(2, "0") +
+                         '-' +
+                         Math.round(Math.random() * 1E9);
 
-    const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
-    const fileName = uniqueSuffix + '-' + photo.originalname;
-
-    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/USER/" + userId  + '/' + fileName;
-    const mimeType = photo.mimetype;
+    const fileName = fieldName + '-' + uniqueSuffix + '.' + photo.split('/')[1];
+    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
 
       //  SELECT USER IMAGE QUERY.
     const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
@@ -4698,12 +4719,20 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
       const addressInput = req.body.Address;
       const mainImage = req.files['Main_image'][0];
       const fieldName = mainImage.fieldname;
-
-      const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
-      const fileName = uniqueSuffix + '-' + mainImage.originalname;
-
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const mimeType = mainImage.mimetype;
+      
+      const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                          (d.getMonth() + 1).toString().padStart(2, "0")  +
+                           d.getDate().toString().padStart(2, "0") +
+                           '-' +
+                           d.getHours().toString().padStart(2, "0") + 
+                           d.getMinutes().toString().padStart(2, "0") + 
+                           d.getSeconds().toString().padStart(2, "0") +
+                           '-' +
+                           Math.round(Math.random() * 1E9);
+
+      const fileName = fieldName + '-' + uniqueSuffix + '.' + mainImage.split('/')[1];
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -4712,13 +4741,21 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
         //  .
       if(additionalImages != undefined) {
         for(let i = 0; i < additionalImages.length; i++) {
-          const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+          const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                              (d.getMonth() + 1).toString().padStart(2, "0")  +
+                               d.getDate().toString().padStart(2, "0") +
+                               '-' +
+                               d.getHours().toString().padStart(2, "0") + 
+                               d.getMinutes().toString().padStart(2, "0") + 
+                               d.getSeconds().toString().padStart(2, "0") +
+                               '-' +
+                               Math.round(Math.random() * 1E9);
 
           additionalImagesInput.push([propertyId,
                                       additionalImages[i].fieldname,
-                                      uniqueSuffix + '-' + additionalImages[i].originalname,
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + uniqueSuffix + '-' + additionalImages[i].originalname,
-                                      additionalImages[i].mimetype
+                                      additionalImages[i].mimetype,
+                                      additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
@@ -4825,9 +4862,9 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                     //  INITIALIZED VALUE FOR insertImageValue.
                   const insertImageValue = [additionalImagesInput[i][0],
                                             additionalImagesInput[i][1],
-                                            additionalImagesInput[i][2],
-                                            additionalImagesInput[i][3],
                                             additionalImagesInput[i][4],
+                                            additionalImagesInput[i][3],
+                                            additionalImagesInput[i][2],
                                           ];
 
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
@@ -4890,12 +4927,20 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
       const addressInput = req.body.Address;
       const mainImage = req.files['Main_image'][0];
       const fieldName = mainImage.fieldname;
-
-      const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
-      const fileName = uniqueSuffix + '-' + mainImage.originalname;
-
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const mimeType = mainImage.mimetype;
+      
+      const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                          (d.getMonth() + 1).toString().padStart(2, "0")  +
+                           d.getDate().toString().padStart(2, "0") +
+                           '-' +
+                           d.getHours().toString().padStart(2, "0") + 
+                           d.getMinutes().toString().padStart(2, "0") + 
+                           d.getSeconds().toString().padStart(2, "0") +
+                           '-' +
+                           Math.round(Math.random() * 1E9);
+
+      const fileName = fieldName + '-' + uniqueSuffix + '.' + mainImage.split('/')[1];
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -4904,13 +4949,21 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
         //  .
       if(additionalImages != undefined) {
         for(let i = 0; i < additionalImages.length; i++) {
-          const uniqueSuffix = d + '-' + Math.round(Math.random() * 1E9);
+          const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
+                              (d.getMonth() + 1).toString().padStart(2, "0")  +
+                               d.getDate().toString().padStart(2, "0") +
+                               '-' +
+                               d.getHours().toString().padStart(2, "0") + 
+                               d.getMinutes().toString().padStart(2, "0") + 
+                               d.getSeconds().toString().padStart(2, "0") +
+                               '-' +
+                               Math.round(Math.random() * 1E9);
 
           additionalImagesInput.push([propertyId,
                                       additionalImages[i].fieldname,
-                                      uniqueSuffix + '-' + additionalImages[i].originalname,
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + uniqueSuffix + '-' + additionalImages[i].originalname,
-                                      additionalImages[i].mimetype
+                                      additionalImages[i].mimetype,
+                                      additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
@@ -5005,9 +5058,9 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                     //  INITIALIZED VALUE FOR insertImageValue.
                   const insertImageValue = [additionalImagesInput[i][0],
                                             additionalImagesInput[i][1],
-                                            additionalImagesInput[i][2],
-                                            additionalImagesInput[i][3],
                                             additionalImagesInput[i][4],
+                                            additionalImagesInput[i][3],
+                                            additionalImagesInput[i][2],
                                           ];
 
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
