@@ -1768,7 +1768,7 @@ app.get('/user-information', (req, res) => {
 app.post('/preview-photo', upload.single('Photo'), function (req, res) {
     //  USER INPUTS
   const photo = req.file;
-  const fieldName = mainImage.fieldname;
+  const fieldName = photo.fieldname;
   const mimeType = photo.mimetype;
 
   const d = new Date();
@@ -1808,8 +1808,8 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
     
       //  USER INPUTS.
     const photo = req.file;
-    const fieldName = mainImage.fieldname;
-    const mimeType = mainImage.mimetype;
+    const fieldName = photo.fieldname;
+    const mimeType = photo.mimetype;
       
     const uniqueSuffix = d.getFullYear().toString().padStart(4, "0")  +
                         (d.getMonth() + 1).toString().padStart(2, "0")  +
@@ -1822,7 +1822,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
                          Math.round(Math.random() * 1E9);
 
     const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
+    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/USER/" + userId + '/' + fileName;
 
       //  SELECT USER IMAGE QUERY.
     const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
@@ -4732,7 +4732,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                            Math.round(Math.random() * 1E9);
 
       const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -4755,7 +4755,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                                       additionalImages[i].fieldname,
                                       additionalImages[i].mimetype,
                                       additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
@@ -4940,7 +4940,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                            Math.round(Math.random() * 1E9);
 
       const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -4963,7 +4963,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                                       additionalImages[i].fieldname,
                                       additionalImages[i].mimetype,
                                       additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
