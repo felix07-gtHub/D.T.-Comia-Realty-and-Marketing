@@ -1782,7 +1782,7 @@ app.post('/preview-photo', upload.single('Photo'), function (req, res) {
                        '-' +
                        Math.round(Math.random() * 1E9);
 
-  const fileName = fieldName + '-' + uniqueSuffix + '.' + photo.split('/')[1];
+  const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
   const buffer = photo.buffer.toString('base64');
   
   if(req.session.userId != undefined) {
@@ -1821,7 +1821,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
                          '-' +
                          Math.round(Math.random() * 1E9);
 
-    const fileName = fieldName + '-' + uniqueSuffix + '.' + photo.split('/')[1];
+    const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
     const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
 
       //  SELECT USER IMAGE QUERY.
@@ -4731,7 +4731,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                            '-' +
                            Math.round(Math.random() * 1E9);
 
-      const fileName = fieldName + '-' + uniqueSuffix + '.' + mainImage.split('/')[1];
+      const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
       const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
@@ -4939,7 +4939,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                            '-' +
                            Math.round(Math.random() * 1E9);
 
-      const fileName = fieldName + '-' + uniqueSuffix + '.' + mainImage.split('/')[1];
+      const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
       const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
