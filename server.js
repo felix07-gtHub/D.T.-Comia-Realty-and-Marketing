@@ -1730,7 +1730,7 @@ app.get('/user-information', (req, res) => {
         if (err) {throw err};
 
           //  SELECT USER RESERVATION QUERY.
-        const selectUserReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "On going"';
+        const selectUserReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "On going"';
             
         connection.query(selectUserReservationQuery, userId, (err, selectUserReservationResult) => {
           if (err) {throw err};
@@ -2976,7 +2976,7 @@ app.get('/featured-property', (req, res) => {
       if (err) {throw err};
 
         //  SELECT RESERVATION LISTINGS QUERY.
-      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
       connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
         if (err) {throw err};
@@ -3118,7 +3118,7 @@ app.post('/house-listings', (req, res) => {
       if (err) {throw err};
 
         //  SELECT RESERVATION LISTINGS QUERY.
-      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
       connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
         if (err) {throw err};
@@ -3249,7 +3249,7 @@ app.post('/land-listings', (req, res) => {
       if (err) {throw err};
 
         //  SELECT RESERVATION LISTINGS QUERY.
-      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
       connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
         if (err) {throw err};
@@ -3408,7 +3408,7 @@ app.get('/saved-property', (req, res) => {
       if (err) {throw err};
 
         //  SELECT RESERVATION LISTINGS QUERY.
-      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
       connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
         if (err) {throw err};
@@ -3629,7 +3629,7 @@ app.get('/history-property', (req, res) => {
       if (err) {throw err};
 
         //  SELECT RESERVATION LISTINGS QUERY.
-      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
+      const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE status = "On Going"';
 
       connection.query(selectReservationListingsQuery, (err, selectReservationListingsResult) => {
         if (err) {throw err};
@@ -3839,7 +3839,7 @@ app.post('/reservation', (req, res) => {
         } else { 
 
             //  SELECT RESERVATION QUERY.
-          const selectReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table';
+          const selectReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table';
 
           connection.query(selectReservationQuery, (err, selectReservationResult) => {
             if(err) {throw err};
@@ -3874,7 +3874,7 @@ app.post('/reservation', (req, res) => {
               };
 
                 //  INSERT RESERVATION QUERY.
-              const insertReservationQuery = 'INSERT INTO reservation_table (reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+              const insertReservationQuery = 'INSERT INTO reservation_table (reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                     
                 //  DECLARES insertReservationValue.
               const insertReservationValue = [reservationId, selectPropertyInformationResult[0].user_id, userId, propertyId, fullNameInput, contactNumberInput, emailAddressInput, selectPropertyInformationResult[0].address, reservataionPeriodFromInput, reservataionPeriodToInput, status];
@@ -3964,7 +3964,7 @@ app.post('/tour-reservation-active', (req, res) => {
                 //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
 
                 //  SELECT RESERVATION LISTINGS QUERY.
-              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "on going"';
+              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "on going"';
 
               connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
                 if (err) {throw err};
@@ -4138,7 +4138,7 @@ app.post('/tour-reservation-history', (req, res) => {
                 //------------------------------------------------------------TOUR LISTINGS--------------------------------------------------.
 
                 //  SELECT RESERVATION LISTINGS QUERY.
-              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND ' + selectTourResercationStatus;
+              const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND ' + selectTourResercationStatus;
 
               connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
                 if (err) {throw err};
@@ -4213,7 +4213,7 @@ app.get('/featured-house-listings', (req, res) => {
             if (err) {throw err};
 
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
                 
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
@@ -4274,7 +4274,7 @@ app.get('/featured-land-listings', (req, res) => {
             if (err) {throw err};
 
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
@@ -4382,7 +4382,7 @@ app.get('/house-listings-2', (req, res) => {
             if (err) {throw err};
 
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
@@ -4441,7 +4441,7 @@ app.get('/land-listings-2', (req, res) => {
             if (err) {throw err};
 
               //  SELECT RESERVATION LISTINGS QUERY.
-            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
+            const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL LIMIT 10';
               
             connection.query(selectReservationListingsQuery, userId, (err, selectReservationListingsResult) => {
               if (err) {throw err};
@@ -5113,8 +5113,8 @@ app.post('/reservation-listings', (req, res) => {
 
         } else {  
             //  SELECT RESERVATION LISTINGS QUERY.
-          let selectReservationListingsQuery = 'SELECT number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM(' +
-                                               'SELECT ROW_NUMBER() OVER (ORDER BY reservation_period_from) AS number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL' +
+          let selectReservationListingsQuery = 'SELECT number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM(' +
+                                               'SELECT ROW_NUMBER() OVER (ORDER BY reservation_period_from) AS number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL' +
                                                ' ) as reservation_table';
             
             //  DECLARES selectReservationListingsValue.
@@ -5191,7 +5191,7 @@ app.post('/edit-info', (req, res) => {
 
       } else { 
           //  SELECT RESERVATION LISTINGS QUERY.
-        const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE reservation_id = ?';
+        const selectReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE reservation_id = ?';
 
         connection.query(selectReservationListingsQuery, reservationIdInput, (err, selectReservationListingsResult) => {
           if(err) {throw err}; 
@@ -5435,7 +5435,7 @@ app.get('/all-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ALL RESERVATION LISTINGS QUERY.
-        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL';
+        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL';
               
         connection.query(selectAllReservationListingsQuery, userId, (err, selectAllReservationListingsResult) => {
           if (err) {throw err};
@@ -5477,7 +5477,7 @@ app.get('/on-going-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going" AND date_archived IS NULL';
+        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going" AND date_archived IS NULL';
               
         connection.query(selectOnGoingReservationListingsQuery, userId, (err, selectOnGoingReservationListingsResult) => {
           if (err) {throw err};
@@ -5519,7 +5519,7 @@ app.get('/completed-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed" AND date_archived IS NULL';
+        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed" AND date_archived IS NULL';
               
         connection.query(selectCompletedReservationListingsQuery, userId, (err, selectCompletedReservationListingsResult) => {
           if (err) {throw err};
@@ -5561,7 +5561,7 @@ app.get('/cancelled-reservation-listings', (req, res) => {
 
       } else {  
           //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled" AND date_archived IS NULL';
+        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled" AND date_archived IS NULL';
               
         connection.query(selectCancelledReservationListingsQuery, userId, (err, selectCancelledReservationListingsResult) => {
           if (err) {throw err};
