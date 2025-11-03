@@ -1,5 +1,5 @@
 body {
-  background-color: #889063;
+  background-color: #354024;
 }
 
 .nav-bar {
@@ -9,6 +9,7 @@ body {
   align-items: center;
   margin-top: 113px;
   width: 100%;
+  background-color: #889063;
 }
 
 .nav-bar p {
@@ -27,6 +28,7 @@ body {
 
 .profileMAIN-div {
   display: flex;
+  background-color: #889063;
 }
 
 .profileMAIN-div h3 {

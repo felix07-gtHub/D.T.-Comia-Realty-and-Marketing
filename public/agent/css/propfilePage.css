@@ -1,6 +1,6 @@
 body {
   margin: 0px;
-  background-color: #d8e3d0;
+  background-color: #4e6e5d;
 }
 
     /* NAVIGATION BAR */
@@ -106,6 +106,7 @@ nav > #user > p:nth-child(2) {
   align-items: center;
   margin-top: 92px;
   width: 100%;
+  background-color: #d8e3d0;
 }
 
 .nav-bar p {
@@ -124,6 +125,7 @@ nav > #user > p:nth-child(2) {
 
 .profileMAIN-div {
   display: flex;
+  background-color: #d8e3d0;
 }
 
 .profileMAIN-div h3 {
