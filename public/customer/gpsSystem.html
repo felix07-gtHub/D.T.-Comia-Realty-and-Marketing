@@ -59,21 +59,56 @@
     function escapeHtml(s=''){return s.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 
     // --- save/load ---
-    function saveMarkers(){
-      localStorage.setItem(LS_KEY, JSON.stringify(markers.map(m => ({
-        id: m._id, label: m._label, lat: m.getLatLng().lat, lng: m.getLatLng().lng
-      }))));
+    async function saveMarkers(){
+      const markerInput = markers.map(m => ({
+        id: m._id,
+        label: m._label,
+        lat: m.getLatLng().lat,
+        lng: m.getLatLng().lng
+      }));
+      const response = await fetch('http://127.0.0.1:3000/save-marker', {
+        method: 'POST',
+        headers: {                    
+                  'User-Agent': 'undici-stream-example',
+                  'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        body: JSON.stringify({role, markerInput}),
+      });
     }
 
-    function loadMarkers(){
-      const raw = localStorage.getItem(LS_KEY);
-      if(!raw) return;
-      try {
-        JSON.parse(raw).forEach(d=>{
-          const m = createMarker([d.lat,d.lng],d.label,d.id);
-          markers.push(m);
+    async function loadMarkers(){
+      if(role != "buyer") {
+        const response = await fetch('http://127.0.0.1:3000/load-marker', {
+          method: 'POST',
+          headers: {                    
+                    'User-Agent': 'undici-stream-example',
+                    'Content-Type': 'application/json'
+          },
+          credentials: "include",
+          body: JSON.stringify({role}),
         });
-      } catch(e){console.log(e);}
+        const raw = await response.json();
+        if(!raw.locationMarker) window.location = "../customer/logIn.html";
+        try {
+          raw.locationMarker.forEach(d=>{
+            const m = createMarker([d.latitude,d.longitude],d.label,d.id);
+            markers.push(m);
+          });
+        } catch(e){console.log(e);}
+      } else {
+        const response = await fetch('http://127.0.0.1:3000/load-all-marker', {
+          method: 'GET',
+          credentials: "include"
+        });
+        const raw = await response.json();
+        try {
+          raw.locationMarker.forEach(d=>{
+            const m = createMarker([d.latitude,d.longitude],d.label,d.id);
+            markers.push(m);
+          });
+        } catch(e){console.log(e);}
+      }
     }
 
     function getPopupHTML(m){
@@ -103,7 +138,7 @@
       if(saveBtn) saveBtn.onclick = ()=>{
         m._label = input.value.trim()||'Unnamed';
         m.bindPopup(getPopupHTML(m));
-        saveMarkers();
+        saveMarkers().catch(console.error);
         m.openPopup();
       };
       if(moveBtn) moveBtn.onclick = ()=>{
@@ -111,17 +146,26 @@
           m.dragging.disable(); m._draggable=false;
         } else {
           m.dragging.enable(); m._draggable=true;
-          m.on('dragend',()=>saveMarkers());
+          m.on('dragend',()=>saveMarkers().catch(console.error));
         }
         m.bindPopup(getPopupHTML(m));
         m.openPopup();
-        saveMarkers();
+        saveMarkers().catch(console.error);
       };
-      if(delBtn) delBtn.onclick = ()=>{
+      if(delBtn) delBtn.onclick = async function(){
         if(!confirm('Delete this marker?'))return;
         map.removeLayer(m);
         markers = markers.filter(x=>x._id!==m._id);
-        saveMarkers();
+        const idInput = m._id;
+        const response = await fetch('http://127.0.0.1:3000/delete-marker', {
+          method: 'POST',
+          headers: {                    
+                    'User-Agent': 'undici-stream-example',
+                    'Content-Type': 'application/json'
+          },
+          credentials: "include",
+          body: JSON.stringify({idInput ,role}),
+        });
       };
     }, 0);
   });
@@ -145,7 +189,7 @@
       if(addingMarker){
         map.once('click',e=>{
           const m=createMarker(e.latlng,'New Marker');
-          markers.push(m); saveMarkers();
+          markers.push(m); // saveMarkers().catch(console.error);
           addingMarker=false; addMarkerBtn.textContent='Add Marker';
         });
       }
@@ -156,10 +200,17 @@
       if(e.key!=='Enter')return;
       const q=e.target.value.trim();
       if(!q)return;
-      const res=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`);
+      const res=await fetch('http://127.0.0.1:3000/search-address', {
+        method: 'POST',
+        headers: {                    
+                    'User-Agent': 'undici-stream-example',
+                    'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({q}),
+      });
       const data=await res.json();
-      if(!data.length)return alert('Address not found');
-      const {lat,lon,display_name}=data[0];
+      if(!data.address.length)return alert('Address not found');
+      const {lat,lon,display_name}=data.address[0];
       map.setView([+lat,+lon],15);
       L.popup().setLatLng([+lat,+lon]).setContent(`<b>${escapeHtml(display_name)}</b>`).openOn(map);
     });
