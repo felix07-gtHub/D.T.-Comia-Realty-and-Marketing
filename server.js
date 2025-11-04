@@ -5086,6 +5086,173 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
   };
 });
 
+  //  SELECT ALL RESERVATION LISTINGS.
+app.get('/all-reservation-listings', (req, res) => {
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+      //  SELECT TYPE OF USER QUERY
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      if (err) {throw err};
+      
+      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      } else {  
+          //  SELECT ALL RESERVATION LISTINGS QUERY.
+        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ?';
+              
+        connection.query(selectAllReservationListingsQuery, userId, (err, selectAllReservationListingsResult) => {
+          if (err) {throw err};
+                        
+          res.json({allReservationListings: selectAllReservationListingsResult});
+
+        });   
+
+      };
+
+    });
+
+    } else {  
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+  
+});
+
+  //  SELECT ON GOING RESERVATION LISTINGS.
+app.get('/on-going-reservation-listings', (req, res) => {
+  let userId = '';
+
+  if(req.session.userId != undefined) {
+    userId = req.session.userId;
+
+      //  SELECT TYPE OF USER QUERY
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      if (err) {throw err};
+      
+      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      } else {  
+          //  SELECT ONG GOING LISTINGS QUERY.
+        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going"';
+              
+        connection.query(selectOnGoingReservationListingsQuery, userId, (err, selectOnGoingReservationListingsResult) => {
+          if (err) {throw err};
+                        
+          res.json({onGoingReservationListings: selectOnGoingReservationListingsResult});
+
+        });
+
+      };
+
+    });
+
+    } else {  
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+  
+});
+
+  //  SELECT COMPLETED RESERVATION LISTINGS.
+app.get('/completed-reservation-listings', (req, res) => {
+  let userId = '';
+
+  if(req.session.userId != undefined) {
+    userId = req.session.userId;
+
+      //  SELECT TYPE OF USER QUERY
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      if (err) {throw err};
+      
+      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      } else {  
+          //  SELECT ONG GOING LISTINGS QUERY.
+        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed"';
+              
+        connection.query(selectCompletedReservationListingsQuery, userId, (err, selectCompletedReservationListingsResult) => {
+          if (err) {throw err};
+                        
+          res.json({completedReservationListings: selectCompletedReservationListingsResult});
+
+        });
+
+      };
+
+    });
+
+    } else {  
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+  
+});
+
+  //  SELECT CANCELLED RESERVATION LISTINGS.
+app.get('/cancelled-reservation-listings', (req, res) => {
+  let userId = '';
+
+  if(req.session.userId != undefined) {
+    userId = req.session.userId;
+
+      //  SELECT TYPE OF USER QUERY
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      if (err) {throw err};
+      
+      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+
+      } else {  
+          //  SELECT ONG GOING LISTINGS QUERY.
+        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled"';
+              
+        connection.query(selectCancelledReservationListingsQuery, userId, (err, selectCancelledReservationListingsResult) => {
+          if (err) {throw err};
+                        
+          res.json({cancelledReservationListings: selectCancelledReservationListingsResult});
+
+        });
+
+      };
+
+    });
+
+    } else {  
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+  
+});
+
+
   //  SELECT RESERVATION LISTINGS.
 app.post('/reservation-listings', (req, res) => {
     //  USER INPUTS.
@@ -5417,170 +5584,124 @@ app.post('/add-note', (req, res) => {
 
 });
 
-  //  SELECT ALL RESERVATION LISTINGS.
-app.get('/all-reservation-listings', (req, res) => {
+  //  SELECT ARCHIVE LISTINGS.
+app.post('/archive-listings', (req, res) => {
+    //  USER INPUTS.
+
+  const orderByInput = req.body.orderByInput;
+  const orderInput = req.body.orderInput;
+  const searchInput = req.body.searchInput;
+  const pageNumberInput = req.body.pageNumberInput;
+
+  let userId = '';
+
+    if(req.session.userId != undefined) {
+      userId = req.session.userId;
+
+      //  SELECT TYPE OF USER QUERY
+    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+
+    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+      if (err) {throw err};
+      
+      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+
+        } else {  
+            //  SELECT ARCHIVE RESERVATION LISTINGS QUERY.
+          let selectArchiveListingsQuery = 'SELECT number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM(' +
+                                               'SELECT ROW_NUMBER() OVER (ORDER BY date_archived) AS number, reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NOT NULL' +
+                                               ' ) as reservation_table';
+            
+            //  DECLARES selectArchiveListingsValue.
+          const selectArchiveListingsValue = [userId];
+
+          if(searchInput != "") {
+            selectArchiveListingsQuery += ' WHERE (number LIKE "%' + searchInput + '%" OR full_name LIKE "%' + searchInput + '%" OR contact_number LIKE "%' + searchInput + '%" OR property LIKE "%' + searchInput + '%" OR reservation_period_from LIKE "%' + searchInput + '%" OR reservation_period_to LIKE "%' + searchInput + '%" OR status LIKE "%' + searchInput + '%")';
+          };
+
+          selectArchiveListingsQuery += ' ORDER BY '+ orderByInput + ' ' + orderInput;
+          
+          selectArchiveListingsQuery += ' LIMIT 10';
+
+          if(pageNumberInput != 0) {
+            selectArchiveListingsQuery += ' OFFSET ?';
+            selectArchiveListingsValue.push(pageNumberInput);
+          };
+            
+          connection.query(selectArchiveListingsQuery, selectArchiveListingsValue, (err, selectArchiveListingsResult) => {
+            if (err) {throw err};
+
+                //  SELECT PROPERTY LISTINGS QUERY.
+              const selectPropertyListingsQuery = 'SELECT property_id, user_id, location, address, property_type, FORMAT(price, 2) AS price, area, room_count, bath_count, description, status, date_featured, date_created, date_deleted FROM property_table WHERE user_id = ? AND date_deleted IS NULL ORDER BY date_created';
+                  
+              connection.query(selectPropertyListingsQuery, userId, (err, selectPropertyListingsResult) => {
+                if (err) {throw err};
+                        
+                  res.json({archiveListings: selectArchiveListingsResult, propertyListings: selectPropertyListingsResult});
+
+              });
+
+          });
+
+        };
+
+      });
+
+    } else {  
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+
+    };
+  
+});
+
+  //  RESERVATION UNARCHIVE.
+app.post('/reservation-unarchive', (req, res) => {
+    //  USER INPUTS
+  const reservationIdInput = req.body.reservationIdInput;
+  
   if(req.session.userId != undefined) {
     const userId = req.session.userId;
 
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
+      //  SELECT AGENT QUERY
+    const selectAgentQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
 
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
+    connection.query(selectAgentQuery, userId, (err, selectAgentQuery) => {
       if (err) {throw err};
-      
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
+                            
+      if(selectAgentQuery.length > 0) {  
+          //  UPDATE ARCHIVE QUERY.
+        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = NULL WHERE reservation_id = ?';
+
+        connection.query(updateArchiveQuery, reservationIdInput, (err, updateArchiveResult) => {
+          if(err) {throw err};
+          
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+          
+        }); 
+
+      } else { 
           //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
           //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
         res.json("");
 
-      } else {  
-          //  SELECT ALL RESERVATION LISTINGS QUERY.
-        const selectAllReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND date_archived IS NULL';
-              
-        connection.query(selectAllReservationListingsQuery, userId, (err, selectAllReservationListingsResult) => {
-          if (err) {throw err};
-                        
-          res.json({allReservationListings: selectAllReservationListingsResult});
-
-        });   
-
       };
-
-    });
-
-    } else {  
-        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-      res.json("");
-
-    };
-  
-});
-
-  //  SELECT ON GOING RESERVATION LISTINGS.
-app.get('/on-going-reservation-listings', (req, res) => {
-  let userId = '';
-
-  if(req.session.userId != undefined) {
-    userId = req.session.userId;
-
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-      if (err) {throw err};
       
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      } else {  
-          //  SELECT ONG GOING LISTINGS QUERY.
-        const selectOnGoingReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "On Going" AND date_archived IS NULL';
-              
-        connection.query(selectOnGoingReservationListingsQuery, userId, (err, selectOnGoingReservationListingsResult) => {
-          if (err) {throw err};
-                        
-          res.json({onGoingReservationListings: selectOnGoingReservationListingsResult});
-
-        });
-
-      };
-
     });
 
-    } else {  
-        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-      res.json("");
+  } else {  
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
 
-    };
-  
-});
+  };
 
-  //  SELECT COMPLETED RESERVATION LISTINGS.
-app.get('/completed-reservation-listings', (req, res) => {
-  let userId = '';
-
-  if(req.session.userId != undefined) {
-    userId = req.session.userId;
-
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-      if (err) {throw err};
-      
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      } else {  
-          //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCompletedReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Completed" AND date_archived IS NULL';
-              
-        connection.query(selectCompletedReservationListingsQuery, userId, (err, selectCompletedReservationListingsResult) => {
-          if (err) {throw err};
-                        
-          res.json({completedReservationListings: selectCompletedReservationListingsResult});
-
-        });
-
-      };
-
-    });
-
-    } else {  
-        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-      res.json("");
-
-    };
-  
-});
-
-  //  SELECT CANCELLED RESERVATION LISTINGS.
-app.get('/cancelled-reservation-listings', (req, res) => {
-  let userId = '';
-
-  if(req.session.userId != undefined) {
-    userId = req.session.userId;
-
-      //  SELECT TYPE OF USER QUERY
-    const selectTypeOfUserQuery = 'SELECT user_id, type_of_user, first_name, last_name, user_name, contact_number, telephone_number, email_address, recovery_email_address, password, date_joined, date_leaved FROM main_user_table WHERE user_id = ?';
-
-    connection.query(selectTypeOfUserQuery, userId, (err, selectTypeOfUserResult) => {
-      if (err) {throw err};
-      
-      if(selectTypeOfUserResult[0].type_of_user != "Agent") { 
-          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-        res.json("");
-
-      } else {  
-          //  SELECT ONG GOING LISTINGS QUERY.
-        const selectCancelledReservationListingsQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE agent_id = ? AND status = "Cancelled" AND date_archived IS NULL';
-              
-        connection.query(selectCancelledReservationListingsQuery, userId, (err, selectCancelledReservationListingsResult) => {
-          if (err) {throw err};
-                        
-          res.json({cancelledReservationListings: selectCancelledReservationListingsResult});
-
-        });
-
-      };
-
-    });
-
-    } else {  
-        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-      res.json("");
-
-    };
-  
 });
 
   //  SELECT DELETED PROPERTY LISTINGS.
@@ -5797,6 +5918,196 @@ app.post('/delete-all-property', (req, res) => {
   };
 
 });
+
+  //  LOAD MARKER.
+app.post('/load-marker', (req, res) => {
+    //  USER INPUTS.
+  const roleInput = req.body.role;
+
+  if(req.session.userId != undefined) {
+    const userId = req.session.userId;
+
+    if(roleInput != "agent") {
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+    } else {   
+        //  SELECT LOCATION MARKER QUERY.
+      const selectLocationMarkerQuery = 'SELECT id, user_id, label, latitude, longitude FROM location_marker_table WHERE user_id = ? AND date_deleted IS NULL';
+
+      connection.query(selectLocationMarkerQuery, userId, (err, selectLocationMarkerResult) => {
+        if(err) {throw err};
+
+        res.json({locationMarker: selectLocationMarkerResult});
+      });
+    };
+  } else {
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+});
+
+  //  SAVE MARKER.
+app.post('/save-marker', (req, res) => { 
+    //  USER INPUTS.
+  const roleInput = req.body.role;
+  const markerInput = req.body.markerInput;
+  const d = new Date();
+  const dateMarked = d.getFullYear().toString().padStart(4, "0") + '-' +
+                      (d.getMonth() + 1).toString().padStart(2, "0") + '-' +
+                       d.getDate().toString().padStart(2, "0") + ' ' +
+                       d.getHours().toString().padStart(2, "0") + ':' +
+                       d.getMinutes().toString().padStart(2, "0") + ':' +
+                       d.getSeconds().toString().padStart(2, "0");
+
+    //  SELECT LABEL QUERY.
+  const selectLabelQuery = 'SELECT id FROM location_marker_table WHERE label = ? AND date_deleted IS NULL';
+
+    //  DECLARES selectLabelValue.
+  const selectLabelValue = markerInput[markerInput.length - 1].label;
+
+  connection.query(selectLabelQuery, selectLabelValue, (err, selectLabelResult) => {
+    if(err) {throw err};
+
+      //  SET.
+    let set = '';
+
+    if(markerInput[markerInput.length - 1].label != "New Marker") {
+      set = "LABEL IS SET!";
+    } else {
+      set = "LABEL IS NOT SET!";
+    };
+
+      //  USED.
+    let used = '';
+
+    if(selectLabelResult.length > 0) {
+      used = "LABEL ALREADY IN USED!";
+    } else {
+      used = "LABEL IS NOT IN USED!";
+    };
+
+      //  LABEL.
+    let label = '';
+
+    if(
+      set != "LABEL IS NOT SET!" &&
+      used != "LABEL ALREADY IN USED!"
+    ) {
+      label = "LABEL FOUND!";
+    } else {
+      label = "LABEL NOT FOUND!";
+    };
+
+    if(label != "LABEL NOT FOUND!") {
+      if(req.session.userId != undefined) {
+        const userId = req.session.userId;
+
+        if(roleInput != "agent") {
+            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+          res.json("");
+        } else { 
+          for(let i = 0; i < markerInput.length; i++) {
+              //  SELECT ID QUERY.
+            const selectIdQuery2 = 'SELECT id FROM location_marker_table WHERE id = ? AND date_deleted IS NULL';
+
+              //  DECLARES selectIdValue.
+            const selectIdValue2 = markerInput[i].id;
+
+            connection.query(selectIdQuery2, selectIdValue2, (err, selectIdResult2) => {
+              if(err) {throw err};
+
+              if(selectIdResult2.length > 0) { 
+                  //  UPDATE LOCATION MARKER QUERY.
+                const updateLocationMarkerQuery = 'UPDATE location_marker_table SET label = ?, latitude = ?, longitude = ? WHERE id = ?';
+
+                  //  INITIALIZED VALUE FOR updateLocationMarkerValue.
+                const updateLocationMarkerValue = [markerInput[i].label,
+                                                  markerInput[i].lat,
+                                                  markerInput[i].lng,
+                                                  markerInput[i].id
+                                                  ];
+
+                connection.query(updateLocationMarkerQuery, updateLocationMarkerValue, (err, updateLocationMarkerResult) => {
+                  if (err) {throw err};
+                });
+              } else {
+                  //  INSERT LOCATION MARKER QUERY.
+                const insertLocationMarkerQuery = 'INSERT INTO location_marker_table (id, user_id, label, latitude, longitude, date_marked) VALUES (?, ?, ?, ?, ?, ?)';
+
+                  //  INITIALIZED VALUE FOR insertLocationMarkerValue.
+                const insertLocationMarkerValue = [markerInput[i].id,
+                                                  userId,
+                                                  markerInput[i].label,
+                                                  markerInput[i].lat,
+                                                  markerInput[i].lng,
+                                                  dateMarked
+                                                  ];
+
+                connection.query(insertLocationMarkerQuery, insertLocationMarkerValue, (err, insertLocationMarkerResult) => {
+                  if (err) {throw err};
+                });
+              }; 
+            });
+          };
+          
+          res.json({label: label});
+        };
+      } else {
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+      };
+    } else {
+      res.json({label: label});
+    } ;
+  });
+});
+
+  //  DELETE MARKER.
+app.post('/delete-marker', (req, res) => {
+    //  USER INPUTS.
+  const roleInput = req.body.role;
+  const idInput = req.body.idInput;
+
+  const d = new Date();
+  const dateToday = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                    (d.getMonth() + 1).toString().padStart(2, "0") + '-' +
+                     d.getDate().toString().padStart(2, "0") + ' ' +
+                     d.getHours().toString().padStart(2, "0") + ':' +
+                     d.getMinutes().toString().padStart(2, "0") + ':' +
+                     d.getSeconds().toString().padStart(2, "0");
+  
+  if(req.session.userId != undefined) {  
+    if(roleInput != "agent") {    
+        //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+        //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+      res.json("");
+    } else {  
+      //  DELETE MARKER QUERY.
+    const deleteMarkerQuery = 'UPDATE location_marker_table SET date_deleted = ? WHERE id = ?';
+
+      //  DECLARES deleteMarkerValue.
+    const deleteMarkerValue = [dateToday, idInput];
+
+    connection.query(deleteMarkerQuery, deleteMarkerValue, (err, deleteMarkerResult) => {
+      if (err) {throw err}; 
+            
+          //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+          //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+        res.json("");
+      });
+    };
+  } else {
+      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
+      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
+    res.json("");
+  };
+});
+
+
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
