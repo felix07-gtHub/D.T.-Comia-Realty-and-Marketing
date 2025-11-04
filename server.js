@@ -4173,6 +4173,110 @@ app.post('/tour-reservation-history', (req, res) => {
   
 });
 
+  //  MESSAGE.
+app.post('/message', (req, res) => {
+    //  USER INPUTS.
+  const nameInput = req.body.nameInput;
+  const emailAddressInput = req.body.emailAddressInput;
+  const messageInput = req.body.messageInput;
+
+      //  NAME.
+    let name = '';
+
+    if(nameInput != "") {
+      name = "NAME FOUND!";
+    } else {
+      name = "NAME NOT FOUND!";
+    };
+
+      //  EMAIL ADDRESS.
+    let emailAddress = '';
+
+    if(emailAddressInput.match("@") != null) {
+      emailAddress = "EMAIL ADDRESS IS AN EMAIL!";
+    } else {
+      emailAddress = "EMAIL ADDRESS IS NOT AN EMAIL!";
+    };
+
+      //  MESSAGE.
+    let message = '';
+
+    if(messageInput != "") {
+      message = "MESSAGE FOUND!";
+    } else {
+      message = "MESSAGE NOT FOUND!";
+    };
+
+    if(
+        name != "NAME NOT FOUND!" &&
+        emailAddress != "EMAIL ADDRESS IS NOT AN EMAIL!" &&
+        message != "MESSAGE NOT FOUND!"
+    ) {
+
+      const d = new Date();
+      const dateMessage = d.getFullYear().toString().padStart(4, "0")  + '-' +
+                         (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                          d.getDate().toString().padStart(2, "0") + ' ' +
+                          d.getHours().toString().padStart(2, "0") + ':' +
+                          d.getMinutes().toString().padStart(2, "0") + ':' +
+                          d.getSeconds().toString().padStart(2, "0");
+
+        //  INSERT MESSAGE QUERY.
+      const insertMessageQuery = 'INSERT INTO message_table (name, email_address, message, date_message) VALUES (?, ?, ?, ?)';
+
+        //  VALUE FOR insertMessageValue.
+      const insertMessageValue = [
+                                  nameInput,
+                                  emailAddressInput,
+                                  messageInput,
+                                  dateMessage
+                                 ];
+
+      connection.query(insertMessageQuery, insertMessageValue, (err, insertMessageResult) => {
+        if(err) {throw err};
+        
+        res.json({
+                  name: name,
+                  emailAddress: emailAddress,
+                  message: message
+                });
+
+      });
+
+    } else {
+      res.json({
+                name: name,
+                emailAddress: emailAddress,
+                message: message
+              });
+    };
+
+});
+
+  //  LOAD ALL MARKER.
+app.get('/load-all-marker', (req, res) => {    
+    //  SELECT LOCATION MARKER QUERY.
+  const selectLocationMarkerQuery = 'SELECT id, user_id, label, latitude, longitude FROM location_marker_table WHERE date_deleted IS NULL';
+
+  connection.query(selectLocationMarkerQuery, (err, selectLocationMarkerResult) => {
+    if(err) {throw err};
+
+    res.json({locationMarker: selectLocationMarkerResult});
+  });
+
+});
+
+  //  TRIGGER THE OPEN STREET MAP END-POINT THROUGH THIS API SINCE BACK-END IS CORS ENABLED.
+app.post('/search-address', async (req, res) => {
+  const qInput = req.body.q;
+
+    //  END-POINT PROVIDED BY NOMINATIM TO FETCH DATA FROM OPEN STREET MAP.
+  const response=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(qInput)}`);
+  const data=await response.json();
+
+  res.json({address: data});
+})
+
 
 
 /*
