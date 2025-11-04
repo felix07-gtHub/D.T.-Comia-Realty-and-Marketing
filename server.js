@@ -6074,13 +6074,13 @@ app.post('/save-marker', (req, res) => {
   connection.query(selectLabelQuery, selectLabelValue, (err, selectLabelResult) => {
     if(err) {throw err};
 
-      //  SET.
-    let set = '';
+      //  empty.
+    let empty = '';
 
-    if(markerInput[markerInput.length - 1].label != "New Marker") {
-      set = "LABEL IS SET!";
+    if(markerInput[markerInput.length - 1].label != '') {
+      empty = "LABEL IS NOT EMPTY!";
     } else {
-      set = "LABEL IS NOT SET!";
+      empty = "LABEL IS EMPTY!";
     };
 
       //  USED.
@@ -6096,7 +6096,7 @@ app.post('/save-marker', (req, res) => {
     let label = '';
 
     if(
-      set != "LABEL IS NOT SET!" &&
+      empty != "LABEL IS EMPTY!" &&
       used != "LABEL ALREADY IN USED!"
     ) {
       label = "LABEL FOUND!";
