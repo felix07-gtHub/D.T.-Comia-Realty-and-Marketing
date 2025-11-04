@@ -192,12 +192,6 @@ textarea {
   margin-top: 45px;
 }
 
-.map {
-  background-image: url('../https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER\ ICONS\ AND\ LOGOS/new map.png'); 
-  background-size: cover; 
-  height: 470px; /* kailangan ng height para lumabas ang bg */
-}
-
 .contact-footer {
   display: flex;
   height: 220px;
