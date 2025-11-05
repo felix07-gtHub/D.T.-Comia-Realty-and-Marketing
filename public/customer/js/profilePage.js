@@ -83,13 +83,9 @@ async function userInformation() {
     });
     const userData = await response.json();
 
-    console.log(userData)
-
     if(userData != "") {
         if(userData.userInformation[0].type_of_user != "Customer") {
-            //  window.location = "./homePage.html";
-
-            console.log("USER IS NOT A CUSTOMER!");
+            window.location = "./homePage.html";
         } else {
             if(userData.userImage.length > 0) {
                 const removeButton = document.createElement('input');
@@ -258,9 +254,7 @@ async function userInformation() {
             
         };
     } else {
-        //  window.location = "./homePage.html";
-
-        console.log("USER NOT FOUND!");
+        window.location = "./homePage.html";
     };
 
         //  .
