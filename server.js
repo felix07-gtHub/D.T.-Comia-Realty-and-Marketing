@@ -1735,22 +1735,22 @@ app.get('/user-information', (req, res) => {
         connection.query(selectUserReservationQuery, userId, (err, selectUserReservationResult) => {
           if (err) {throw err};
 
-        const emailAddress = selectUserInformationResult[0].email_address;
-        const recoveryEmailAddres = selectUserInformationResult[0].recovery_email_address;
+          const emailAddress = selectUserInformationResult[0].email_address;
+          const recoveryEmailAddres = selectUserInformationResult[0].recovery_email_address;
 
-          //  SELECT EMAIL ADDRESS QUERY.
-        let selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE old_email_Address = ?';
-        
-          //  INITIALIZE selectEmailAddressValue.
-        const selectEmailAddressValue = [emailAddress];
+            //  SELECT EMAIL ADDRESS QUERY.
+          let selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE old_email_Address = ?';
+          
+            //  INITIALIZE selectEmailAddressValue.
+          const selectEmailAddressValue = [emailAddress];
 
-        if(recoveryEmailAddres != undefined) {
-          selectEmailAddressQuery += ' || old_email_address = ?';
-          selectEmailAddressValue.push(recoveryEmailAddres);
-        };
+          if(recoveryEmailAddres != null) {
+            selectEmailAddressQuery += ' || old_email_address = ?';
+            selectEmailAddressValue.push(recoveryEmailAddres);
+          };
 
-        connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
-          if(err) {throw err};
+          connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
+            if(err) {throw err};
             
             res.json({userInformation: selectUserInformationResult,
                       userImage: selectUserImageResult,
