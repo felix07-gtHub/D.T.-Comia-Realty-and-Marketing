@@ -1739,17 +1739,12 @@ app.get('/user-information', (req, res) => {
           const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address;
 
             //  SELECT EMAIL ADDRESS QUERY.
-          let selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table';
+          const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE (old_email_address = ? || old_email_address = ?)';
           
-            //  INITIALIZE selectEmailAddressValue.
-          const selectEmailAddressValue = [emailAddress];
+            //  DECLARES selectEmailAddressValue.
+          const selectEmailAddressValue = [emailAddress, recoveryEmailAddress];
 
-          if(recoveryEmailAddress != null) {
-            selectEmailAddressQuery += ' OR old_email_address = ?';
-            selectEmailAddressValue.push(recoveryEmailAddress);
-          };
-
-          connection.query(selectEmailAddressQuery, (err, selectEmailAddressResult) => {
+          connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
             if(err) {throw err};
             
             res.json({userInformation: selectUserInformationResult,
