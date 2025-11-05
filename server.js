@@ -308,7 +308,7 @@ app.post('/sign-up', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
 
                 res.json({
                           firstName: firstName2,
@@ -381,7 +381,7 @@ app.post('/sign-up', (req, res) => {
                 connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
                   
                   res.json({
                             firstName: firstName2,
@@ -458,7 +458,7 @@ app.post('/sign-up', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(emailAddressInput, firstNameInput + ' ' + lastNameInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+              emailSender(emailAddressInput, firstNameInput + ' ' + lastNameInput, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
 
               res.json({
                         firstName: firstName2,
@@ -561,7 +561,7 @@ app.post('/proxy-user-verification-link', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -631,7 +631,7 @@ app.post('/proxy-user-verification-link', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/emailVerifivation.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -726,7 +726,7 @@ app.post('/proxy-user-verification', (req, res) => {
               };
 
               text = "Your account has been successfully verified.";
-              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
+              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/homePage.html";
 
                 //  INSERT USER QUERY.
               const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
@@ -818,7 +818,7 @@ app.post('/proxy-user-verification', (req, res) => {
                 };
 
                 text = "Your account has been successfully verified.";
-                link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
+                link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/homePage.html";
 
                   //  INSERT USER QUERY.
                 const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, recovery_email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -1147,7 +1147,7 @@ app.post('/forgot-password', (req, res) => {
               connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
 
                 res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1215,7 +1215,7 @@ app.post('/forgot-password', (req, res) => {
                 connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
+                  emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
 
                   res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1285,7 +1285,7 @@ app.post('/forgot-password', (req, res) => {
             connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
+              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
 
               res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1379,7 +1379,7 @@ app.post('/password-change-link', (req, res) => {
             connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
+              emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1449,7 +1449,7 @@ app.post('/password-change-link', (req, res) => {
               connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerifivation.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1507,7 +1507,7 @@ app.post('/password-verification', (req, res) => {
 
           if(d < dateExpired) {
             text = "Password verified.";
-            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
+            link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
             res.json({text: text, link: link});
 
@@ -1527,7 +1527,7 @@ app.post('/password-verification', (req, res) => {
 
             if(d < dateExpired) {
               text = "Password verified.";
-              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
+              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
               res.json({text: text, link: link});
           
@@ -1784,6 +1784,7 @@ app.post('/preview-photo', upload.single('Photo'), function (req, res) {
 
   const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
   const buffer = photo.buffer.toString('base64');
+      
   
   if(req.session.userId != undefined) {
       res.json({buffer: buffer,
@@ -1822,7 +1823,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
                          Math.round(Math.random() * 1E9);
 
     const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/USER/" + userId + '/' + fileName;
+    const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/USER/" + userId + '/' + fileName;
 
       //  SELECT USER IMAGE QUERY.
     const selectUserImageQuery = 'SELECT user_id, field_name, path, file_name, mime_type FROM user_image_table WHERE user_id = ?';
@@ -1846,7 +1847,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer);
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer);
           };  
 
           photoUploader().catch(console.error);
@@ -1884,7 +1885,7 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer);
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('USER/' + userId  + '/' + fileName, photo.buffer);
           };  
 
           photoUploader().catch(console.error);
@@ -1908,67 +1909,6 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
         });
       };
     });
-  } else {    
-      //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-      //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-    res.json("");
-  };
-});
-
-  //  DELETE ACCOUNT.
-app.get('/delete-account', (req, res) => {
-    //  USER INPUTS.
-  const d = new Date();
-  const dateToday = d.getFullYear().toString().padStart(4, "0")  + '-' +
-                    (d.getMonth() + 1).toString().padStart(2, "0") + '-' +
-                     d.getDate().toString().padStart(2, "0") + ' ' +
-                     d.getHours().toString().padStart(2, "0") + ':' +
-                     d.getMinutes().toString().padStart(2, "0") + ':' +
-                     d.getSeconds().toString().padStart(2, "0");
-  
-  if(req.session.userId != undefined) {
-    const userId = req.session.userId;
-    
-      //  DELETE ACCOUNT QUERY.
-    const deleteAccountQuery = 'UPDATE main_user_table SET date_leaved = ? WHERE user_id = ?';
-
-      //  DECLARES deleteAccountValue.
-    const deleteAccountValue = [dateToday, userId];
-
-    connection.query(deleteAccountQuery, deleteAccountValue, (err, deleteAccountResult) => {
-      if (err) {throw err}; 
-    
-        //  DELETE PROPERTY QUERY.
-      const deletePropertyQuery = 'UPDATE property_table SET date_deleted = ? WHERE user_id = ?';
-
-        //  DECLARES deletePropertyValue.
-      const deletePropertyValue = [dateToday, userId];
-
-      connection.query(deletePropertyQuery, deletePropertyValue, (err, deletePropertyResult) => {
-        if (err) {throw err}; 
-
-          //  UPDATE ARCHIVE QUERY.
-        const updateArchiveQuery = 'UPDATE reservation_table SET date_archived = ? WHERE (customer_id = ? OR agent_id = ?)';
-
-          //  DECLARES updateArchiveValue.
-        const updateArchiveValue = [dateToday, userId, userId];
-
-        connection.query(updateArchiveQuery, updateArchiveValue, (err, updateArchiveResult) => {
-          if(err) {throw err};
-
-          req.session.destroy;
-          res.clearCookie('connect.sid');
-              
-            //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
-            //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
-          res.json("");
-              
-        }); 
-
-      });
-
-    });
-
   } else {    
       //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
       //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -2443,7 +2383,7 @@ app.post('/verify-new-email-address', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
 
                 res.json({emailAddress: emailAddress});
 
@@ -2511,7 +2451,7 @@ app.post('/verify-new-email-address', (req, res) => {
                 connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+                  emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
                   
                   res.json({emailAddress: emailAddress});
 
@@ -2582,7 +2522,7 @@ app.post('/verify-new-email-address', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(newEmailAddressInput, newEmailAddressInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + newEmailAddressInput + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+              emailSender(newEmailAddressInput, newEmailAddressInput, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + newEmailAddressInput + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
 
               res.json({emailAddress: emailAddress});
 
@@ -2676,7 +2616,7 @@ app.post('/new-email-verification-link', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+              emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
 
               res.json({emailAddress: emailAddress});
 
@@ -2744,7 +2684,7 @@ app.post('/new-email-verification-link', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html</a>");
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
                 
                 res.json({emailAddress: emailAddress});
 
@@ -2800,7 +2740,7 @@ app.post('/new-email-verification', (req, res) => {
             const userId = req.session.userId;
 
             text = "Your account has been successfully verified.";
-            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
+            link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/profilePage.html";
 
             if(selectEmailAddressResult[0].type_of_email_address != "Main") {
                 //  UPDATE RECOVERY QUERY.
@@ -2872,7 +2812,7 @@ app.post('/new-email-verification', (req, res) => {
               const userId = req.session.userId;
 
               text = "Your account has been successfully verified.";
-              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
+              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/profilePage.html";
 
               if(selectEmailAddressResult[0].type_of_email_address != "Main") {
                   //  UPDATE RECOVERY QUERY.
@@ -4764,7 +4704,7 @@ app.post('/mark-sold', (req, res) => {
 });
 
 async function imageUploader(propertyImage, propertyId, fileName) {
-  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer);
+  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer);
 };  
 
 /*
@@ -4836,7 +4776,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                            Math.round(Math.random() * 1E9);
 
       const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -4859,7 +4799,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                                       additionalImages[i].fieldname,
                                       additionalImages[i].mimetype,
                                       additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
@@ -4872,7 +4812,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
       const descriptionInput = req.body.Description;
       const status = "AVAILABLE";
       const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
-                        (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
+                         (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
                           d.getDate().toString().padStart(2, "0") + ' ' +
                           d.getHours().toString().padStart(2, "0") + ':' +
                           d.getMinutes().toString().padStart(2, "0") + ':' +
@@ -5044,7 +4984,8 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                            Math.round(Math.random() * 1E9);
 
       const fileName = fieldName + '-' + uniqueSuffix + '.' + mimeType.split('/')[1];
-      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
+
+      const path = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + fileName;
       const additionalImages = req.files['Additional_images'];
 
         //  INITIALIZED VALUE FOR additionalImagesInput.
@@ -5067,7 +5008,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                                       additionalImages[i].fieldname,
                                       additionalImages[i].mimetype,
                                       additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1],
-                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
+                                      "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing%20Local/PROPERTY/" + userId + '/' + propertyId + '/' + additionalImages[i].fieldname + '-' + uniqueSuffix + '.' + additionalImages[i].mimetype.split('/')[1]
                                     ]);
         };
       };
@@ -5355,7 +5296,6 @@ app.get('/cancelled-reservation-listings', (req, res) => {
     };
   
 });
-
 
   //  SELECT RESERVATION LISTINGS.
 app.post('/reservation-listings', (req, res) => {
