@@ -308,7 +308,7 @@ app.post('/sign-up', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>Verify</a>");
 
                 res.json({
                           firstName: firstName2,
@@ -381,7 +381,7 @@ app.post('/sign-up', (req, res) => {
                 connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
+                  emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>Verify</a>");
                   
                   res.json({
                             firstName: firstName2,
@@ -458,7 +458,7 @@ app.post('/sign-up', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(emailAddressInput, firstNameInput + ' ' + lastNameInput, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
+              emailSender(emailAddressInput, firstNameInput + ' ' + lastNameInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + emailAddressInput + "&token=" + token + "'>Verify</a>");
 
               res.json({
                         firstName: firstName2,
@@ -561,7 +561,7 @@ app.post('/proxy-user-verification-link', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
+              emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>Verify</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -631,7 +631,7 @@ app.post('/proxy-user-verification-link', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/emailVerifivation.html</a>");
+                emailSender(selectProxyUserResult[0].email_address, selectProxyUserResult[0].email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/proxyUserVerification.html?emailAddress=" + selectProxyUserResult[0].email_address + "&token=" + token + "'>Verify</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -726,7 +726,7 @@ app.post('/proxy-user-verification', (req, res) => {
               };
 
               text = "Your account has been successfully verified.";
-              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/homePage.html";
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
 
                 //  INSERT USER QUERY.
               const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
@@ -818,7 +818,7 @@ app.post('/proxy-user-verification', (req, res) => {
                 };
 
                 text = "Your account has been successfully verified.";
-                link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/homePage.html";
+                link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
 
                   //  INSERT USER QUERY.
                 const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, recovery_email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -1147,7 +1147,7 @@ app.post('/forgot-password', (req, res) => {
               connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>Verify</a>");
 
                 res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1215,7 +1215,7 @@ app.post('/forgot-password', (req, res) => {
                 connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
+                  emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>Verify</a>");
 
                   res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1285,7 +1285,7 @@ app.post('/forgot-password', (req, res) => {
             connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
+              emailSender(selectUserResult[0].recovery_email_address, selectUserResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectUserResult[0].recovery_email_address + "&token=" + token + "'>Verify</a>");
 
               res.json({recoveryEmailAddress: recoveryEmailAddress});
 
@@ -1379,7 +1379,7 @@ app.post('/password-change-link', (req, res) => {
             connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
               if(err) {throw err};
 
-              emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
+              emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>Verify</a>");
 
                 //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                 //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1449,7 +1449,7 @@ app.post('/password-change-link', (req, res) => {
               connection.query(insertForgotPasswordQuery, insertForgotPasswordValue, (err, insertForgotPasswordResult) => {
                 if(err) {throw err};
 
-                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordVerifivation.html</a>");
+                emailSender(selectForgotPasswordResult[0].recovery_email_address, selectForgotPasswordResult[0].recovery_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordVerification.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + token + "'>Verify</a>");
 
                   //  IF USERS KEEPS SENDING THE SAME DATA OVER AND OVER THIS END-POINT WILL STOP,
                   //  TO AVOID THAT BACK-END MUST SEND SOMETHING BACK TO FRONT-END.
@@ -1507,7 +1507,7 @@ app.post('/password-verification', (req, res) => {
 
           if(d < dateExpired) {
             text = "Password verified.";
-            link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
+            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
             res.json({text: text, link: link});
 
@@ -1527,7 +1527,7 @@ app.post('/password-verification', (req, res) => {
 
             if(d < dateExpired) {
               text = "Password verified.";
-              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/passwordChange.html?recoveryEmailAddress=" + selectForgotPasswordResult[0].recovery_email_address + "&token=" + selectForgotPasswordResult[0].token;
             
               res.json({text: text, link: link});
           
@@ -2383,7 +2383,7 @@ app.post('/verify-new-email-address', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>Verify</a>");
 
                 res.json({emailAddress: emailAddress});
 
@@ -2451,7 +2451,7 @@ app.post('/verify-new-email-address', (req, res) => {
                 connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                   if(err) {throw err};
 
-                  emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
+                  emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>Verify</a>");
                   
                   res.json({emailAddress: emailAddress});
 
@@ -2522,7 +2522,7 @@ app.post('/verify-new-email-address', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(newEmailAddressInput, newEmailAddressInput, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + newEmailAddressInput + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
+              emailSender(newEmailAddressInput, newEmailAddressInput, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + newEmailAddressInput + "&token=" + token + "'>Verify</a>");
 
               res.json({emailAddress: emailAddress});
 
@@ -2616,7 +2616,7 @@ app.post('/new-email-verification-link', (req, res) => {
             connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
               if(err) {throw err};
 
-              emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
+              emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>Verify</a>");
 
               res.json({emailAddress: emailAddress});
 
@@ -2684,7 +2684,7 @@ app.post('/new-email-verification-link', (req, res) => {
               connection.query(insertProxyUserQuery, insertProxyUserValue, (err, insertProxyUserResult) => {
                 if(err) {throw err};
 
-                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>http://127.0.0.1:3001/html/SE1/GROUP%202/customer/newEmailVerification.html</a>");
+                emailSender(selectEmailAddressResult[0].new_email_address, selectEmailAddressResult[0].new_email_address, "Hello ✔", "Hello world?", "<a href='https://dt-comia-realty-and-marketing-production.up.railway.app/customer/newEmailVerification.html?newEmailAddress=" + selectEmailAddressResult[0].new_email_address + "&token=" + token + "'>Verify</a>");
                 
                 res.json({emailAddress: emailAddress});
 
@@ -2740,7 +2740,7 @@ app.post('/new-email-verification', (req, res) => {
             const userId = req.session.userId;
 
             text = "Your account has been successfully verified.";
-            link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/profilePage.html";
+            link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
 
             if(selectEmailAddressResult[0].type_of_email_address != "Main") {
                 //  UPDATE RECOVERY QUERY.
@@ -2812,7 +2812,7 @@ app.post('/new-email-verification', (req, res) => {
               const userId = req.session.userId;
 
               text = "Your account has been successfully verified.";
-              link = "http://127.0.0.1:3001/html/SE1/GROUP%202/customer/profilePage.html";
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/profilePage.html";
 
               if(selectEmailAddressResult[0].type_of_email_address != "Main") {
                   //  UPDATE RECOVERY QUERY.
