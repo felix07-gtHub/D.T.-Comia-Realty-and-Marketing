@@ -726,7 +726,7 @@ app.post('/proxy-user-verification', (req, res) => {
               };
 
               text = "Your account has been successfully verified.";
-              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/logIn.html";
+              link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
 
                 //  INSERT USER QUERY.
               const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
@@ -818,7 +818,7 @@ app.post('/proxy-user-verification', (req, res) => {
                 };
 
                 text = "Your account has been successfully verified.";
-                link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/logIn.html";
+                link = "https://dt-comia-realty-and-marketing-production.up.railway.app/customer/homePage.html";
 
                   //  INSERT USER QUERY.
                 const insertUserQuery = 'INSERT INTO main_user_table (user_id, type_of_user, first_name, last_name, user_name, email_address, recovery_email_address, password, date_joined) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
