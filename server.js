@@ -1745,7 +1745,7 @@ app.get('/user-information', (req, res) => {
           const selectEmailAddressValue = [emailAddress];
 
           if(recoveryEmailAddress != null) {
-            selectEmailAddressQuery += ' || old_email_address = ?';
+            selectEmailAddressQuery += ' OR old_email_address = ?';
             selectEmailAddressValue.push(recoveryEmailAddress);
           };
 
