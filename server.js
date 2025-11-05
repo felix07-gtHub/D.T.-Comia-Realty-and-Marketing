@@ -1734,23 +1734,27 @@ app.get('/user-information', (req, res) => {
             
         connection.query(selectUserReservationQuery, userId, (err, selectUserReservationResult) => {
           if (err) {throw err};
-
-          const emailAddress = selectUserInformationResult[0].email_address;
-          const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address;
-
-            //  SELECT EMAIL ADDRESS QUERY.
-          let selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE old_email_address = ?';
           
-            //  INITIALIZE selectEmailAddressValue.
-          const selectEmailAddressValue = [emailAddress];
+          const selectEmailAddressQuery = `
+                                            SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted
+                                            FROM email_address_table
+                                            WHERE (old_email_address = ? OR old_email_address = ?)
+                                          `;
 
-          if(recoveryEmailAddress != null) {
-            selectEmailAddressQuery += ' OR old_email_address = ?';
-            selectEmailAddressValue.push(recoveryEmailAddress);
-          };
+          if (!selectUserInformationResult[0]) {
+            return res.json({ userInformation: [] });
+          }
+
+          const emailAddress = selectUserInformationResult[0].email_address || "";
+          const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address || "";
+          const selectEmailAddressValue = [emailAddress, recoveryEmailAddress];
+
 
           connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
-            if(err) {throw err};
+            if (err) {
+              console.error("Email address query error:", err);
+              return res.status(500).json({ error: "Email query failed" });
+            }
             
             res.json({userInformation: selectUserInformationResult,
                       userImage: selectUserImageResult,
