@@ -28,7 +28,7 @@ async function emailVerification() {
 
     if(data.text != "Link expired.") {
         link.href = data.link;
-        link.innerHTML = "BACK TO LOGIN";
+        link.innerHTML = "PROCEED TO HOMEPAGE";
 
     } else { 
         if(data.dateAttempted != undefined) {
