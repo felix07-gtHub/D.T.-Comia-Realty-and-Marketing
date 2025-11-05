@@ -85,7 +85,7 @@ async function userInformation() {
 
     if(userData.userInformation != undefined) {
         if(userData.userInformation[0].type_of_user != "Customer") {
-            window.location = "./homePage.html";
+            //  window.location = "./homePage.html";
         } else {
             if(userData.userImage.length > 0) {
                 const removeButton = document.createElement('input');
@@ -254,7 +254,7 @@ async function userInformation() {
             
         };
     } else {
-        window.location = "./homePage.html";
+        //  window.location = "./homePage.html";
     };
 
         //  .
