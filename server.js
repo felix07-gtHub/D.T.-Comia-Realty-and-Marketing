@@ -4703,8 +4703,10 @@ app.post('/mark-sold', (req, res) => {
 
 });
 
-async function imageUploader(propertyImage, propertyId, fileName) {
-  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer);
+async function imageUploader(userId, propertyImage, propertyId, fileName, mimeType) {
+  const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing Local').upload('PROPERTY/' + userId + '/' + propertyId + '/' + fileName, propertyImage.buffer, {
+  contentType: mimeType,
+});
 };  
 
 /*
@@ -4896,7 +4898,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
             connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
               if (err) {throw err};
 
-              imageUploader(mainImage, propertyId, fileName).catch(console.error);
+              imageUploader(userId, mainImage, propertyId, fileName, mimeType).catch(console.error);
 
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
@@ -4914,7 +4916,7 @@ app.post('/add-house', uploadMiddleware, function (req, res) {
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
                     if (err) {throw err};
 
-                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
+                    imageUploader(userId, additionalImages[i], propertyId, additionalImagesInput[i][3], additionalImagesInput[i][2]).catch(console.error);
                   });
                 };     
 
@@ -5093,7 +5095,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
             connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
               if (err) {throw err};
 
-              imageUploader(mainImage, propertyId, fileName).catch(console.error);
+              imageUploader(userId, mainImage, propertyId, fileName, mimeType).catch(console.error);
 
               if(additionalImagesInput.length > 0) {
                 for(let i = 0; i < additionalImagesInput.length; i++) {
@@ -5111,7 +5113,7 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
                   connection.query(insertImageQuery, insertImageValue, (err, insertImageResult) => {
                     if (err) {throw err};
 
-                    imageUploader(additionalImages, propertyId, additionalImagesInput[i][3]).catch(console.error);
+                    imageUploader(userId, additionalImages[i], propertyId, additionalImagesInput[i][3], additionalImagesInput[i][2]).catch(console.error);
                   });
                 };     
 
