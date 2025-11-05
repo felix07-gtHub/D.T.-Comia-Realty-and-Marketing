@@ -118,7 +118,7 @@ async function userInformation() {
     });
     const userData = await response.json();
 
-    if(userData.userInformation != undefined) {
+    if(userData != "") {
         if(userData.userInformation[0].type_of_user != "Agent") {
             window.location = "../customer/logIn.html";
         } else {
