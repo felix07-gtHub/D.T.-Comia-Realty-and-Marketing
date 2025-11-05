@@ -187,13 +187,8 @@
       addingMarker=!addingMarker;
       addMarkerBtn.textContent=addingMarker?'Click map to place marker...':'Add Marker';
       if(addingMarker){
-        map.once('click',async function(e){
-          const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/load-all-marker', {
-            method: 'GET',
-            credentials: "include"
-          });
-          const data = await response.json();
-          const m=createMarker(e.latlng,'New Marker ' + (parseInt(data.locationMarker.length) + 1));
+        map.once('click',e=>{
+          const m=createMarker(e.latlng,'');
           markers.push(m); 
           addingMarker=false; addMarkerBtn.textContent='Add Marker';
         });
