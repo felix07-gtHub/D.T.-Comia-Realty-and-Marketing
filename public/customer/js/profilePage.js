@@ -79,7 +79,7 @@ function invalidInputsMousEave(e) {
 async function userInformation() {
     const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/user-information', {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
     });
     const userData = await response.json();
 
