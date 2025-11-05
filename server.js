@@ -1736,7 +1736,7 @@ app.get('/user-information', (req, res) => {
           if (err) {throw err};
 
           const emailAddress = selectUserInformationResult[0].email_address;
-          const recovery_email_address = selectUserInformationResult[0].recovery_email_address;
+          const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address;
 
             //  SELECT EMAIL ADDRESS QUERY.
           const selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE (old_email_address = ? || old_email_address = ?)';
