@@ -1847,7 +1847,9 @@ app.post('/upload-photo', upload.single('Photo'), function (req, res) {
           if (err) {throw err};
 
           async function photoUploader() {
-            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer);
+            const { data, error } = await supabase.storage.from('D.T. Comia Realty and Marketing').upload('USER/' + userId  + '/' + fileName, photo.buffer, {
+              contentType: mimeType,
+            });
           };  
 
           photoUploader().catch(console.error);
