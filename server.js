@@ -1729,40 +1729,28 @@ app.get('/user-information', (req, res) => {
       connection.query(selectUserImageQuery, userId, (err, selectUserImageResult) => {
         if (err) {throw err};
 
-          //  SELECT USER RESERVATION QUERY.
-        const selectUserReservationQuery = 'SELECT reservation_id, agent_id, customer_id, property_id, full_name, contact_number, email_address, property, reservation_period_from, reservation_period_to, status, date_archived, reason_for_cancelling, note FROM reservation_table WHERE customer_id = ? AND status = "On going"';
-            
-        connection.query(selectUserReservationQuery, userId, (err, selectUserReservationResult) => {
-          if (err) {throw err};
+          const emailAddress = selectUserInformationResult[0].email_address;
+          const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address;
+
+            //  SELECT EMAIL ADDRESS QUERY.
+          let selectEmailAddressQuery = 'SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted FROM email_address_table WHERE old_email_address = ?';
           
-          const selectEmailAddressQuery = `
-                                            SELECT type_of_email_address, old_email_address, new_email_address, token, date_expired, attempt_count, date_attempted
-                                            FROM email_address_table
-                                            WHERE (old_email_address = ? OR old_email_address = ?)
-                                          `;
+            //  INITIALIZE selectEmailAddressValue.
+          const selectEmailAddressValue = [emailAddress];
 
-          if (!selectUserInformationResult[0]) {
-            return res.json({ userInformation: [] });
-          }
-
-          const emailAddress = selectUserInformationResult[0].email_address || "";
-          const recoveryEmailAddress = selectUserInformationResult[0].recovery_email_address || "";
-          const selectEmailAddressValue = [emailAddress, recoveryEmailAddress];
-
+          if(recoveryEmailAddress != null) {
+            selectEmailAddressQuery += ' OR old_email_address = ?';
+            selectEmailAddressValue.push(recoveryEmailAddress);
+          };
 
           connection.query(selectEmailAddressQuery, selectEmailAddressValue, (err, selectEmailAddressResult) => {
-            if (err) {
-              console.error("Email address query error:", err);
-              return res.status(500).json({ error: "Email query failed" });
-            }
+            if(err) {throw err};
             
             res.json({userInformation: selectUserInformationResult,
                       userImage: selectUserImageResult,
-                      userReservation: selectUserReservationResult,
                       emailAddress: selectEmailAddressResult
                     });
           });
-        });
       });
     });
   } else {  
