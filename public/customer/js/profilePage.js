@@ -83,6 +83,8 @@ async function userInformation() {
     });
     const userData = await response.json();
 
+    console.log(userData)
+
     if(userData != "") {
         if(userData.userInformation[0].type_of_user != "Customer") {
             //  window.location = "./homePage.html";
