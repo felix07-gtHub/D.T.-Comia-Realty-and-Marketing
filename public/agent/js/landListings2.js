@@ -73,6 +73,10 @@ async function landListings2() {
         const removeDelete = document.createElement('button');
         const price = document.createElement('p');
         const address = document.createElement('p');
+        const bedIcon = document.createElement('img');
+        const bedCount = document.createElement('p');
+        const bathtubIcon = document.createElement('img');
+        const bathtubCount = document.createElement('p');
         const viewDetail = document.createElement('button');
         const propertyId = document.createElement('input');
 
@@ -107,6 +111,10 @@ async function landListings2() {
         imageContainer.appendChild(removeDelete);
         property.appendChild(price);
         property.appendChild(address);
+        property.appendChild(bedIcon);
+        property.appendChild(bedCount);
+        property.appendChild(bathtubIcon);
+        property.appendChild(bathtubCount);
         property.appendChild(viewDetail);
         property.appendChild(propertyId);
     
@@ -289,10 +297,6 @@ async function landListings2() {
         const propertyType = document.createElement('p');
         const hr = document.createElement('hr');
         const locationModal = document.createElement('a');
-        const bedRooms = document.createElement('p');
-        const bedRoomsCount = document.createElement('p');
-        const bathRooms = document.createElement('p');
-        const bathRoomsCount = document.createElement('p');
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
@@ -301,10 +305,6 @@ async function landListings2() {
         propertyType.innerHTML = data.landListings[i].property_type;
         locationModal.href = "./gpsSystem.html";
         locationModal.innerHTML = "View Location";
-        bedRooms.innerHTML = "Bedrooms";
-        bedRoomsCount.innerHTML = data.landListings[i].room_count;
-        bathRooms.innerHTML = "Bathrooms";
-        bathRoomsCount.innerHTML = data.landListings[i].bath_count;
         area.innerHTML = "Area";
         measurments.classList.add('measurements');
         measurments.innerHTML = data.landListings[i].area + "sq";

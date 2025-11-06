@@ -69,24 +69,20 @@ cancelledReservationListings().catch(console.error);
     //  INITIALIZE VALUES.
 let orderByInput = "number";
 let orderInput = "ASC"
-let searchInput = "";
-let pageNumberInput = 0;
 
 function orderByFunction(e) {
     if(e.target.value != "") {
-        if(orderByInput == e.target.value) {
+        if(orderByInput != e.target.value) {
+            orderInput = "ASC";
+        } else {
             if(orderInput == "ASC") {
                 orderInput = "DESC";
-
             } else {
                 orderInput = "ASC";
-
             };
-
         };
 
         orderByInput = e.target.value;
-
         reservationListings().catch(console.error);
 
     };
@@ -95,16 +91,22 @@ function orderByFunction(e) {
 
 document.querySelector('#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > .reservation').addEventListener("click", orderByFunction);
 
+    //  INITIALIZE VALUES.
+let searchInput = "";
+
 function searchInputFunction() {
     searchInput = document.querySelector('#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:hover > input[name="Search input"]').value;
-
     reservationListings().catch(console.error);
+
 };
 
 document.querySelector('#reservationPeriod > div:nth-child(3) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div > input[name="Search input"]').addEventListener("input", searchInputFunction);
 
+    //  INITIALIZE VALUES.
+let pageNumberInput = 0;
+
     //  .
-async function reservationListings() {  
+async function reservationListings() {      
     const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/reservation-listings', {
         method: 'POST',
         headers: {                    
@@ -155,7 +157,7 @@ async function reservationListings() {
         contactNo.value = data.reservationListings[i].contact_number;
         property.name = "Property";
         property.disabled = true;
-        property.value = data.reservationListings[i].address;
+        property.value = data.reservationListings[i].property;
 
     
 

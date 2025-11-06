@@ -294,7 +294,7 @@ async function featuredHouseListings() {
             markAsSold.disabled = true;
         };
 
-        
+
 
         const propertyType = document.createElement('p');
         const hr = document.createElement('hr');
