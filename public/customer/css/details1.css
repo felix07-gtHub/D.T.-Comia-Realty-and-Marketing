@@ -1,120 +1,33 @@
-    /*  PROPERTY DETAILS */
-.propertyDetails {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    justify-items: center;
-    top: 0%;
-    left: 0%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 153px 10px 100px 10px;
-    box-sizing: border-box;
-    background-color: #00000075;
-    display: none;
-    z-index: 3;
-    border: solid;
-}
 
-    /* FIRST MODAL */
-.propertyDetails > .propertyModal {
-    width: 100%;
-    max-width: 712px;
-    display: flex;
-    
-    background-color: #f2e6d6;
-    border: solid 1px white;
-    padding: 12px;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-    /* DETAILS */
-.propertyDetails > .propertyModal > .details {
-    width: 45%;
-    height: 437px;
-    margin: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    align-items: center;
-}
-
-.propertyDetails > .propertyModal > .details > .imageContainer {
-    width: 100%;
-    height: 225px;
-    
-    border: solid 1px white;
-    padding: 5px;
-    box-sizing: border-box;
-    position: relative;
-    text-align: left;
-    margin-bottom: 12px;
-}
-
-.propertyDetails > .propertyModal > .details > .imageContainer > img {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-}
-
-.propertyDetails > .propertyModal > .details > .imageContainer > .reserved {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    align-content: center;
-    padding: 12px;
-    box-sizing: border-box;
-    background-color: #00000099;
-}
-
-.propertyDetails > .propertyModal > .details > .imageContainer > .reserved > p {
-    text-align: center; 
-    color: #ffffff;
-    font-size: 15px;
-}
-
-.propertyDetails > .propertyModal > .details > .imageContainer > .status {
-    position: absolute;
-    top: -6px;
-    right: 12px;
-    color: #354024;
-    border-radius: 10px;
-    width: 100px;
-    height: 25px;
-    font-size: 15px;
-    align-content: center;
-    text-align: center;    
-}
 
     /* IMAGES */
 .propertyDetails > .propertyModal > .images {
     width: 55%;
     height: 437px;
     margin: 5px;
+    position: relative;
 }
 
 .propertyDetails > .propertyModal > .images > div {
-    align-items: center;
     height: 100%;
     display: flex;
-    position: relative;
     overflow: hidden;
-    background-color: #faebcf;
-    text-align: left;
-    border: none;
 }
 
-.propertyDetails > .propertyModal > .images > div > img {
+.propertyDetails > .propertyModal > .images > div > div {
     min-width: 100%;
+    height: 100%;
+    background-color: #faebcf;
+    align-content: center;
+    text-align: center;
 }
 
-.propertyDetails > .propertyModal > .images > div > .previousIcon {
+.propertyDetails > .propertyModal > .images > div > div > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.propertyDetails > .propertyModal > .images > .previousIcon {
     position: absolute;
     height: 100%;
     top: 0px;
@@ -127,7 +40,7 @@
     align-content: center;
 }
 
-.propertyDetails > .propertyModal > .images > div > .nextIcon {
+.propertyDetails > .propertyModal > .images > .nextIcon {
     position: absolute;
     height: 100%;
     top: 0px;
@@ -140,55 +53,7 @@
     align-content: center;
 }
 
-.propertyDetails > .propertyModal > .images > div > button > img {
+.propertyDetails > .propertyModal > .images > button > img {
     height: 60px;
     width: 40px;
-}
-
-@media (max-width: 575px) {    
-    .propertyDetails > .propertyModal {
-        flex-wrap: wrap;
-    }
-    .propertyDetails > .propertyModal > .details,
-    .propertyDetails > .propertyModal > .images {
-        width: 100%;
-    }
-}
-
-/* RESERVED */
-.propertyDetails > .propertyModal > .details > .reserveModal
-{
-    width: 100%;
-    max-width: 612px;
-    border-radius: 6px;
-    background-color: #e5d7c4;
-    padding: 12px;
-    box-sizing: border-box;
-    text-align: center;
-    position: fixed;
-    z-index: 1;
-    display: none;
-    left: 50%;
-    transform: translate(-50%, 0px);
-}
-
-.propertyDetails > .propertyModal > .details > .reserveModal > h1
-{
-    margin: 6px;
-    font-weight: lighter;
-    font-size: 20px;
-    color: #354024;
-}
-
-.propertyDetails > .propertyModal > .details > .reserveModal > h1 > span {
-    color: #354024;
-}
-
-.propertyDetails > .description > p {
-    margin: 0px;
-    color: #354024;
-}
-
-.propertyDetails > .description > p + p {
-    text-indent: 30px;
 }

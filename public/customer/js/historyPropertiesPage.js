@@ -95,7 +95,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyImage.src = data.imageListings[k].path;
                                 propertyImage.alt = data.imageListings[k].file_name;
-                                propertyImage.type = data.imageListings[k].mime_type;
+                                propertyImage.type = data.imageListings[k].mime_type.split('/')[1];
 
                                 break;
                             };
@@ -316,7 +316,7 @@ async function historyPropertiesListings() {
                             translateCarousel = 0;
 
                             for(let j = 0; j < imageCount; j++) {
-                            div.children[j].style.transform = 'none';
+                            imagesDiv.children[j].style.transform = 'none';
                             };
 
                             property.style.transform = 'none';
@@ -343,7 +343,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyMainImage.src = data.imageListings[k].path;
                                 propertyMainImage.alt = data.imageListings[k].file_name;
-                                propertyMainImage.type = data.imageListings[k].mime_type;
+                                propertyMainImage.type = data.imageListings[k].mime_type.split('/')[1];
 
                                 break;
                             };
@@ -464,22 +464,22 @@ async function historyPropertiesListings() {
                     const bedRooms = document.createElement('p');
                     const bedRoomsCount = document.createElement('p');
                     const bathRooms = document.createElement('p');
-                    const bathrRoomsCount = document.createElement('p');
+                    const bathRoomsCount = document.createElement('p');
                     const area = document.createElement('p');
                     const measurments = document.createElement('p');
                     const images = document.createElement('div');
-                    const div = document.createElement('div');
+                    const imagesDiv = document.createElement('div');
                 
-                    propertyType.innerHTML = data.propertyListings[i].property_type;
+                    propertyType.innerHTML = data.houseListings[i].property_type;
                     locationModal.href = "./gpsSystem.html";
                     locationModal.innerHTML = "View Location";
                     bedRooms.innerHTML = "Bedrooms";
-                    bedRoomsCount.innerHTML = data.propertyListings[i].room_count;
+                    bedRoomsCount.innerHTML = data.houseListings[i].room_count;
                     bathRooms.innerHTML = "Bathrooms";
-                    bathrRoomsCount.innerHTML = data.propertyListings[i].bath_count;
+                    bathRoomsCount.innerHTML = data.houseListings[i].bath_count;
                     area.innerHTML = "Area";
                     measurments.classList.add('measurements');
-                    measurments.innerHTML = data.propertyListings[i].area + "sq";
+                    measurments.innerHTML = data.houseListings[i].area + "sq";
                     images.classList.add('images');
 
                     details.appendChild(propertyType);
@@ -488,37 +488,39 @@ async function historyPropertiesListings() {
                     details.appendChild(bedRooms);
                     details.appendChild(bedRoomsCount);
                     details.appendChild(bathRooms);
-                    details.appendChild(bathrRoomsCount);
+                    details.appendChild(bathRoomsCount);
                     details.appendChild(area);
                     details.appendChild(measurments);
                     propertyModal.appendChild(images);
-                    images.appendChild(div);
+                    images.appendChild(imagesDiv);
 
                     
 
                         //  INITIALIZE THE VALUE FOR imageCount.
                     let imageCount = 0;
 
-                    for(let k = 0; k < data.imageListings.length; k++) {
-                        if(data.propertyListings[j].property_id == data.imageListings[j].property_id) {
-                            if(data.imageListings[k].field_name == "Additional_images") {
+                    for(let j = 0; j < data.imageListings.length; j++) {
+                        if(data.houseListings[i].property_id == data.imageListings[j].property_id) {
+                            if(data.imageListings[j].field_name == "Additional_images") {
                                 imageCount++;
 
-                                const image = document.createElement('img');
+                                const imagesImageContainer = document.createElement('div');
+                                const imagesImage = document.createElement('img');
 
-                                image.src = data.imageListings[k].path;
-                                image.alt = data.imageListings[k].file_name;
-                                image.type = data.imageListings[k].mime_type;
+                                imagesImage.src = data.imageListings[j].path;
+                                imagesImage.alt = data.imageListings[j].file_name;
+                                imagesImage.type = data.imageListings[j].mime_type.split('/')[1];
 
-                                div.appendChild(image);
+                                imagesDiv.appendChild(imagesImageContainer);
+                                imagesImageContainer.appendChild(imagesImage);
                             };
                         };
                     };
 
                         // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
                     let translateCarousel = 0;
-                                
-                    if(div.children.length > 1) {
+                    
+                    if(imagesDiv.children.length > 1) {
                         const previousButton = document.createElement('button');
                         const previous = document.createElement('img');
                         const nextButton = document.createElement('button');
@@ -533,19 +535,19 @@ async function historyPropertiesListings() {
                         next.alt = "Next icon";
                         next.type = "";
 
-                        div.appendChild(previousButton);
+                        images.appendChild(previousButton);
                         previousButton.appendChild(previous);
-                        div.appendChild(nextButton);
+                        images.appendChild(nextButton);
                         nextButton.appendChild(next);
 
                             // IMAGE CAROUSEL FUNCTION.
                         function previousCarousel() {
                             translateCarousel++;
-                            
+                                
                             if(translateCarousel > 0) {
-                            translateCarousel = -(imageCount - 1);
+                                translateCarousel = -(imageCount - 1);
                             };
-                            
+                                
                             carousel(translateCarousel);
                         };
 
@@ -553,24 +555,23 @@ async function historyPropertiesListings() {
 
                         function nextCarousel() {
                             translateCarousel--;
-                            
+                                
                             if(translateCarousel < -(imageCount - 1)) {
-                            translateCarousel = 0;
+                                translateCarousel = 0;
                             };
-                            
+                                
                             carousel(translateCarousel);
                         };
 
                         nextButton.addEventListener("click", nextCarousel);
 
-                        function carousel(translateValue) {            
-                            // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
-                            // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
+                        function carousel(translateValue) {                
+                                // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
+                                // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                             for(let j = 0; j < imageCount; j++) {
-                            div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                            }
+                                imagesDiv.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                            };
                         };  
-
                     };
 
 
