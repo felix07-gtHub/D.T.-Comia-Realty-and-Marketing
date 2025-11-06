@@ -22,7 +22,7 @@
 
         //  FUNCTION FOR ACTION mouseleave.
     function actionMousEave(e) {
-        e.target.style.color = '#000000';
+        e.target.style.color = '#e5d7c4';
     };
 
     reservations.addEventListener("mouseleave", actionMousEave);
@@ -53,6 +53,8 @@
             sort.style.display = 'none';
                     
             document.body.removeEventListener("click", hideActionDropDown);
+            arrow2.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/arrow2 down.png";
+            arrow2.alt = "Arrow icon";
             arrow2.addEventListener("click", showActionDropDown);
         
         };
@@ -69,6 +71,8 @@
 
         }, 10);
 
+        arrow2.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/arrow2 up.png";
+        arrow2.alt = "Arrow icon";
         arrow2.removeEventListener("click", showActionDropDown);
 
     };
@@ -94,7 +98,7 @@
             ul.children[0].innerHTML = "All";
             ul.children[0].style.color = '#45703c';
             ul.children[0].removeEventListener("mouseleave", actionMousEave);
-            checkMark.src = "";
+            checkMark.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/white check (saved prop).png";
             checkMark.alt = "Check mark";
             checkMark.type = "";
 
@@ -102,14 +106,14 @@
 
             if (ul.children[1].children.length > 0) {
                 ul.children[1].innerHTML = "Completed";
-                ul.children[1].style.color = '#000000';
+                ul.children[1].style.color = '#e5d7c4';
                 ul.children[1].addEventListener("mouseleave", actionMousEave);
 
             };
 
             if (ul.children[2].children.length > 0) {
                 ul.children[2].innerHTML = "Cancelled";
-                ul.children[2].style.color = '#000000';
+                ul.children[2].style.color = '#e5d7c4';
                 ul.children[2].addEventListener("mouseleave", actionMousEave);
 
             };
@@ -124,7 +128,7 @@
 
             if (ul.children[0].children.length > 0) {
                 ul.children[0].innerHTML = "All";
-                ul.children[0].style.color = '#000000';
+                ul.children[0].style.color = '#e5d7c4';
                 ul.children[0].addEventListener("mouseleave", actionMousEave);
 
             };
@@ -134,7 +138,7 @@
             ul.children[1].innerHTML = "Completed";
             ul.children[1].style.color = '#45703c';
             ul.children[1].removeEventListener("mouseleave", actionMousEave);
-            checkMark.src = "";
+            checkMark.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/white check (saved prop).png";
             checkMark.alt = "Check mark";
             checkMark.type = "";
 
@@ -142,7 +146,7 @@
 
             if (ul.children[2].children.length > 0) {
                 ul.children[2].innerHTML = "Cancelled";
-                ul.children[2].style.color = '#000000';
+                ul.children[2].style.color = '#e5d7c4';
                 ul.children[2].addEventListener("mouseleave", actionMousEave);
 
             };
@@ -156,14 +160,14 @@
 
             if (ul.children[0].children.length > 0) {
                 ul.children[0].innerHTML = "All";
-                ul.children[0].style.color = '#000000';
+                ul.children[0].style.color = '#e5d7c4';
                 ul.children[0].addEventListener("mouseleave", actionMousEave);
 
             }
 
             if (ul.children[1].children.length > 0) {
                 ul.children[1].innerHTML = "Completed";
-                ul.children[1].style.color = '#000000';
+                ul.children[1].style.color = '#e5d7c4';
                 ul.children[1].addEventListener("mouseleave", actionMousEave);
 
             }
@@ -173,7 +177,7 @@
             ul.children[2].innerHTML = "Cancelled";
             ul.children[2].style.color = '#45703c';
             ul.children[2].removeEventListener("mouseleave", actionMousEave);
-            checkMark.src = "";
+            checkMark.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/white check (saved prop).png";
             checkMark.alt = "Check mark";
             checkMark.type = "";
 

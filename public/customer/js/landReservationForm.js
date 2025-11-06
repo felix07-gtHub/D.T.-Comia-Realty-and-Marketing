@@ -39,8 +39,8 @@ async function propertyInformation() {
         if(data.propertyInformation.length > 0) {
             propertyName.value = data.propertyInformation[0].address;
             locationPropertyDetails.value = data.propertyInformation[0].location;
-            lotArea.value = data.propertyInformation[0].area_formatted; + "sq";
-            totalPrice.value = '₱' + data.propertyInformation[0].price_formatted;
+            lotArea.value = data.propertyInformation[0].area; + "sq";
+            totalPrice.value = '₱' + data.propertyInformation[0].price;
 
             const d = new Date();
             const dateReserved = d.getFullYear().toString().padStart(4, "0")  + '-' +
@@ -48,7 +48,11 @@ async function propertyInformation() {
                                 d.getDate().toString().padStart(2, "0");
 
             reservataionPeriodFrom.value = dateReserved;
-            
+        } else { 
+            //--DIRECT TO PREVIOUS PAGE--.
+
+        };
+        
     } else { 
         window.location = "./homePage.html";
 
@@ -58,13 +62,7 @@ async function propertyInformation() {
 
 propertyInformation().catch(console.error);
 
-    /*
-        IF INPUTS ARE INVALID AND THE USER INPUTS A VALUE INPUTS RESETS.
-        IF USER INPUTS A VALUE IT ENABLES DISCARD BUTTON 
-        IF THE USER DELETE THE VALUE OF THE ENTIRE INPUTS IT DISABLES THE DISCARD BUTTON
-        UNLESS THE INPUTS SHOWS ERROR EVEN WITHOUT VALUE
-        THIS HAPPENS WHEN THE USER INPUTS A VALUE IN A NON-REQUIRED FIELD AND SAVES IT.
-    */
+    //  .
 function inputChange() {
     if(contactNumber.value.length > 50) {
         contactNumber.value = contactNumber.value.substring(0, 50);
@@ -82,7 +80,7 @@ function inputChange() {
         reservataionPeriodFrom.value != "" &&
         (
             reservataionPeriodTo.value != "" &&
-            reservataionPeriodFrom.value > reservataionPeriodTo.value
+            reservataionPeriodTo.value > reservataionPeriodFrom.value
         ) &&
         termsCondition.checked == true
     ) {
@@ -97,7 +95,7 @@ fullName.addEventListener("input", inputChange);
 contactNumber.addEventListener("input", inputChange);
 emailAddress.addEventListener("input", inputChange);
 reservataionPeriodTo.addEventListener("input", inputChange);
-termsCondition.addEventListener("input", inputChange);
+termsCondition.addEventListener("change", inputChange);
 
 
 

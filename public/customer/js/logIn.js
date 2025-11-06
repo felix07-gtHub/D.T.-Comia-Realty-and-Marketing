@@ -45,6 +45,7 @@ function inputChange() {
         accountInputField.style.transform = 'none';
         accountInputField.style.transition = 'none';
         accountInputField.style.boxShadow = 'none';
+        accountInputField.style.border = 'none';
 
         accountInputField.addEventListener("mouseenter", validInputsMousEnter);
         accountInputField.addEventListener("mouseleave", validInputsMousEave);
