@@ -87,7 +87,7 @@ async function deletedListings() {
                     if(data.deletedImageListings[j].field_name == "Main_image") {
                         propertyImage.src = data.deletedImageListings[j].path;
                         propertyImage.alt = data.deletedImageListings[j].file_name;
-                        propertyImage.type = data.deletedImageListings[j].mime_type.split('/')[1];
+                        propertyImage.type = data.deletedImageListings[j].mime_type;
 
                         break;
                     };
@@ -177,7 +177,7 @@ async function deletedListings() {
                     translateCarousel = 0;
 
                     for(let j = 0; j < imageCount; j++) {
-                        images.children[j].style.transform = 'none';
+                        div.children[j].style.transform = 'none';
                     };
 
                     property.style.transform = 'none';
@@ -201,7 +201,7 @@ async function deletedListings() {
                     if(data.deletedImageListings[j].field_name == "Main_image") {
                         propertyMainImage.src = data.deletedImageListings[j].path;
                         propertyMainImage.alt = data.deletedImageListings[j].file_name;
-                        propertyMainImage.type = data.deletedImageListings[j].mime_type.split('/')[1];
+                        propertyMainImage.type = data.deletedImageListings[j].mime_type;
 
                         break;
                     };
@@ -243,6 +243,7 @@ async function deletedListings() {
             const area = document.createElement('p');
             const measurments = document.createElement('p');
             const images = document.createElement('div');
+            const div = document.createElement('div');
             
             propertyType.innerHTML = data.deletedPropertyListings[i].property_type;
             locationModal.href = "../customer/gpsSystem.html?role=agent";
@@ -266,6 +267,7 @@ async function deletedListings() {
             details.appendChild(area);
             details.appendChild(measurments);
             propertyModal.appendChild(images);
+            images.appendChild(div);
             
 
             
@@ -277,14 +279,12 @@ async function deletedListings() {
                     if(data.deletedImageListings[j].field_name == "Additional_images") {
                         imageCount++;
 
-                        const div = document.createElement('div');
                         const image = document.createElement('img');
 
                         image.src = data.deletedImageListings[j].path;
                         image.alt = data.deletedImageListings[j].file_name;
-                        image.type = data.deletedImageListings[j].mime_type.split('/')[1];
+                        image.type = data.deletedImageListings[j].mime_type;
 
-                        images.appendChild(div);
                         div.appendChild(image);
                     };
                 };
@@ -292,8 +292,8 @@ async function deletedListings() {
 
                 // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
             let translateCarousel = 0;
-                        
-            if(images.children.length > 1) {
+                    
+            if(div.children.length > 1) {
                 const previousButton = document.createElement('button');
                 const previous = document.createElement('img');
                 const nextButton = document.createElement('button');
@@ -308,9 +308,9 @@ async function deletedListings() {
                 next.alt = "Next icon";
                 next.type = "";
 
-                images.appendChild(previousButton);
+                div.appendChild(previousButton);
                 previousButton.appendChild(previous);
-                images.appendChild(nextButton);
+                div.appendChild(nextButton);
                 nextButton.appendChild(next);
 
 
@@ -340,11 +340,11 @@ async function deletedListings() {
 
                 nextButton.addEventListener("click", nextCarousel);
 
-                function carousel(translateValue) {                
+                function carousel(translateValue) {            
                         // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                         // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                     for(let j = 0; j < imageCount; j++) {
-                        images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                        div.children[j].style.transform = `translate(${translateValue * 100}%, 0)`;
                     }
                 };     
             

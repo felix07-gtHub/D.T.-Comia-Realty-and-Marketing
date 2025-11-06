@@ -95,7 +95,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyImage.src = data.imageListings[k].path;
                                 propertyImage.alt = data.imageListings[k].file_name;
-                                propertyImage.type = data.imageListings[k].mime_type.split('/')[1];
+                                propertyImage.type = data.imageListings[k].mime_type;
 
                                 break;
                             };
@@ -316,7 +316,7 @@ async function historyPropertiesListings() {
                             translateCarousel = 0;
 
                             for(let j = 0; j < imageCount; j++) {
-                                images.children[j].style.transform = 'none';
+                            div.children[j].style.transform = 'none';
                             };
 
                             property.style.transform = 'none';
@@ -343,7 +343,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyMainImage.src = data.imageListings[k].path;
                                 propertyMainImage.alt = data.imageListings[k].file_name;
-                                propertyMainImage.type = data.imageListings[k].mime_type.split('/')[1];
+                                propertyMainImage.type = data.imageListings[k].mime_type;
 
                                 break;
                             };
@@ -458,7 +458,6 @@ async function historyPropertiesListings() {
                     };
 
 
-
                     const propertyType = document.createElement('p');
                     const hr = document.createElement('hr');
                     const locationModal = document.createElement('a');
@@ -469,6 +468,7 @@ async function historyPropertiesListings() {
                     const area = document.createElement('p');
                     const measurments = document.createElement('p');
                     const images = document.createElement('div');
+                    const div = document.createElement('div');
                 
                     propertyType.innerHTML = data.propertyListings[i].property_type;
                     locationModal.href = "./gpsSystem.html";
@@ -492,32 +492,33 @@ async function historyPropertiesListings() {
                     details.appendChild(area);
                     details.appendChild(measurments);
                     propertyModal.appendChild(images);
+                    images.appendChild(div);
 
                     
 
                         //  INITIALIZE THE VALUE FOR imageCount.
                     let imageCount = 0;
 
-                    for(let j = 0; j < data.imageListings.length; j++) {
-                        if(data.propertyListings[i].property_id == data.imageListings[j].property_id) {
-                            if(data.imageListings[j].field_name == "Additional_images") {
+                    for(let k = 0; k < data.imageListings.length; k++) {
+                        if(data.propertyListings[j].property_id == data.imageListings[j].property_id) {
+                            if(data.imageListings[k].field_name == "Additional_images") {
                                 imageCount++;
 
                                 const image = document.createElement('img');
 
-                                image.src = data.imageListings[j].path;
-                                image.alt = data.imageListings[j].file_name;
-                                image.type = data.imageListings[j].mime_type.split('/')[1];
+                                image.src = data.imageListings[k].path;
+                                image.alt = data.imageListings[k].file_name;
+                                image.type = data.imageListings[k].mime_type;
 
-                                images.appendChild(image);
+                                div.appendChild(image);
                             };
                         };
                     };
 
                         // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
                     let translateCarousel = 0;
-                    
-                    if(images.children.length > 1) {
+                                
+                    if(div.children.length > 1) {
                         const previousButton = document.createElement('button');
                         const previous = document.createElement('img');
                         const nextButton = document.createElement('button');
@@ -532,19 +533,19 @@ async function historyPropertiesListings() {
                         next.alt = "Next icon";
                         next.type = "";
 
-                        images.appendChild(previousButton);
+                        div.appendChild(previousButton);
                         previousButton.appendChild(previous);
-                        images.appendChild(nextButton);
+                        div.appendChild(nextButton);
                         nextButton.appendChild(next);
 
                             // IMAGE CAROUSEL FUNCTION.
                         function previousCarousel() {
                             translateCarousel++;
-                                
+                            
                             if(translateCarousel > 0) {
-                                translateCarousel = -(imageCount - 1);
+                            translateCarousel = -(imageCount - 1);
                             };
-                                
+                            
                             carousel(translateCarousel);
                         };
 
@@ -552,23 +553,24 @@ async function historyPropertiesListings() {
 
                         function nextCarousel() {
                             translateCarousel--;
-                                
+                            
                             if(translateCarousel < -(imageCount - 1)) {
-                                translateCarousel = 0;
+                            translateCarousel = 0;
                             };
-                                
+                            
                             carousel(translateCarousel);
                         };
 
                         nextButton.addEventListener("click", nextCarousel);
 
-                        function carousel(translateValue) {                
-                                // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
-                                // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
+                        function carousel(translateValue) {            
+                            // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
+                            // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                             for(let j = 0; j < imageCount; j++) {
-                                images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                            };
+                            div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                            }
                         };  
+
                     };
 
 

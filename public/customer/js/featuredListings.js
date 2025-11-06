@@ -174,7 +174,7 @@ async function featuredProperty() {
                     if(data.featuredImageListings[j].field_name == "Main_image") {
                         propertyImage.src = data.featuredImageListings[j].path;
                         propertyImage.alt = data.featuredImageListings[j].file_name;
-                        propertyImage.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                        propertyImage.type = data.featuredImageListings[j].mime_type;
 
                         break;
                     };
@@ -298,7 +298,7 @@ async function featuredProperty() {
                 savedInput.disabled = true;
                 savedLabel.htmlFor = data.featuredPropertyListings[i].property_id;
                 savedLink.href = "./signUp.html";
-                savedIcon.src = "../resources/BUYER ICONS AND LOGOS/emptyheart.png";
+                savedIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/emptyheart.png";
                 savedIcon.alt = "Heart icon empty";
                 savedIcon.type = "";
                 savedIcon.classList.add('savedIcon');
@@ -448,7 +448,7 @@ async function featuredProperty() {
                     translateCarousel = 0;
 
                     for(let j = 0; j < imageCount; j++) {
-                        images.children[j].style.transform = 'none';
+                        div.children[j].style.transform = 'none';
                     };
 
                     property.style.transform = 'none';
@@ -475,7 +475,7 @@ async function featuredProperty() {
                     if(data.featuredImageListings[j].field_name == "Main_image") {
                         propertyMainImage.src = data.featuredImageListings[j].path;
                         propertyMainImage.alt = data.featuredImageListings[j].file_name;
-                        propertyMainImage.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                        propertyMainImage.type = data.featuredImageListings[j].mime_type;
 
                         break;
                     };
@@ -590,7 +590,6 @@ async function featuredProperty() {
             };
 
 
-            
             const propertyType = document.createElement('p');
             const hr = document.createElement('hr');
             const locationModal = document.createElement('a');
@@ -601,6 +600,7 @@ async function featuredProperty() {
             const area = document.createElement('p');
             const measurments = document.createElement('p');
             const images = document.createElement('div');
+            const div = document.createElement('div');
          
             propertyType.innerHTML = data.featuredPropertyListings[i].property_type;
             locationModal.href = "./gpsSystem.html";
@@ -624,6 +624,7 @@ async function featuredProperty() {
             details.appendChild(area);
             details.appendChild(measurments);
             propertyModal.appendChild(images);
+            images.appendChild(div);
 
             
 
@@ -639,9 +640,9 @@ async function featuredProperty() {
 
                         image.src = data.featuredImageListings[j].path;
                         image.alt = data.featuredImageListings[j].file_name;
-                        image.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                        image.type = data.featuredImageListings[j].mime_type;
 
-                        images.appendChild(image);
+                        div.appendChild(image);
                     };
                 };
             };
@@ -649,7 +650,7 @@ async function featuredProperty() {
                 // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
             let translateCarousel = 0;
             
-            if(images.children.length > 1) {
+            if(div.children.length > 1) {
                 const previousButton = document.createElement('button');
                 const previous = document.createElement('img');
                 const nextButton = document.createElement('button');
@@ -664,9 +665,9 @@ async function featuredProperty() {
                 next.alt = "Next icon";
                 next.type = "";
 
-                images.appendChild(previousButton);
+                div.appendChild(previousButton);
                 previousButton.appendChild(previous);
-                images.appendChild(nextButton);
+                div.appendChild(nextButton);
                 nextButton.appendChild(next);
 
                     // IMAGE CAROUSEL FUNCTION.
@@ -698,7 +699,7 @@ async function featuredProperty() {
                         // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                         // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                     for(let j = 0; j < imageCount; j++) {
-                        images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                        div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
                     };
                 };  
             };

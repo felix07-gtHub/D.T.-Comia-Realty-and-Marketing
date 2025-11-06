@@ -1,6 +1,6 @@
     //  .
 async function featuredHouseListings() {    
-    const response = await fetch('http://127.0.0.1:3000/featured-house-listings', {
+    const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/featured-house-listings', {
         method: 'GET',
         credentials: "include",
     });
@@ -86,7 +86,7 @@ async function featuredHouseListings() {
                 if(data.featuredImageListings[j].field_name == "Main_image") {
                     propertyImage.src = data.featuredImageListings[j].path;
                     propertyImage.alt = data.featuredImageListings[j].file_name;
-                    propertyImage.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                    propertyImage.type = data.featuredImageListings[j].mime_type;
 
                     break;
                 };
@@ -127,7 +127,7 @@ async function featuredHouseListings() {
         async function removeFeatured() {
             const propertyIdInput = data.featuredHouseListings[i].property_id;
     
-            const response = await fetch('http://127.0.0.1:3000/remove-featured', {
+            const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/remove-featured', {
                 method: 'POST',
                 headers: {                    
                             'User-Agent': 'undici-stream-example',
@@ -202,7 +202,7 @@ async function featuredHouseListings() {
                 translateCarousel = 0;
 
                 for(let j = 0; j < imageCount; j++) {
-                    images.children[j].style.transform = 'none';
+                    div.children[j].style.transform = 'none';
                 };
 
                 property.style.transform = 'none';
@@ -229,7 +229,7 @@ async function featuredHouseListings() {
                 if(data.featuredImageListings[j].field_name == "Main_image") {
                     propertyMainImage.src = data.featuredImageListings[j].path;
                     propertyMainImage.alt = data.featuredImageListings[j].file_name;
-                    propertyMainImage.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                    propertyMainImage.type = data.featuredImageListings[j].mime_type;
 
                     break;
                 };
@@ -272,7 +272,7 @@ async function featuredHouseListings() {
         async function markSoldunction() {
             const propertyIdInput = data.featuredHouseListings[i].property_id;
 
-            const response = await fetch('http://127.0.0.1:3000/mark-sold', {
+            const response = await fetch('https://dt-comia-realty-and-marketing-production.up.railway.app/mark-sold', {
                 method: 'POST',
                 headers: {                    
                             'User-Agent': 'undici-stream-example',
@@ -306,6 +306,7 @@ async function featuredHouseListings() {
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
+        const div = document.createElement('div');
          
         propertyType.innerHTML = data.featuredHouseListings[i].property_type;
         locationModal.href = "../customer/gpsSystem.html?role=agent";
@@ -329,25 +330,24 @@ async function featuredHouseListings() {
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
+        images.appendChild(div);
         
 
         
             //  INITIALIZE THE VALUE FOR imageCount.
         let imageCount = 0;
 
-        for(let j = 0; j < data.featuredImageListings.length; j++) {
+        for(let j = 0; j < data.featuredImageListings.length; j++) {            
             if(data.featuredHouseListings[i].property_id == data.featuredImageListings[j].property_id) {
                 if(data.featuredImageListings[j].field_name == "Additional_images") {
                     imageCount++;
 
-                    const div = document.createElement('div');
                     const image = document.createElement('img');
 
                     image.src = data.featuredImageListings[j].path;
                     image.alt = data.featuredImageListings[j].file_name;
-                    image.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                    image.type = data.featuredImageListings[j].mime_type;
 
-                    images.appendChild(div);
                     div.appendChild(image);
                 };
             };
@@ -356,7 +356,7 @@ async function featuredHouseListings() {
             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
         let translateCarousel = 0;
                     
-        if(images.children.length > 1) {
+        if(div.children.length > 1) {
             const previousButton = document.createElement('button');
             const previous = document.createElement('img');
             const nextButton = document.createElement('button');
@@ -367,13 +367,13 @@ async function featuredHouseListings() {
             previous.alt = "Previous icon";
             previous.type = "";
             nextButton.classList.add('nextIcon');
-            next.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/right arrow.png";
+            next.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LO/right arrow.png";
             next.alt = "Next icon";
             next.type = "";
 
-            images.appendChild(previousButton);
+            div.appendChild(previousButton);
             previousButton.appendChild(previous);
-            images.appendChild(nextButton);
+            div.appendChild(nextButton);
             nextButton.appendChild(next);
 
 
@@ -407,7 +407,7 @@ async function featuredHouseListings() {
                     // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                     // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                 for(let j = 0; j < imageCount; j++) {
-                    images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                    div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
                 }
             };     
         
