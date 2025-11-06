@@ -95,7 +95,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyImage.src = data.imageListings[k].path;
                                 propertyImage.alt = data.imageListings[k].file_name;
-                                propertyImage.type = data.imageListings[k].mime_type;
+                                propertyImage.type = data.imageListings[k].mime_type.split('/')[1];
 
                                 break;
                             };
@@ -343,7 +343,7 @@ async function historyPropertiesListings() {
                             if(data.imageListings[k].field_name == "Main_image") {
                                 propertyMainImage.src = data.imageListings[k].path;
                                 propertyMainImage.alt = data.imageListings[k].file_name;
-                                propertyMainImage.type = data.imageListings[k].mime_type;
+                                propertyMainImage.type = data.imageListings[k].mime_type.split('/')[1];
 
                                 break;
                             };
@@ -458,6 +458,7 @@ async function historyPropertiesListings() {
                     };
 
 
+
                     const propertyType = document.createElement('p');
                     const hr = document.createElement('hr');
                     const locationModal = document.createElement('a');
@@ -468,7 +469,6 @@ async function historyPropertiesListings() {
                     const area = document.createElement('p');
                     const measurments = document.createElement('p');
                     const images = document.createElement('div');
-                    const div = document.createElement('div');
                 
                     propertyType.innerHTML = data.propertyListings[i].property_type;
                     locationModal.href = "./gpsSystem.html";
@@ -492,24 +492,25 @@ async function historyPropertiesListings() {
                     details.appendChild(area);
                     details.appendChild(measurments);
                     propertyModal.appendChild(images);
-                    images.appendChild(div);
 
                     
 
                         //  INITIALIZE THE VALUE FOR imageCount.
                     let imageCount = 0;
 
-                    for(let k = 0; k < data.imageListings.length; k++) {
-                        if(data.propertyListings[j].property_id == data.imageListings[j].property_id) {
-                            if(data.imageListings[k].field_name == "Additional_images") {
+                    for(let j = 0; j < data.featuredImageListings.length; j++) {
+                        if(data.propertyListings[i].property_id == data.featuredImageListings[j].property_id) {
+                            if(data.featuredImageListings[j].field_name == "Additional_images") {
                                 imageCount++;
 
+                                const div = document.createElement('div');
                                 const image = document.createElement('img');
 
-                                image.src = data.imageListings[k].path;
-                                image.alt = data.imageListings[k].file_name;
-                                image.type = data.imageListings[k].mime_type;
+                                image.src = data.featuredImageListings[j].path;
+                                image.alt = data.featuredImageListings[j].file_name;
+                                image.type = data.featuredImageListings[j].mime_type.split('/')[1];
 
+                                images.appendChild(div);
                                 div.appendChild(image);
                             };
                         };
@@ -517,8 +518,8 @@ async function historyPropertiesListings() {
 
                         // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
                     let translateCarousel = 0;
-                                
-                    if(div.children.length > 1) {
+                    
+                    if(images.children.length > 1) {
                         const previousButton = document.createElement('button');
                         const previous = document.createElement('img');
                         const nextButton = document.createElement('button');
@@ -533,19 +534,19 @@ async function historyPropertiesListings() {
                         next.alt = "Next icon";
                         next.type = "";
 
-                        div.appendChild(previousButton);
+                        images.appendChild(previousButton);
                         previousButton.appendChild(previous);
-                        div.appendChild(nextButton);
+                        images.appendChild(nextButton);
                         nextButton.appendChild(next);
 
                             // IMAGE CAROUSEL FUNCTION.
                         function previousCarousel() {
                             translateCarousel++;
-                            
+                                
                             if(translateCarousel > 0) {
-                            translateCarousel = -(imageCount - 1);
+                                translateCarousel = -(imageCount - 1);
                             };
-                            
+                                
                             carousel(translateCarousel);
                         };
 
@@ -553,24 +554,23 @@ async function historyPropertiesListings() {
 
                         function nextCarousel() {
                             translateCarousel--;
-                            
+                                
                             if(translateCarousel < -(imageCount - 1)) {
-                            translateCarousel = 0;
+                                translateCarousel = 0;
                             };
-                            
+                                
                             carousel(translateCarousel);
                         };
 
                         nextButton.addEventListener("click", nextCarousel);
 
-                        function carousel(translateValue) {            
-                            // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
-                            // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
+                        function carousel(translateValue) {                
+                                // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
+                                // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                             for(let j = 0; j < imageCount; j++) {
-                            div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                            }
+                                images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                            };
                         };  
-
                     };
 
 
