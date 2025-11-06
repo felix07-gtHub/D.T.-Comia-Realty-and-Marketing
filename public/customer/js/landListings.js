@@ -782,17 +782,17 @@ async function landListings() {
                 //  INITIALIZE THE VALUE FOR imageCount.
             let imageCount = 0;
 
-            for(let j = 0; j < data.featuredImageListings.length; j++) {
-                if(data.landListings[i].property_id == data.featuredImageListings[j].property_id) {
-                    if(data.featuredImageListings[j].field_name == "Additional_images") {
+            for(let j = 0; j < data.imageListings.length; j++) {
+                if(data.landListings[i].property_id == data.imageListings[j].property_id) {
+                    if(data.imageListings[j].field_name == "Additional_images") {
                         imageCount++;
 
                         const div = document.createElement('div');
                         const image = document.createElement('img');
 
-                        image.src = data.featuredImageListings[j].path;
-                        image.alt = data.featuredImageListings[j].file_name;
-                        image.type = data.featuredImageListings[j].mime_type.split('/')[1];
+                        image.src = data.imageListings[j].path;
+                        image.alt = data.imageListings[j].file_name;
+                        image.type = data.imageListings[j].mime_type.split('/')[1];
 
                         images.appendChild(div);
                         div.appendChild(image);
