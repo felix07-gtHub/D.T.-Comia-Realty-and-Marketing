@@ -88,7 +88,7 @@ async function houseListings2() {
                 if(data.imageListings[j].field_name == "Main_image") {
                     propertyImage.src = data.imageListings[j].path;
                     propertyImage.alt = data.imageListings[j].file_name;
-                    propertyImage.type = data.imageListings[j].mime_type;
+                    propertyImage.type = data.imageListings[j].mime_type.split('/')[1];
 
                     break;
                 };
@@ -234,7 +234,7 @@ async function houseListings2() {
                 if(data.imageListings[j].field_name == "Main_image") {
                     propertyMainImage.src = data.imageListings[j].path;
                     propertyMainImage.alt = data.imageListings[j].file_name;
-                    propertyMainImage.type = data.imageListings[j].mime_type;
+                    propertyMainImage.type = data.imageListings[j].mime_type.split('/')[1];
 
                     break;
                 };
@@ -351,7 +351,7 @@ async function houseListings2() {
 
                     image.src = data.imageListings[j].path;
                     image.alt = data.imageListings[j].file_name;
-                    image.type = data.imageListings[j].mime_type;
+                    image.type = data.imageListings[j].mime_type.split('/')[1];
 
                     images.appendChild(div);
                     div.appendChild(image);

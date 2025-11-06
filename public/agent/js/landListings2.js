@@ -84,7 +84,7 @@ async function landListings2() {
                 if(data.imageListings[j].field_name == "Main_image") {
                     propertyImage.src = data.imageListings[j].path;
                     propertyImage.alt = data.imageListings[j].file_name;
-                    propertyImage.type = data.imageListings[j].mime_type;
+                    propertyImage.type = data.imageListings[j].mime_type.split('/')[1];
 
                     break;
                 };
@@ -218,7 +218,7 @@ async function landListings2() {
                 if(data.imageListings[j].field_name == "Main_image") {
                     propertyMainImage.src = data.imageListings[j].path;
                     propertyMainImage.alt = data.imageListings[j].file_name;
-                    propertyMainImage.type = data.imageListings[j].mime_type;
+                    propertyMainImage.type = data.imageListings[j].mime_type.split('/')[1];
 
                     break;
                 };
@@ -289,14 +289,21 @@ async function landListings2() {
         const propertyType = document.createElement('p');
         const hr = document.createElement('hr');
         const locationModal = document.createElement('a');
+        const bedRooms = document.createElement('p');
+        const bedRoomsCount = document.createElement('p');
+        const bathRooms = document.createElement('p');
+        const bathrRoomsCount = document.createElement('p');
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
-        const div = document.createElement('div');
          
         propertyType.innerHTML = data.landListings[i].property_type;
         locationModal.href = "../customer/gpsSystem.html?role=agent";
-        locationModal.innerHTML = "View Location";;
+        locationModal.innerHTML = "View Location";
+        bedRooms.innerHTML = "Bedrooms";
+        bedRoomsCount.innerHTML = data.landListings[i].room_count;
+        bathRooms.innerHTML = "Bathrooms";
+        bathrRoomsCount.innerHTML = data.landListings[i].bath_count;
         area.innerHTML = "Area";
         measurments.classList.add('measurements');
         measurments.innerHTML = data.landListings[i].area + "sq";
@@ -305,10 +312,13 @@ async function landListings2() {
         details.appendChild(propertyType);
         details.appendChild(hr);
         details.appendChild(locationModal);
+        details.appendChild(bedRooms);
+        details.appendChild(bedRoomsCount);
+        details.appendChild(bathRooms);
+        details.appendChild(bathrRoomsCount);
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
-        images.appendChild(div);
         
 
         
@@ -320,12 +330,14 @@ async function landListings2() {
                 if(data.imageListings[j].field_name == "Additional_images") {
                     imageCount++;
 
+                    const div = document.createElement('div');
                     const image = document.createElement('img');
 
                     image.src = data.imageListings[j].path;
                     image.alt = data.imageListings[j].file_name;
-                    image.type = data.imageListings[j].mime_type;
+                    image.type = data.imageListings[j].mime_type.split('/')[1];
 
+                    images.appendChild(div);
                     div.appendChild(image);
                 };
             };
@@ -334,7 +346,7 @@ async function landListings2() {
             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
         let translateCarousel = 0;
                     
-        if(div.children.length > 1) {
+        if(images.children.length > 1) {
             const previousButton = document.createElement('button');
             const previous = document.createElement('img');
             const nextButton = document.createElement('button');
@@ -349,9 +361,9 @@ async function landListings2() {
             next.alt = "Next icon";
             next.type = "";
 
-            div.appendChild(previousButton);
+            images.appendChild(previousButton);
             previousButton.appendChild(previous);
-            div.appendChild(nextButton);
+            images.appendChild(nextButton);
             nextButton.appendChild(next);
 
 
@@ -385,7 +397,7 @@ async function landListings2() {
                     // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                     // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                    images.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
                 }
             };     
         
