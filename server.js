@@ -5022,8 +5022,6 @@ app.post('/add-land', uploadMiddleware, function (req, res) {
       const areaInput = req.body.Area;
       const descriptionInput = req.body.Description;
       const status = "AVAILABLE";
-
-      const d = new Date();
       const dateCreated = d.getFullYear().toString().padStart(4, "0")  + '-' +
                         (d.getMonth() + 1).toString().padStart(2, "0")  + '-' +
                           d.getDate().toString().padStart(2, "0") + ' ' +
