@@ -843,6 +843,19 @@ async function updateFunction() {
         confirmPassword.addEventListener("mouseleave", invalidInputsMousEave);
 
     };
+
+    if(
+        data.oldPassword != "OLD PASSWORD NOT MATCH" &&
+        data.newPassword != "NEW PASSWORD NOT FOUND" &&
+        data.confirmPassword != "CONFIRM PASSWORD NOT MATCH"
+    ) {
+        oldPassword.value = "";
+        newPassword.value = "";
+        confirmPassword.value = "";
+
+        updateButton.disabled = true;
+    };
+    
 };
 
 updateButton.addEventListener("click", updateFunction);

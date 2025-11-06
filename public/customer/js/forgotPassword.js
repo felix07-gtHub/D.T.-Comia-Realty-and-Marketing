@@ -43,6 +43,7 @@ function inputChange() {
         recoveryEmailAddressInputField.style.transform = 'none';
         recoveryEmailAddressInputField.style.transition = 'none';
         recoveryEmailAddressInputField.style.boxShadow = 'none';
+        recoveryEmailAddressInputField.style.border = 'solid 1.25px #f5f2e8';
 
         recoveryEmailAddressInputField.addEventListener("mouseenter", validInputsMousEnter);
         recoveryEmailAddressInputField.addEventListener("mouseleave", validInputsMousEave);
