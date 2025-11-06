@@ -3660,7 +3660,7 @@ app.post('/delete-all-history', (req, res) => {
 
         if(propertyIdInput.length > 0) {
           //  DELETE ALL QUERY.
-          deleteAllHistoryQuery += 'DELETE FROM history_property_table WHERE user_id = "' + userId + '" AND (';
+          let deleteAllHistoryQuery = 'DELETE FROM history_property_table WHERE user_id = "' + userId + '" AND (';
             
             //  SELECT EVERY propertyIdInput VALUES.
           for(let i = 0; i < propertyIdInput.length; i++) {
