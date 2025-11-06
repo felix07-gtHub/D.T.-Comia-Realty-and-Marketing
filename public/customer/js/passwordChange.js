@@ -110,6 +110,7 @@ async function submitButton() {
             newPasswordInputField.style.boxShadow = '0px 0px 10px red';
             newPasswordInputField.style.border = 'solid 1.25px red';
             newPasswordInputField.style.boxShadow = '0px 0px 10px red';
+            newPasswordInputField.style.border = 'solid 1.25px #f5f2e8';
                 
             newPasswordInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             newPasswordInputField.addEventListener("mouseleave", invalidInputsMousEave);
@@ -124,6 +125,7 @@ async function submitButton() {
             confirmPasswordInputField.style.boxShadow = '0px 0px 10px red';
             confirmPasswordInputField.style.border = 'solid 1.25px red';
             confirmPasswordInputField.style.boxShadow = '0px 0px 10px red';
+            confirmPasswordInputField.style.border = 'solid 1.25px #f5f2e8';
                 
             confirmPasswordInputField.addEventListener("mouseenter", invalidInputsMousEnter);
             confirmPasswordInputField.addEventListener("mouseleave", invalidInputsMousEave);
