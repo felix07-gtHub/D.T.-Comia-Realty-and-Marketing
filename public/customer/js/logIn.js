@@ -60,6 +60,7 @@ function inputChange() {
         passwordInputField.style.transform = 'none';
         passwordInputField.style.transition = 'none';
         passwordInputField.style.boxShadow = 'none';
+        passwordInputField.style.border = 'none';
 
         passwordInputField.addEventListener("mouseenter", validInputsMousEnter);
         passwordInputField.addEventListener("mouseleave", validInputsMousEave);

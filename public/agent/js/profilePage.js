@@ -967,8 +967,10 @@ async function updateInfoFunction() {
         userName.addEventListener("mouseenter", invalidInputsMousEnter);
         userName.addEventListener("mouseleave", invalidInputsMousEave);
 
+    };
+    
+    if(data.userName != "USER NAME ALREADY IN USE!") {
         updateInfoButton.disabled = true;
-
     };
 };
 

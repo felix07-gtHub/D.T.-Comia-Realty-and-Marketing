@@ -3791,7 +3791,7 @@ app.post('/reservation', (req, res) => {
               //  GENERATE RESERVATION ID.
             function reservationIdFunction() {
               const randomIndex = Math.floor(Math.random() * 10000);
-              reservationId = "RSRV" + reservataionPeriodFromInput.substring(2 , 4) + randomIndex;
+              reservationId = "RSRV" + randomIndex;
             };
 
               //  SELECT RESERVATION ID QUERY.
