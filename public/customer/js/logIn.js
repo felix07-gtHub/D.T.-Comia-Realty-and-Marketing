@@ -45,7 +45,7 @@ function inputChange() {
         accountInputField.style.transform = 'none';
         accountInputField.style.transition = 'none';
         accountInputField.style.boxShadow = 'none';
-        accountInputField.style.border = 'none';
+        accountInputField.style.border = 'solid 1.25px #f5f2e8';
 
         accountInputField.addEventListener("mouseenter", validInputsMousEnter);
         accountInputField.addEventListener("mouseleave", validInputsMousEave);
@@ -60,7 +60,7 @@ function inputChange() {
         passwordInputField.style.transform = 'none';
         passwordInputField.style.transition = 'none';
         passwordInputField.style.boxShadow = 'none';
-        passwordInputField.style.border = 'none';
+        passwordInputField.style.border = 'solid 1.25px #f5f2e8';
 
         passwordInputField.addEventListener("mouseenter", validInputsMousEnter);
         passwordInputField.addEventListener("mouseleave", validInputsMousEave);
