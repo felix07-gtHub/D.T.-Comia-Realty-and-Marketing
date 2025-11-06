@@ -43,7 +43,7 @@ async function emailVerification() {
                                 'User-Agent': 'undici-stream-example',
                                 'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({emailAddressInput, tokenInput}),
+                    body: JSON.stringify({newEmailAddressInput, tokenInput}),
                 }); 
 
             };

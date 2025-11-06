@@ -199,7 +199,7 @@ async function userInformation() {
 
             if(userData.emailAddress.length > 0) {
                 for(let i = 0; i < userData.emailAddress.length; i++) {
-                    if(userData.emailAddress[i].type_of_email_address == "Recovery") {
+                    if(userData.emailAddress[i].type_of_email_address != "Recovery") {
                         if(userData.userInformation[0].recovery_email_address != null) {
                             const verified = document.createElement('p');   
                             recoveryEmailAddress.value = userData.userInformation[0].recovery_email_address;
