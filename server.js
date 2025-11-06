@@ -3985,7 +3985,7 @@ app.post('/cancel-reservation', (req, res) => {
         const updateStatusReservationQuery = 'UPDATE reservation_table SET status = ?, reason_for_cancelling = ? WHERE reservation_id = ?';
 
           //  DECLARES updateStatusReservationValue.
-        const updateStatusReservationValue = ["cancelled", "Buyer backed off", reservationIdInput];
+        const updateStatusReservationValue = ["Cancelled", "Buyer backed off", reservationIdInput];
 
         connection.query(updateStatusReservationQuery, updateStatusReservationValue, (err, updateStatusReservationResult) => {
           if(err) {throw err};
