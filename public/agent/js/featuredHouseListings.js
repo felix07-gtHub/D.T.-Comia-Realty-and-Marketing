@@ -202,7 +202,7 @@ async function featuredHouseListings() {
                 translateCarousel = 0;
 
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'none';
+                    imagesDiv.children[j].style.transform = 'none';
                 };
 
                 property.style.transform = 'none';
@@ -294,7 +294,7 @@ async function featuredHouseListings() {
             markAsSold.disabled = true;
         };
 
-
+        
 
         const propertyType = document.createElement('p');
         const hr = document.createElement('hr');
@@ -302,19 +302,19 @@ async function featuredHouseListings() {
         const bedRooms = document.createElement('p');
         const bedRoomsCount = document.createElement('p');
         const bathRooms = document.createElement('p');
-        const bathrRoomsCount = document.createElement('p');
+        const bathRoomsCount = document.createElement('p');
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
-        const div = document.createElement('div');
+        const imagesDiv = document.createElement('div');
          
         propertyType.innerHTML = data.featuredHouseListings[i].property_type;
-        locationModal.href = "../customer/gpsSystem.html?role=agent";
+        locationModal.href = "./gpsSystem.html";
         locationModal.innerHTML = "View Location";
         bedRooms.innerHTML = "Bedrooms";
         bedRoomsCount.innerHTML = data.featuredHouseListings[i].room_count;
         bathRooms.innerHTML = "Bathrooms";
-        bathrRoomsCount.innerHTML = data.featuredHouseListings[i].bath_count;
+        bathRoomsCount.innerHTML = data.featuredHouseListings[i].bath_count;
         area.innerHTML = "Area";
         measurments.classList.add('measurements');
         measurments.innerHTML = data.featuredHouseListings[i].area + "sq";
@@ -326,37 +326,39 @@ async function featuredHouseListings() {
         details.appendChild(bedRooms);
         details.appendChild(bedRoomsCount);
         details.appendChild(bathRooms);
-        details.appendChild(bathrRoomsCount);
+        details.appendChild(bathRoomsCount);
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
-        images.appendChild(div);
-        
+        images.appendChild(imagesDiv);
 
-        
+            
+
             //  INITIALIZE THE VALUE FOR imageCount.
         let imageCount = 0;
 
-        for(let j = 0; j < data.featuredImageListings.length; j++) {            
+        for(let j = 0; j < data.featuredImageListings.length; j++) {
             if(data.featuredHouseListings[i].property_id == data.featuredImageListings[j].property_id) {
                 if(data.featuredImageListings[j].field_name == "Additional_images") {
                     imageCount++;
 
-                    const image = document.createElement('img');
+                    const imagesImageContainer = document.createElement('div');
+                    const imagesImage = document.createElement('img');
 
-                    image.src = data.featuredImageListings[j].path;
-                    image.alt = data.featuredImageListings[j].file_name;
-                    image.type = data.featuredImageListings[j].mime_type;
+                    imagesImage.src = data.featuredImageListings[j].path;
+                    imagesImage.alt = data.featuredImageListings[j].file_name;
+                    imagesImage.type = data.featuredImageListings[j].mime_type.split('/')[1];
 
-                    div.appendChild(image);
+                    imagesDiv.appendChild(imagesImageContainer);
+                    imagesImageContainer.appendChild(imagesImage);
                 };
             };
         };
 
             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
         let translateCarousel = 0;
-                    
-        if(div.children.length > 1) {
+            
+        if(imagesDiv.children.length > 1) {
             const previousButton = document.createElement('button');
             const previous = document.createElement('img');
             const nextButton = document.createElement('button');
@@ -367,25 +369,23 @@ async function featuredHouseListings() {
             previous.alt = "Previous icon";
             previous.type = "";
             nextButton.classList.add('nextIcon');
-            next.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LO/right arrow.png";
+            next.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/right arrow.png";
             next.alt = "Next icon";
             next.type = "";
 
-            div.appendChild(previousButton);
+            imagesDiv.appendChild(previousButton);
             previousButton.appendChild(previous);
-            div.appendChild(nextButton);
+            imagesDiv.appendChild(nextButton);
             nextButton.appendChild(next);
-
-
 
                 // IMAGE CAROUSEL FUNCTION.
             function previousCarousel() {
                 translateCarousel++;
-                    
+                        
                 if(translateCarousel > 0) {
                     translateCarousel = -(imageCount - 1);
                 };
-                    
+                        
                 carousel(translateCarousel);
             };
 
@@ -393,11 +393,11 @@ async function featuredHouseListings() {
 
             function nextCarousel() {
                 translateCarousel--;
-                    
+                        
                 if(translateCarousel < -(imageCount - 1)) {
                     translateCarousel = 0;
                 };
-                    
+                        
                 carousel(translateCarousel);
             };
 
@@ -407,10 +407,9 @@ async function featuredHouseListings() {
                     // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                     // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                }
-            };     
-        
+                    imagesDiv.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                };
+            };  
         };
 
 

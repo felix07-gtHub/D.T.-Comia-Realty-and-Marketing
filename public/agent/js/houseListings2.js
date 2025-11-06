@@ -207,7 +207,7 @@ async function houseListings2() {
                 translateCarousel = 0;
 
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'none';
+                    imagesDiv.children[j].style.transform = 'none';
                 };
 
                 property.style.transform = 'none';
@@ -308,19 +308,19 @@ async function houseListings2() {
         const bedRooms = document.createElement('p');
         const bedRoomsCount = document.createElement('p');
         const bathRooms = document.createElement('p');
-        const bathrRoomsCount = document.createElement('p');
+        const bathRoomsCount = document.createElement('p');
         const area = document.createElement('p');
         const measurments = document.createElement('p');
         const images = document.createElement('div');
-        const div = document.createElement('div');
+        const imagesDiv = document.createElement('div');
          
         propertyType.innerHTML = data.houseListings[i].property_type;
-        locationModal.href = "../customer/gpsSystem.html?role=agent";
+        locationModal.href = "./gpsSystem.html";
         locationModal.innerHTML = "View Location";
         bedRooms.innerHTML = "Bedrooms";
         bedRoomsCount.innerHTML = data.houseListings[i].room_count;
         bathRooms.innerHTML = "Bathrooms";
-        bathrRoomsCount.innerHTML = data.houseListings[i].bath_count;
+        bathRoomsCount.innerHTML = data.houseListings[i].bath_count;
         area.innerHTML = "Area";
         measurments.classList.add('measurements');
         measurments.innerHTML = data.houseListings[i].area + "sq";
@@ -332,14 +332,14 @@ async function houseListings2() {
         details.appendChild(bedRooms);
         details.appendChild(bedRoomsCount);
         details.appendChild(bathRooms);
-        details.appendChild(bathrRoomsCount);
+        details.appendChild(bathRoomsCount);
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
-        images.appendChild(div);
-        
+        images.appendChild(imagesDiv);
 
-        
+            
+
             //  INITIALIZE THE VALUE FOR imageCount.
         let imageCount = 0;
 
@@ -348,21 +348,23 @@ async function houseListings2() {
                 if(data.imageListings[j].field_name == "Additional_images") {
                     imageCount++;
 
-                    const image = document.createElement('img');
+                    const imagesImageContainer = document.createElement('div');
+                    const imagesImage = document.createElement('img');
 
-                    image.src = data.imageListings[j].path;
-                    image.alt = data.imageListings[j].file_name;
-                    image.type = data.imageListings[j].mime_type;
+                    imagesImage.src = data.imageListings[j].path;
+                    imagesImage.alt = data.imageListings[j].file_name;
+                    imagesImage.type = data.imageListings[j].mime_type.split('/')[1];
 
-                    div.appendChild(image);
+                    imagesDiv.appendChild(imagesImageContainer);
+                    imagesImageContainer.appendChild(imagesImage);
                 };
             };
         };
 
             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
         let translateCarousel = 0;
-                    
-        if(div.children.length > 1) {
+            
+        if(imagesDiv.children.length > 1) {
             const previousButton = document.createElement('button');
             const previous = document.createElement('img');
             const nextButton = document.createElement('button');
@@ -377,21 +379,19 @@ async function houseListings2() {
             next.alt = "Next icon";
             next.type = "";
 
-            div.appendChild(previousButton);
+            imagesDiv.appendChild(previousButton);
             previousButton.appendChild(previous);
-            div.appendChild(nextButton);
+            imagesDiv.appendChild(nextButton);
             nextButton.appendChild(next);
-
-
 
                 // IMAGE CAROUSEL FUNCTION.
             function previousCarousel() {
                 translateCarousel++;
-                    
+                        
                 if(translateCarousel > 0) {
                     translateCarousel = -(imageCount - 1);
                 };
-                    
+                        
                 carousel(translateCarousel);
             };
 
@@ -399,11 +399,11 @@ async function houseListings2() {
 
             function nextCarousel() {
                 translateCarousel--;
-                    
+                        
                 if(translateCarousel < -(imageCount - 1)) {
                     translateCarousel = 0;
                 };
-                    
+                        
                 carousel(translateCarousel);
             };
 
@@ -413,10 +413,9 @@ async function houseListings2() {
                     // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
                     // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                }
-            };     
-        
+                    imagesDiv.children[j].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                };
+            };  
         };
 
 
