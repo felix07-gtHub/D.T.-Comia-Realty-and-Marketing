@@ -310,9 +310,9 @@ async function deletedListings() {
                 next.alt = "Next icon";
                 next.type = "";
 
-                imagesDiv.appendChild(previousButton);
+                images.appendChild(previousButton);
                 previousButton.appendChild(previous);
-                imagesDiv.appendChild(nextButton);
+                images.appendChild(nextButton);
                 nextButton.appendChild(next);
 
                     // IMAGE CAROUSEL FUNCTION.
