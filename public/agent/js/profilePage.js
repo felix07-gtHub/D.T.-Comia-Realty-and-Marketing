@@ -967,6 +967,8 @@ async function updateInfoFunction() {
         userName.addEventListener("mouseenter", invalidInputsMousEnter);
         userName.addEventListener("mouseleave", invalidInputsMousEave);
 
+        updateInfoButton.disabled = true;
+
     };
 };
 
