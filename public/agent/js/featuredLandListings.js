@@ -186,7 +186,7 @@ async function featuredLandListings() {
                 translateCarousel = 0;
 
                 for(let j = 0; j < imageCount; j++) {
-                    div.children[j].style.transform = 'none';
+                    images.children[j].style.transform = 'none';
                 };
 
                 property.style.transform = 'none';
