@@ -470,16 +470,16 @@ async function historyPropertiesListings() {
                     const images = document.createElement('div');
                     const imagesDiv = document.createElement('div');
                 
-                    propertyType.innerHTML = data.houseListings[i].property_type;
+                    propertyType.innerHTML = data.propertyListings[i].property_type;
                     locationModal.href = "./gpsSystem.html";
                     locationModal.innerHTML = "View Location";
                     bedRooms.innerHTML = "Bedrooms";
-                    bedRoomsCount.innerHTML = data.houseListings[i].room_count;
+                    bedRoomsCount.innerHTML = data.propertyListings[i].room_count;
                     bathRooms.innerHTML = "Bathrooms";
-                    bathRoomsCount.innerHTML = data.houseListings[i].bath_count;
+                    bathRoomsCount.innerHTML = data.propertyListings[i].bath_count;
                     area.innerHTML = "Area";
                     measurments.classList.add('measurements');
-                    measurments.innerHTML = data.houseListings[i].area + "sq";
+                    measurments.innerHTML = data.propertyListings[i].area + "sq";
                     images.classList.add('images');
 
                     details.appendChild(propertyType);
@@ -500,7 +500,7 @@ async function historyPropertiesListings() {
                     let imageCount = 0;
 
                     for(let j = 0; j < data.imageListings.length; j++) {
-                        if(data.houseListings[i].property_id == data.imageListings[j].property_id) {
+                        if(data.propertyListings[i].property_id == data.imageListings[j].property_id) {
                             if(data.imageListings[j].field_name == "Additional_images") {
                                 imageCount++;
 
@@ -710,14 +710,14 @@ function selectAllFunction() {
                 selectCount += 1;
 
                 listings.children[i].querySelector('.imageContainer > input').checked = true;
-                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "";
+                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/checkbox with check.png";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].alt = "Checked checkbox";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].type = "";
             } else {
                 selectCount = 0;
 
                 listings.children[i].querySelector('.imageContainer > input').checked = false;
-                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "";
+                listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/empty checkbox.png";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].alt = "Empty checkbox";
                 listings.children[i].querySelector('.imageContainer > .selectCheckbox').children[0].type = "";
             }
