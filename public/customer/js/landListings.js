@@ -754,16 +754,16 @@ async function landListings() {
             const images = document.createElement('div');
             const imagesDiv = document.createElement('div');
          
-            propertyType.innerHTML = data.houseListings[i].property_type;
+            propertyType.innerHTML = data.landListings[i].property_type;
             locationModal.href = "./gpsSystem.html";
             locationModal.innerHTML = "View Location";
             bedRooms.innerHTML = "Bedrooms";
-            bedRoomsCount.innerHTML = data.houseListings[i].room_count;
+            bedRoomsCount.innerHTML = data.landListings[i].room_count;
             bathRooms.innerHTML = "Bathrooms";
-            bathRoomsCount.innerHTML = data.houseListings[i].bath_count;
+            bathRoomsCount.innerHTML = data.landListings[i].bath_count;
             area.innerHTML = "Area";
             measurments.classList.add('measurements');
-            measurments.innerHTML = data.houseListings[i].area + "sq";
+            measurments.innerHTML = data.landListings[i].area + "sq";
             images.classList.add('images');
 
             details.appendChild(propertyType);
@@ -784,7 +784,7 @@ async function landListings() {
             let imageCount = 0;
 
             for(let j = 0; j < data.imageListings.length; j++) {
-                if(data.houseListings[i].property_id == data.imageListings[j].property_id) {
+                if(data.landListings[i].property_id == data.imageListings[j].property_id) {
                     if(data.imageListings[j].field_name == "Additional_images") {
                         imageCount++;
 

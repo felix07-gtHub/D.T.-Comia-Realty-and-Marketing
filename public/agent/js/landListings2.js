@@ -313,10 +313,6 @@ async function landListings2() {
         details.appendChild(propertyType);
         details.appendChild(hr);
         details.appendChild(locationModal);
-        details.appendChild(bedRooms);
-        details.appendChild(bedRoomsCount);
-        details.appendChild(bathRooms);
-        details.appendChild(bathRoomsCount);
         details.appendChild(area);
         details.appendChild(measurments);
         propertyModal.appendChild(images);
