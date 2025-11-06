@@ -241,22 +241,26 @@ body {
     width: 55%;
     height: 437px;
     margin: 5px;
+    position: relative;
 }
 
 .toursReservationsDetails > .toursReservationsModal > .images > div {
-    border: solid #a39a9a;
-    align-items: center;
-    border-radius: 20px;
     height: 100%;
     display: flex;
-    position: relative;
     overflow: hidden;
-    background-color: #faebcf;
-    text-align: left;
 }
 
-.toursReservationsDetails > .toursReservationsModal > .images > div > img {
+.toursReservationsDetails > .toursReservationsModal > .images > div > div {
     min-width: 100%;
+    height: 100%;
+    background-color: #faebcf;
+    align-content: center;
+    text-align: center;
+}
+
+.toursReservationsDetails > .toursReservationsModal > .images > div > div > img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .toursReservationsDetails > .toursReservationsModal > .images > div > input {

@@ -73,7 +73,7 @@ async function activeListings() {
                                 if(data.imageListings[k].field_name == "Main_image") {
                                     propertyImage.src = data.imageListings[k].path;
                                     propertyImage.alt = data.imageListings[k].file_name;
-                                    propertyImage.type = data.imageListings[k].mime_type;
+                                    propertyImage.type = data.imageListings[k].mime_type.split('/')[1];
 
                                     break;
                                 };
@@ -168,7 +168,7 @@ async function activeListings() {
                                 translateCarousel = 0;
 
                                 for(let k = 0; k < imageCount; k++) {
-                                    div.children[k].style.transform = 'none';
+                                    imagesDiv.children[k].style.transform = 'none';
                                 };
 
                                 toursReservations.style.transform = 'none';
@@ -184,12 +184,12 @@ async function activeListings() {
 
 
                         const images = document.createElement('div');
-                        const div = document.createElement('div');
-
+                        const imagesDiv = document.createElement('div');
+                    
                         images.classList.add('images');
 
                         toursReservationsModal.appendChild(images);
-                        images.appendChild(div);
+                        images.appendChild(imagesDiv);
 
                         
 
@@ -201,44 +201,48 @@ async function activeListings() {
                                 if(data.imageListings[k].field_name == "Additional_images") {
                                     imageCount++;
 
-                                    const image = document.createElement('img');
+                                    const imagesImageContainer = document.createElement('div');
+                                    const imagesImage = document.createElement('img');
 
-                                    image.src = data.imageListings[k].path;
-                                    image.alt = data.imageListings[k].file_name;
-                                    image.type = data.imageListings[k].mime_type;
+                                    imagesImage.src = data.imageListings[k].path;
+                                    imagesImage.alt = data.imageListings[k].file_name;
+                                    imagesImage.type = data.imageListings[k].mime_type.split('/')[1];
 
-                                    div.appendChild(image);
+                                    imagesDiv.appendChild(imagesImageContainer);
+                                    imagesImageContainer.appendChild(imagesImage);
                                 };
                             };
                         };
 
                             // INITIALLY ADDS 100% TRANSLATE TO ITS TRANSFORM.
                         let translateCarousel = 0;
-                                
-                        if(div.children.length > 1) {
+                        
+                        if(imagesDiv.children.length > 1) {
                             const previousButton = document.createElement('input');
                             const nextButton = document.createElement('input');
 
                             previousButton.type = "image";
+                            previousButton.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/left arrow-white.png";
                             previousButton.name = "Previous button";
                             previousButton.alt = "Previous icon";
                             previousButton.classList.add('previousIcon');
                             nextButton.type = "image";
+                            nextButton.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/right arrow.png";
                             nextButton.name = "Next button";
                             nextButton.alt = "Next icon";
                             nextButton.classList.add('nextIcon');
 
-                            div.appendChild(previousButton);
-                            div.appendChild(nextButton);
+                            images.appendChild(previousButton);
+                            images.appendChild(nextButton);
 
                                 // IMAGE CAROUSEL FUNCTION.
                             function previousCarousel() {
                                 translateCarousel++;
-                                
+                                    
                                 if(translateCarousel > 0) {
-                                translateCarousel = -(imageCount - 1);
+                                    translateCarousel = -(imageCount - 1);
                                 };
-                                
+                                    
                                 carousel(translateCarousel);
                             };
 
@@ -246,24 +250,23 @@ async function activeListings() {
 
                             function nextCarousel() {
                                 translateCarousel--;
-                                
+                                    
                                 if(translateCarousel < -(imageCount - 1)) {
-                                translateCarousel = 0;
+                                    translateCarousel = 0;
                                 };
-                                
+                                    
                                 carousel(translateCarousel);
                             };
 
                             nextButton.addEventListener("click", nextCarousel);
 
-                            function carousel(translateValue) {            
-                                // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
-                                // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
+                            function carousel(translateValue) {                
+                                    // EVERY RUN ADDS A 100% TRANSLATE TO ITS TRANSFORM TO MOVE IT MORE TO THE LEFT SHOWING ANOTHER IMAGE.
+                                    // VALUE OF TRANSLATE EQAUL TO INDEX OF IMAGE SHOWING.
                                 for(let k = 0; k < imageCount; k++) {
-                                    div.children[k].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
-                                }
+                                    imagesDiv.children[k].style.transform = 'translate(' + translateValue * 100 + '%, 0)';
+                                };
                             };  
-
                         };
 
 
