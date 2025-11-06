@@ -298,7 +298,7 @@ async function featuredProperty() {
                 savedInput.disabled = true;
                 savedLabel.htmlFor = data.featuredPropertyListings[i].property_id;
                 savedLink.href = "./signUp.html";
-                savedIcon.src = "https://niwxujzmwpdhegjlmyfw.supabase.co/storage/v1/object/public/D.T.%20Comia%20Realty%20and%20Marketing/BUYER ICONS AND LOGOS/emptyheart.png";
+                savedIcon.src = "../resources/BUYER ICONS AND LOGOS/emptyheart.png";
                 savedIcon.alt = "Heart icon empty";
                 savedIcon.type = "";
                 savedIcon.classList.add('savedIcon');
@@ -448,7 +448,7 @@ async function featuredProperty() {
                     translateCarousel = 0;
 
                     for(let j = 0; j < imageCount; j++) {
-                        div.children[j].style.transform = 'none';
+                        images.children[j].style.transform = 'none';
                     };
 
                     property.style.transform = 'none';
@@ -635,15 +635,13 @@ async function featuredProperty() {
                     if(data.featuredImageListings[j].field_name == "Additional_images") {
                         imageCount++;
 
-                        const div = document.createElement('div');
                         const image = document.createElement('img');
 
                         image.src = data.featuredImageListings[j].path;
                         image.alt = data.featuredImageListings[j].file_name;
                         image.type = data.featuredImageListings[j].mime_type.split('/')[1];
 
-                        images.appendChild(div);
-                        div.appendChild(image);
+                        images.appendChild(image);
                     };
                 };
             };

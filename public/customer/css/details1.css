@@ -99,9 +99,10 @@
     margin: 5px;
     display: flex;
     overflow: hidden;
+    position: relative;
     background-color: #f2e6d6;
     align-content: center;
-    text-align: left;
+    text-align: center;
 }
 
 .propertyDetails > .propertyModal > .images > img {

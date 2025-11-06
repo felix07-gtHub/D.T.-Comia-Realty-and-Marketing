@@ -363,7 +363,7 @@
                                     translateCarousel = 0;
 
                                     for(let k = 0; k < imageCount; k++) {
-                                        div.children[k].style.transform = 'none';
+                                        images.children[k].style.transform = 'none';
                                     };
 
                                     toursReservations.style.transform = 'none';

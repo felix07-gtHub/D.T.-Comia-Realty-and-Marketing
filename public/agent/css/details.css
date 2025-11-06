@@ -98,6 +98,7 @@
     height: 437px;
     margin: 5px;
     display: flex;
+    position: relative;
     overflow: hidden;
     background-color: #4e6e5d;
 }

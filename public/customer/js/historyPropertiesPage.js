@@ -316,7 +316,7 @@ async function historyPropertiesListings() {
                             translateCarousel = 0;
 
                             for(let j = 0; j < imageCount; j++) {
-                            div.children[j].style.transform = 'none';
+                                images.children[j].style.transform = 'none';
                             };
 
                             property.style.transform = 'none';
@@ -503,15 +503,13 @@ async function historyPropertiesListings() {
                             if(data.imageListings[j].field_name == "Additional_images") {
                                 imageCount++;
 
-                                const div = document.createElement('div');
                                 const image = document.createElement('img');
 
                                 image.src = data.imageListings[j].path;
                                 image.alt = data.imageListings[j].file_name;
                                 image.type = data.imageListings[j].mime_type.split('/')[1];
 
-                                images.appendChild(div);
-                                div.appendChild(image);
+                                images.appendChild(image);
                             };
                         };
                     };
